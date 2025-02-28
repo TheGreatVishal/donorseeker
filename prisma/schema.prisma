@@ -1,0 +1,93 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  contact   String
+  isAdmin   Boolean  @default(false) // USER = false, ADMIN = true
+  verified  Boolean  @default(false) // True if email is verified
+  createdAt DateTime @default(now())
+}
+
+model OTPVerification {
+  id        String   @id @default(uuid())
+  email     String   @unique // Ensures only one OTP per email
+  otp       String
+  expiresAt DateTime
+}
+
+// model Listing {
+//   id          String     @id @default(uuid())  
+//   title       String
+//   description String
+//   category    String
+//   condition   Condition  
+//   imageUrls   String[]  
+//   contact     String
+//   status      ListingStatus  @default(PENDING) // Pending, Approved, Rejected, Donated
+//   createdAt   DateTime   @default(now())
+//   isApproved  Boolean    @default(false)
+//   donorId     String
+//   donor       User       @relation("UserListings", fields: [donorId], references: [id])
+
+//   requests    Request[]  @relation("ListingRequests")  // Seeker requests
+// }
+
+// model Request {
+//   id         String     @id @default(uuid())  
+//   seekerId   String
+//   listingId  String
+//   status     RequestStatus  @default(PENDING) // Pending, Accepted, Rejected
+//   createdAt  DateTime   @default(now())
+
+//   seeker     User       @relation("UserRequests", fields: [seekerId], references: [id])
+//   listing    Listing    @relation("ListingRequests", fields: [listingId], references: [id])
+// }
+
+// model PasswordReset {
+//   id         String    @id @default(uuid())
+//   email      String    @unique
+//   otp        String
+//   expiresAt  DateTime  
+// }
+
+// enum Role {
+//   USER
+//   ADMIN
+// }
+
+// enum ListingStatus {
+//   PENDING
+//   APPROVED
+//   REJECTED
+//   DONATED
+// }
+
+// enum ApprovalStatus {
+//   PENDING
+//   APPROVED
+//   REJECTED
+// }
+
+// enum RequestStatus {
+//   PENDING
+//   ACCEPTED
+//   REJECTED
+// }
+
+// enum Condition {
+//   NEW
+//   USED
+//   GOOD
+//   FAIR
+//   BAD
+// }
