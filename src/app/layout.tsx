@@ -1,12 +1,12 @@
 'use client';
 import "./globals.css";
 import { SessionProvider } from "next-auth/react";
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import { ReactNode } from 'react';
 
 
 export default function RootLayout({ children }: { children: ReactNode }) {
-  const router = useRouter();
+  // const router = useRouter();
 
   return (
     <html>

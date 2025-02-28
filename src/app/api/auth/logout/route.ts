@@ -2,7 +2,6 @@
 
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-import prisma from '../../../../lib/prisma';
 import { verifyJwtAccessToken } from '../../../../lib/jwt';
 
 export async function POST(request: Request) {

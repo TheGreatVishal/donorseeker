@@ -9,7 +9,7 @@ import { motion } from 'framer-motion';
 export default function HomePage() {
     const router = useRouter();
     const { data: session, status } = useSession();
-    const [scrolled, setScrolled] = useState(false);
+    const [, setScrolled] = useState(false);
 
     useEffect(() => {
         if (status === 'unauthenticated') {

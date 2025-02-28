@@ -165,7 +165,7 @@ export default function LoginPage() {
             Forgot your password?
           </Link>
           <p className="text-sm text-muted-foreground bg-gradient-to-r from-rose-500 to-indigo-500 text-transparent bg-clip-text">
-            Don't have an account?{" "}
+            Do not have an account?{" "}
             <Link
               href="/loginSystem/signup"
               className="font-medium text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-indigo-500 hover:underline"

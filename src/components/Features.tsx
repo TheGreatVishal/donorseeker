@@ -29,7 +29,7 @@ const Features = () => {
             A better way to give and receive
           </p>
           <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-            Our platform makes it easy to donate items you no longer need and find items you're looking for.
+            Our platform makes it easy to donate items you no longer need and find items you are looking for.
           </p>
         </div>
 

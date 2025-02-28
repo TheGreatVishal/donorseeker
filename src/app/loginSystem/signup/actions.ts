@@ -60,8 +60,12 @@ export async function sendOTP(email: string) {
 				create: { email, otp, expiresAt },
 			});
 			console.log("OTP stored successfully.");
-		} catch (error: any) {
-			console.error("Database Error:", error.message);
+		} catch (error) {
+			if (error instanceof Error) {
+				console.error("Database Error:", error.message);
+			} else {
+				console.error("Database Error:", error);
+			}
 		}
 		
 		

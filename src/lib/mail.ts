@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
  */
 export async function sendEmail(to: string, otp: string) {
   console.log(`(Mail module) Sending OTP to ${to}: ${otp}`);
-  
+
   try {
     const info = await transporter.sendMail({
       from: `"Donor and Seeker" <${process.env.EMAIL_USER}>`,
@@ -28,8 +28,9 @@ export async function sendEmail(to: string, otp: string) {
 
     console.log(`OTP sent to ${to}. Message ID: ${info.messageId}`);
     return { success: true };
-  } catch (error: any) {
-    console.error("Error sending email:", error.message, error.response);
-    return { success: false, error: error.message };
+  } catch (error) {
+    const err = error as any;
+    console.error("Error sending email:", err.message, err.response);
+    return { success: false, error: (error as any).message };
   }
 }

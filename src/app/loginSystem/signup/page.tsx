@@ -44,7 +44,7 @@ export default function SignupPage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [email, setEmail] = useState("")
+  // const [email, setEmail] = useState("")
   const [otp, setOtp] = useState("")
   const [adminKeyVerified, setAdminKeyVerified] = useState(false)
   const [verifyingAdminKey, setVerifyingAdminKey] = useState(false)
@@ -55,7 +55,7 @@ export default function SignupPage() {
   const [sendingOtp, setSendingOtp] = useState(false)
   const [otpSent, setOtpSent] = useState(false)
   const usernameTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-  const formData = useRef<SignupFormValues | null>(null)
+  // const formData = useRef<SignupFormValues | null>(null)
 
   useEffect(() => {
     setMounted(true)
@@ -67,7 +67,7 @@ export default function SignupPage() {
     watch,
     setValue,
     trigger,
-    getValues,
+    // getValues,
     formState: { errors, isValid },
   } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
