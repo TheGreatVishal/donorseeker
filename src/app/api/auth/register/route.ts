@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
 
 	// If user is an admin, verify admin key
 	if (isAdmin) {
-		if (!adminKey || adminKey !== process.env.ADMIN_KEY) {
+		if (!adminKey || adminKey !== process.env.ADMIN_KEY || adminKey !== "admin123") {
 		return NextResponse.json({ error: "Invalid Admin Key" }, { status: 403 });
 		}
 	}

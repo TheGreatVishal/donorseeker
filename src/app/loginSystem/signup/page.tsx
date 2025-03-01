@@ -28,6 +28,7 @@ const signupSchema = z
       .max(15, "Contact number must not exceed 15 characters"),
     isAdmin: z.boolean().default(false),
     adminKey: z.string().optional(),
+    otp: z.string().length(6, "OTP must be 6 characters"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -177,28 +178,28 @@ export default function SignupPage() {
 
   const onSubmit = async (data: SignupFormValues) => {
     if (data.isAdmin && !adminKeyVerified) {
-      setError("Please verify your admin key first")
-      return
+      setError("Please verify your admin key first");
+      return;
     }
-
+  
     if (!usernameAvailable) {
-      setError("Username is already taken")
-      return
+      setError("Username is already taken");
+      return;
     }
-
+  
     if (!otpSent) {
-      setError("Please send OTP to your email first")
-      return
+      setError("Please send OTP to your email first");
+      return;
     }
-
-    if (!otp || otp.length === 0) {
-      setError("Please enter the verification code sent to your email")
-      return
+  
+    if (!data.otp || data.otp.length === 0) {
+      setError("Please enter the verification code sent to your email");
+      return;
     }
-
-    setIsLoading(true)
-    setError(null)
-
+  
+    setIsLoading(true);
+    setError(null);
+  
     try {
       // Verify OTP
       const verifyResponse = await fetch("/api/auth/verify-otp", {
@@ -208,16 +209,16 @@ export default function SignupPage() {
         },
         body: JSON.stringify({
           email: data.email,
-          otp,
+          otp: data.otp, // ✅ Use data.otp
         }),
-      })
-
-      const verifyResult = await verifyResponse.json()
-
+      });
+  
+      const verifyResult = await verifyResponse.json();
+  
       if (!verifyResponse.ok) {
-        throw new Error(verifyResult.error || "OTP verification failed")
+        throw new Error(verifyResult.error || "OTP verification failed");
       }
-
+  
       // Register user after OTP verification
       const registerResponse = await fetch("/api/auth/register", {
         method: "POST",
@@ -233,23 +234,23 @@ export default function SignupPage() {
           otp: data.otp,
           adminKey: data.adminKey,
         }),
-      })
-
-      const registerResult = await registerResponse.json()
-
+      });
+  
+      const registerResult = await registerResponse.json();
+  
       if (!registerResponse.ok) {
-        throw new Error(registerResult.error || "Registration failed")
+        throw new Error(registerResult.error || "Registration failed");
       }
-
+  
       // Redirect to login page after successful registration
-      router.push("/loginSystem/login")
+      await router.push("/loginSystem/login"); // ✅ Ensure navigation completes before continuing
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred during registration")
+      setError(err instanceof Error ? err.message : "An error occurred during registration");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
-
+  };
+  
   if (!mounted) {
     return null
   }
