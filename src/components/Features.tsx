@@ -24,67 +24,45 @@ const features = [
 
 const Features = () => {
   return (
-    <div className="py-12 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="lg:text-center">
-          <motion.h2
-            className="text-primary font-semibold tracking-wide uppercase text-orange-600 text-xl"
-            initial={{ opacity: 0, y: -20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-          >
-            Features
-          </motion.h2>
-          <motion.p
-            className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            A better way to give and receive
-          </motion.p>
-          <motion.p
-            className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
-          >
-            Our platform makes it easy to donate items you no longer need and find items you are looking for.
-          </motion.p>
-        </div>
+    <section className="py-16 bg-gradient-to-br from-yellow-100 via-orange-200 to-red-300">
+      <div className="max-w-6xl mx-auto px-6 lg:px-12">
+        <motion.div
+          className="text-center"
+          initial={{ opacity: 0, y: -30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 3, ease: "easeOut" }}
+          viewport={{ once: true }}
+        >
+          <h2 className="text-xl font-semibold text-orange-700 uppercase tracking-wide">Features</h2>
+          <p className="mt-2 text-4xl font-bold text-gray-900">A Smarter Way to Give & Receive</p>
+          <p className="mt-3 text-lg text-gray-600 max-w-2xl mx-auto">
+            Our platform simplifies the process of donating and receiving items, making it easier for everyone to contribute.
+          </p>
+        </motion.div>
 
-        <div className="mt-10">
-          <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-3 md:gap-x-8 md:gap-y-10">
-            {features.map((feature, index) => (
-              <motion.div
-                key={feature.name}
-                className={`relative p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300 cursor-pointer bg-gradient-to-r ${feature.color}`}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.2 }} // Staggered appearance
-                viewport={{ once: true }}
-                whileHover={{ scale: 1.05, rotate: 2 }}
-              >
-                <dt>
-                  <motion.div
-                    className="absolute flex items-center justify-center h-12 w-12 rounded-md bg-white text-gray-900 shadow-md"
-                    whileHover={{ scale: 1.2, rotate: 10 }}
-                    transition={{ duration: 0.2 }} // No delay in hover effect
-                  >
-                    <feature.icon className="h-6 w-6" aria-hidden="true" />
-                  </motion.div>
-                  <p className="ml-16 text-lg leading-6 font-medium text-white">{feature.name}</p>
-                </dt>
-                <dd className="mt-2 ml-16 text-base text-white">{feature.description}</dd>
-              </motion.div>
-            ))}
-          </dl>
+        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+          {features.map((feature, ) => (
+            <motion.div
+              key={feature.name}
+              className={`relative p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all cursor-pointer bg-gradient-to-r ${feature.color}`}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0, ease: "easeOut" }}
+              viewport={{ once: true }}
+              whileHover={{ scale: 1.5, zIndex: 10 }}
+            >
+              <div className="absolute -top-6 left-6 flex items-center justify-center h-14 w-14 rounded-lg bg-white text-gray-900 shadow-md">
+                <feature.icon className="h-8 w-8" aria-hidden="true" />
+              </div>
+              <div className="mt-8">
+                <h3 className="text-xl font-semibold text-white">{feature.name}</h3>
+                <p className="mt-2 text-white text-lg leading-relaxed">{feature.description}</p>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

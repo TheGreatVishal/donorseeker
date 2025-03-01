@@ -8,6 +8,7 @@ import { motion, useAnimation, useScroll, useSpring } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { Navbar } from "@/components/Navbar";
 import Testimonials  from "@/components/Testimonials";
+import {CallToActionSection} from "@/components/CallToActionSection";
 
 export default function Home() {
   const controls = useAnimation();
@@ -48,43 +49,13 @@ export default function Home() {
           hidden: { opacity: 0, y: 50 },
         }}
         transition={{ duration: 0.5 }}
-        className="py-12 bg-white text-gray-900"
+        className="bg-white text-gray-900"
       >
 
       <Testimonials />
       </motion.section>
 
-      <motion.section
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-        className="bg-blue-700 py-12 text-white"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-extrabold sm:text-4xl">
-            <span className="block">Ready to make a difference?</span>
-            <span className="block">Join our community today.</span>
-          </h2>
-          <div className="mt-8 flex lg:mt-0 lg:flex-shrink-0">
-            <div className="inline-flex rounded-md shadow">
-              <a
-                href="#"
-                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-blue-700 bg-white hover:bg-gray-200"
-              >
-                Sign Up
-              </a>
-            </div>
-            <div className="ml-3 inline-flex rounded-md shadow">
-              <a
-                href="#"
-                className="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-800 hover:bg-blue-900"
-              >
-                Learn more
-              </a>
-            </div>
-          </div>
-        </div>
-      </motion.section>
+      <CallToActionSection/>
     </div>
   );
 }

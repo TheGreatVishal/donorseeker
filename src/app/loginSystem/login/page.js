@@ -165,7 +165,7 @@ export default function LoginPage() {
 
 				<CardFooter className="flex flex-col items-center gap-4 pb-6">
 					<Link
-						href="/forgot-password"
+						href="/loginSystem/forgot-password"
 						className="text-sm text-muted-foreground text-black hover:text-indigo-600 transition-colors"
 					>
 						Forgot your password?

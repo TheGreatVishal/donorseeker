@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
 		secureCookie: process.env.NODE_ENV === 'production'
 	});
 
-	const publicPaths = ['/', '/loginSystem/login', '/loginSystem/signup', '../public'];
+	const publicPaths = ['/', '/loginSystem/login', '/loginSystem/signup', '../public', '/loginSystem/forgot-password', '/loginSystem/reset-password'];
 
 	const isPublicPath = publicPaths.includes(request.nextUrl.pathname);
 
@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest) {
 	}
 
 	if (session) {
-		console.log("Middleware (session exists): ", session);
+		console.log("\n\nMiddleware (session exists) \n\n");
 		// You can add additional checks here if needed
 	}
 

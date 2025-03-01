@@ -23,33 +23,32 @@ const testimonials = [
 
 const Testimonials = () => {
   return (
-    <section className="py-12 bg-white text-gray-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="lg:text-center">
-          <h2 className="text-base text-blue-600 font-semibold tracking-wide uppercase">Testimonials</h2>
-          <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-800 sm:text-4xl">
-            Hear from our community
-          </p>
+    <section className="py-16 bg-gradient-to-br from-blue-50 via-purple-200 to-pink-100 text-gray-900">
+      <div className="max-w-6xl mx-auto px-6 lg:px-12">
+        <div className="text-center">
+          <h2 className="text-lg font-semibold text-blue-700 tracking-wide uppercase">Testimonials</h2>
+          <p className="mt-2 text-4xl font-bold text-gray-800">What Our Users Say</p>
+          <p className="mt-3 text-gray-600 text-lg">Real experiences from our community members.</p>
         </div>
-        <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={index}
-              className="p-6 border rounded-lg shadow-lg bg-gray-50 hover:shadow-xl transition-shadow duration-300"
+              className="p-8 bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-200"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.2 }}
+              transition={{ duration: 0.5, delay: index * 0.15 }}
               viewport={{ once: true }}
             >
               <div className="flex items-center space-x-4">
                 {testimonial.gender === "male" ? (
-                  <FaMale className="text-blue-500 text-2xl" />
+                  <FaMale className="text-blue-500 text-3xl" aria-label="Male Icon" />
                 ) : (
-                  <FaFemale className="text-pink-500 text-2xl" />
+                  <FaFemale className="text-pink-500 text-3xl" aria-label="Female Icon" />
                 )}
-                <p className="text-lg font-semibold text-gray-800">{testimonial.name}</p>
+                <p className="text-xl font-semibold text-gray-900">{testimonial.name}</p>
               </div>
-              <p className="mt-4 text-gray-600">{testimonial.feedback}</p>
+              <p className="mt-4 text-gray-700 text-lg leading-relaxed">{testimonial.feedback}</p>
             </motion.div>
           ))}
         </div>

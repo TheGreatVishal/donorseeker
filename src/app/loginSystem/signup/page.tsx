@@ -116,6 +116,14 @@ export default function SignupPage() {
   useEffect(() => {
     if (watchedEmail) {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+      // Start at beginning of string or line
+      // Include all characters except @ until the @ sign
+      // Include the @ sign
+      // Include all characters except @ after the @ sign until the full stop
+      // Include all characters except @ after the full stop
+      // Stop at the end of the string or line
+
       setEmailValid(emailPattern.test(watchedEmail))
     } else {
       setEmailValid(null)
