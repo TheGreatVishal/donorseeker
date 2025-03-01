@@ -49,7 +49,7 @@ const Testimonials = () => {
                 )}
                 <p className="text-lg font-semibold text-gray-800">{testimonial.name}</p>
               </div>
-              <p className="mt-4 text-gray-600">"{testimonial.feedback}"</p>
+              <p className="mt-4 text-gray-600">{testimonial.feedback}</p>
             </motion.div>
           ))}
         </div>

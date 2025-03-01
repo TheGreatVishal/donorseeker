@@ -67,7 +67,6 @@ const Features = () => {
                 transition={{ duration: 0.4, delay: index * 0.2 }} // Staggered appearance
                 viewport={{ once: true }}
                 whileHover={{ scale: 1.05, rotate: 2 }}
-                transition={{ duration: 0.2 }} // No delay in hover effect
               >
                 <dt>
                   <motion.div

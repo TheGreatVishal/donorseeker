@@ -49,12 +49,13 @@ export default function LoginPage() {
 
 			// console.log("Result",JSON.stringify(result))
 			if (result?.error) {
-				setErrorMessage(result.error)
+				// setErrorMessage(result.error)
+				setErrorMessage("Some problem occured. Try again.")
 			} else {
 				router.push("/home")
 			}
 		} catch (err) {
-			// console.error("Error occurred:", err);
+			console.error("Error occurred:", err);
 			setErrorMessage("An unexpected error occurred");
 		} finally {
 			setIsLoading(false)
