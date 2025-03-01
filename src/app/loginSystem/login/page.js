@@ -36,7 +36,7 @@ export default function LoginPage() {
 		setIsLoading(true)
 
 		const { email, password } = formData
-		console.log("Trying login for Email",email, password);
+		// console.log("Trying login for Email",email, password);
 		
 		try {
 			const result = await signIn("credentials", {
@@ -45,16 +45,16 @@ export default function LoginPage() {
 				password,
 			})
 
-			alert(`Result: ${JSON.stringify(result)}`);
+			// alert(`Result: ${JSON.stringify(result)}`);
 
-			console.log("Result",JSON.stringify(result))
+			// console.log("Result",JSON.stringify(result))
 			if (result?.error) {
 				setErrorMessage(result.error)
 			} else {
 				router.push("/home")
 			}
 		} catch (err) {
-			console.error("Error occurred:", err);
+			// console.error("Error occurred:", err);
 			setErrorMessage("An unexpected error occurred");
 		} finally {
 			setIsLoading(false)

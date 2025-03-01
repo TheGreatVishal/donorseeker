@@ -5,19 +5,19 @@ import { signJwtAccessToken } from "../../../../lib/jwt"
 
 export async function POST(request: Request) {
   try {
-    console.log("=====================================")
-    console.log("api/auth/login/route.ts")
+    // console.log("=====================================")
+    // console.log("api/auth/login/route.ts")
     const body = await request.json()
     const { email, password } = body
 
-    console.log("Email:", email)
-    console.log("Password:", password)
+    // console.log("Email:", email)
+    // console.log("Password:", password)
 
     const user = await prisma.user.findUnique({
       where: { email: email },
     })
 
-    console.log("User:", user)
+    // console.log("User:", user)
 
     if (!user) {
       return NextResponse.json({ error: "Invalid email or password" }, { status: 400 })
@@ -41,10 +41,10 @@ export async function POST(request: Request) {
 
     const response = NextResponse.redirect(new URL("/home", request.url)) // Use a relative path
 
-    console.log("Access Token:", accessToken)
-    console.log("Response:", response)
+    // console.log("Access Token:", accessToken)
+    // console.log("Response:", response)
 
-    console.log("Setting cookies...")
+    // console.log("Setting cookies...")
 
     response.cookies.set({
       name: "token",
@@ -55,9 +55,9 @@ export async function POST(request: Request) {
       maxAge: 7 * 24 * 60 * 60, // 30 days
       path: "/", // Ensure the path is root to access across the application
     })
-    console.log("Cookies set.", response.cookies)
+    // console.log("Cookies set.", response.cookies)
 
-    console.log("=====================================")
+    // console.log("=====================================")
 
     return response // Return the redirect response
   } catch (error) {
