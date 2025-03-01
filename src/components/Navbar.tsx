@@ -72,7 +72,7 @@ export function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
-            className="lg:hidden bg-white shadow-lg rounded-b-lg mt-4 p-4 text-gray-900"
+            className="lg:hidden bg-white shadow-lg rounded-b-lg p-4 text-gray-900"
           >
             <Link href="/" className="block py-2" onClick={() => setIsMobileMenuOpen(false)}>
               Home
@@ -88,7 +88,7 @@ export function Navbar() {
             </Link>
 
             <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white mt-2" onClick={() => setIsMobileMenuOpen(false)}>
-              <Link href="/login">Login / Sign Up</Link>
+              <Link href="/loginSystem/login">Login / Sign Up</Link>
             </Button>
           </motion.div>
         )}

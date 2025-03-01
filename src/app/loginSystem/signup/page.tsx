@@ -44,7 +44,6 @@ export default function SignupPage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  // const [email, setEmail] = useState("")
   const [otp, setOtp] = useState("")
   const [adminKeyVerified, setAdminKeyVerified] = useState(false)
   const [verifyingAdminKey, setVerifyingAdminKey] = useState(false)
@@ -55,7 +54,6 @@ export default function SignupPage() {
   const [sendingOtp, setSendingOtp] = useState(false)
   const [otpSent, setOtpSent] = useState(false)
   const usernameTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-  // const formData = useRef<SignupFormValues | null>(null)
 
   useEffect(() => {
     setMounted(true)
@@ -258,7 +256,7 @@ export default function SignupPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-rose-50 to-indigo-50 p-4">
       <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-r from-rose-400 to-indigo-500 rounded-b-[30%] opacity-80" />
 
-      <Card className="w-full max-w-md relative z-10 border-none shadow-xl bg-white/90 backdrop-blur-sm">
+      <Card className="w-full max-w-md relative z-10 border-none shadow-xl bg-white/90 backdrop-blur-sm mt-10">
         <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-white p-3 rounded-full shadow-lg">
           <div className="bg-gradient-to-r from-rose-500 to-indigo-500 p-3 rounded-full">
             <Heart className="h-6 w-6 text-white" />
@@ -460,7 +458,7 @@ export default function SignupPage() {
                     className="data-[state=checked]:bg-indigo-500"
                   />
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-slate-950">
                   Admins have additional privileges to manage the platform
                 </p>
               </div>
@@ -534,7 +532,7 @@ export default function SignupPage() {
           <p className="text-sm text-muted-foreground bg-gradient-to-r from-rose-500 to-indigo-500 text-transparent bg-clip-text">
             Already have an account?{" "}
             <Link
-              href="/login"
+              href="/loginSystem/login"
               className="font-medium text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-indigo-500 hover:underline"
             >
               Login
