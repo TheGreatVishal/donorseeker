@@ -4,7 +4,7 @@ import bcrypt from "bcryptjs"
 
 export async function POST(request: NextRequest) {
   try {
-    const { username, email, password, contact, isAdmin } = await request.json()
+    const { username, email, password, contact, isAdmin, otp, adminKey } = await request.json()
 
     // Validate required fields
     if (!username || !email || !password || !contact) {
@@ -36,6 +36,21 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Contact number must be between 7 and 15 characters" }, { status: 400 })
     }
 
+	// Verify OTP from oTPVerification table
+	const otpRecord = await prisma.oTPVerification.findUnique({
+	where: { email },
+	});
+
+	if (!otpRecord || otpRecord.otp !== otp) {
+	return NextResponse.json({ error: "Invalid OTP" }, { status: 400 });
+	}
+
+	// If user is an admin, verify admin key
+	if (isAdmin) {
+		if (!adminKey || adminKey !== process.env.ADMIN_KEY) {
+		return NextResponse.json({ error: "Invalid Admin Key" }, { status: 403 });
+		}
+	}
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10)
 

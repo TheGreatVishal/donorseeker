@@ -230,6 +230,8 @@ export default function SignupPage() {
           password: data.password,
           contact: data.contact,
           isAdmin: data.isAdmin,
+          otp: data.otp,
+          adminKey: data.adminKey,
         }),
       })
 
