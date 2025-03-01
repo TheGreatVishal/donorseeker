@@ -1,4 +1,4 @@
-import nodemailer from "nodemailer";
+import nodemailer from "nodemailer"
 
 // Create a transporter using SMTP settings
 const transporter = nodemailer.createTransport({
@@ -7,7 +7,7 @@ const transporter = nodemailer.createTransport({
     user: process.env.EMAIL_USER, // Your email address
     pass: process.env.EMAIL_PASS, // Your email password or app password
   },
-});
+})
 
 /**
  * Sends an email with the OTP code.
@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
  * @param otp One-time password to send.
  */
 export async function sendEmail(to: string, otp: string) {
-  console.log(`(Mail module) Sending OTP to ${to}: ${otp}`);
+  console.log(`(Mail module) Sending OTP to ${to}: ${otp}`)
 
   try {
     const info = await transporter.sendMail({
@@ -24,13 +24,15 @@ export async function sendEmail(to: string, otp: string) {
       subject: "Your OTP Code",
       text: `Your OTP code is: ${otp}`,
       html: `<p>Your OTP code is: <strong>${otp}</strong></p>`,
-    });
+    })
 
-    console.log(`OTP sent to ${to}. Message ID: ${info.messageId}`);
-    return { success: true };
+    console.log(`OTP sent to ${to}. Message ID: ${info.messageId}`)
+    return { success: true }
   } catch (error) {
-    const err = error as any;
-    console.error("Error sending email:", err.message, err.response);
-    return { success: false, error: (error as any).message };
+    // Fix: Replace 'any' with a more specific type
+    const err = error as Error
+    console.error("Error sending email:", err.message)
+    return { success: false, error: (error as Error).message }
   }
 }
+

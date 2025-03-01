@@ -7,15 +7,8 @@ export async function middleware(request: NextRequest) {
 	const session = await getToken({
 		req: request,
 		secret: process.env.NEXTAUTH_SECRET,
-		secureCookie: process.env.NODE_ENV === 'production',
-		raw: true, // Try retrieving the raw token
-		cookieName: "token", // Explicitly specify the token name
-	  });
-	// console.log("Middleware (request): ", request);
-	
-
-    // console.log("Middleware (session): ", session);
-    
+		secureCookie: process.env.NODE_ENV === 'production'
+	});
 
 	const publicPaths = ['/', '/loginSystem/login', '/loginSystem/signup', '../public'];
 

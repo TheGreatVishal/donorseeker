@@ -6,6 +6,7 @@ import bcrypt from 'bcryptjs'
 import prisma from '../../../../lib/prisma'
 
 const handler = NextAuth({
+	// debug:true,
 	providers: [
 		CredentialsProvider({
 			name: "Credentials",
@@ -34,7 +35,7 @@ const handler = NextAuth({
 				return {
 					id: user.id.toString(),
 					email: user.email,
-					name: `${user.username}`,
+					name: user.username,
 					isAdmin: user.isAdmin
 				}
 			}

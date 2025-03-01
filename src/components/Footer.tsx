@@ -7,8 +7,8 @@ export function Footer() {
         <div>
           <h3 className="mb-4 text-lg font-semibold">Contact Us</h3>
           <p>Email: donationhelp@example.com</p>
-          <p>Phone: +91 98765 43210</p>
-          <p>Phone: +91 91234 56789</p>
+          <p>Phone: +91 1234567890</p>
+          <p>Phone: +91 1234567890</p>
         </div>
         <div>
           <h3 className="mb-4 text-lg font-semibold">Follow Us</h3>
@@ -27,7 +27,7 @@ export function Footer() {
       <div className="text-center mt-8">
         <p>
           © {new Date().getFullYear()} Donation Platform | Made with{" "}
-          <Heart className="inline h-4 w-4 text-red-500" /> by The Great Vishal
+          <Heart className="inline h-4 w-4 text-red-500" /> by Vishal Solanki
         </p>
       </div>
     </footer>
