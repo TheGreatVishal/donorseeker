@@ -1,21 +1,28 @@
-import NextAuth from "next-auth"
+import type { DefaultSession } from "next-auth";
 
 declare module "next-auth" {
+  /**
+   * Extend the built-in session types
+   */
+  interface Session {
+    user: {
+      id: string;
+      isAdmin: boolean;
+    } & DefaultSession["user"];
+  }
 
+  /**
+   * Extend the built-in user types
+   */
   interface User {
     id: string;
-    name: string;
-    email: string;
-    isAdmin: boolean; // Add isAdmin property
+    isAdmin: boolean;
   }
-  interface Session {
-    user: User; // Use the extended User interface
-  }
-
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
-    id: string
+    id: string;
+    isAdmin: boolean;
   }
 }

@@ -4,7 +4,7 @@ import * as React from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { motion, AnimatePresence } from "framer-motion"
-import { Menu, X, User } from "lucide-react"
+import { Menu, X, User } from 'lucide-react'
 import { useSession, signOut } from "next-auth/react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -13,10 +13,12 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 export function HomePageNavbar() {
   const [isScrolled, setIsScrolled] = React.useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
-  const { data: session, status } = useSession()
+  // Fix: Remove 'status' from destructuring since it's not used
+  const { data: session } = useSession()
   const router = useRouter()
 
-  const isAdmin = session?.user?.isAdmin
+  // Add a type assertion to fix the TypeScript error
+  const isAdmin = session?.user?.isAdmin as boolean | undefined;
 
   React.useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 10)
@@ -81,13 +83,13 @@ export function HomePageNavbar() {
             Browse Donations
           </Link>
 
-            <Link href="/list-item" className="text-sm font-medium px-3 py-2 hover:text-orange-500">
-              List an Item
-            </Link>
+          <Link href="/list-item" className="text-sm font-medium px-3 py-2 hover:text-orange-500">
+            List an Item
+          </Link>
 
-            <Link href="/requests" className="text-sm font-medium px-3 py-2 hover:text-orange-500">
-              My Requests
-            </Link>
+          <Link href="/requests" className="text-sm font-medium px-3 py-2 hover:text-orange-500">
+            My Requests
+          </Link>
 
           {isAdmin && (
             <Link href="/admin-dashboard" className="text-sm font-medium px-3 py-2 hover:text-orange-500">
@@ -150,16 +152,13 @@ export function HomePageNavbar() {
               Browse Donations
             </Link>
 
-              <Link href="/list-item" className="block py-2" onClick={() => setIsMobileMenuOpen(false)}>
-                List an Item
-              </Link>
-            
+            <Link href="/list-item" className="block py-2" onClick={() => setIsMobileMenuOpen(false)}>
+              List an Item
+            </Link>
 
-            
-              <Link href="/requests" className="block py-2" onClick={() => setIsMobileMenuOpen(false)}>
-                My Requests
-              </Link>
-            
+            <Link href="/requests" className="block py-2" onClick={() => setIsMobileMenuOpen(false)}>
+              My Requests
+            </Link>
 
             {isAdmin && (
               <Link href="/admin-dashboard" className="block py-2" onClick={() => setIsMobileMenuOpen(false)}>
@@ -176,8 +175,8 @@ export function HomePageNavbar() {
             </Link>
             <button
               onClick={() => {
-                handleLogout();
-                setIsMobileMenuOpen(false);
+                handleLogout()
+                setIsMobileMenuOpen(false)
               }}
               className="block py-2 w-full text-left"
             >
@@ -189,4 +188,3 @@ export function HomePageNavbar() {
     </motion.header>
   )
 }
-
