@@ -48,17 +48,20 @@ const HeroCarousel = () => {
             Join our community of givers and receivers
           </motion.p>
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-          >
-            <a
-              href="#get-started"
-              className="bg-primary text-white font-bold py-3 px-8 rounded-full text-lg hover:bg-primary-dark transition duration-300"
-            >
-              Get Started
-            </a>
-          </motion.div>
+  initial={{ scale: 0.8, opacity: 0 }}
+  animate={{ scale: 1, opacity: 1 }}
+  transition={{ delay: 0.6, duration: 0.8 }}
+  whileHover={{ scale: 1.1 }}
+  whileTap={{ scale: 0.95 }}
+>
+  <a
+    href="/loginSystem/signup"
+    className="bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold py-3 px-8 rounded-full text-lg shadow-lg hover:shadow-xl transition duration-300 ease-in-out transform hover:scale-105 hover:from-red-600 hover:to-orange-500"
+  >
+    Get Started 🚀
+  </a>
+</motion.div>
+
         </div>
       </div>
     </div>
