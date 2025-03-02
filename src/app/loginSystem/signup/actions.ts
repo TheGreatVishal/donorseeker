@@ -5,7 +5,7 @@ import { sendEmail } from "../../../lib/mail";
 
 export async function checkUsernameAvailability(username: string): Promise<boolean> {
 	try {
-		console.log(`Checking availability for username: ${username}`);
+		// console.log(`Checking availability for username: ${username}`);
 
 		const existingUser = await prisma.user.findUnique({
 			where: { username },
@@ -13,7 +13,7 @@ export async function checkUsernameAvailability(username: string): Promise<boole
 		});
 
 		const isAvailable = !existingUser;
-		console.log(`Username availability: ${isAvailable}`);
+		// console.log(`Username availability: ${isAvailable}`);
 		return isAvailable;
 	} catch (error) {
 		console.error("Error checking username availability:", error);
@@ -23,9 +23,9 @@ export async function checkUsernameAvailability(username: string): Promise<boole
 
 export async function sendOTP(email: string) {
 	try {
-		console.log("=====================================");
+		// console.log("=====================================");
 
-		console.log(`Generating OTP for email: ${email}`);
+		// console.log(`Generating OTP for email: ${email}`);
 
 		// Check if email already exists
 		const existingUser = await prisma.user.findUnique({
@@ -41,7 +41,7 @@ export async function sendOTP(email: string) {
 		// Generate a 6-digit OTP
 		const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
-		console.log(`Generated OTP for ${email}: ${otp}`);
+		// console.log(`Generated OTP for ${email}: ${otp}`);
 
 
 		// Set expiration time (15 minutes from now)
@@ -49,8 +49,8 @@ export async function sendOTP(email: string) {
 
 		expiresAt.setMinutes(expiresAt.getMinutes() + 15);
 
-		console.log(`OTP expires at: ${expiresAt.getMinutes() + 15}`);
-		console.log("storing otp in db");
+		// console.log(`OTP expires at: ${expiresAt.getMinutes() + 15}`);
+		// console.log("storing otp in db");
 
 		// Store OTP in database (upsert to handle existing OTP cases)
 		try {
@@ -69,14 +69,14 @@ export async function sendOTP(email: string) {
 		}
 		
 		
-		console.log("storing otp in db done.....");
+		// console.log("storing otp in db done.....");
 
-		console.log(`OTP for ${email}: ${otp}`);
+		// console.log(`OTP for ${email}: ${otp}`);
 
 		// Send OTP via email
 		await sendEmail(email, otp);
 
-		console.log(`OTP sent successfully to: ${email}`);
+		// console.log(`OTP sent successfully to: ${email}`);
 
 		return { success: true, message: "OTP sent successfully" };
 	} catch (error) {
@@ -87,7 +87,7 @@ export async function sendOTP(email: string) {
 
 export async function verifyAdminKeyRequest(adminKey: string) {
 	try {
-		console.log(`Verifying admin key: ${adminKey}`);
+		// console.log(`Verifying admin key: ${adminKey}`);
 
 		// Using a hardcoded key for now
 		const validAdminKey = process.env.ADMIN_KEY || "admin123";

@@ -6,23 +6,34 @@ export async function POST(request: NextRequest) {
   try {
     const { username, email, password, contact, isAdmin, otp, adminKey } = await request.json()
 
-	console.log("=====================================================");
+	// console.log("=====================================================");
 	
-	console.log("(Register api)...");
-	
-	console.log("username: ", username);
-	console.log("email: ", email);
-	console.log("password: ", password);
-	console.log("contact: ", contact);
-	console.log("isAdmin: ", isAdmin);
-	console.log("otp: ", otp);
-	console.log("adminKey: ", adminKey);
+	// console.log("(Register api)...");
+	// console.log("username: ", username);
+	// console.log("email: ", email);
+	// console.log("password: ", password);
+	// console.log("contact: ", contact);
+	// console.log("isAdmin: ", isAdmin);
+	// console.log("otp: ", otp);
+	// console.log("adminKey: ", adminKey);
+
 	
     // Validate required fields
     if (!username || !email || !password || !contact) {
 		return NextResponse.json({ error: "All fields are required" }, { status: 400 })
     }
 	
+	// Validate Username length
+	if (username.length < 3 || username.length > 15) {
+	 return NextResponse.json({ error: "Username must be between 7 and 15 characters" }, { status: 400 })
+   }
+	
+ 
+   // Validate Username length
+	if (otp.length > 6) {
+	 return NextResponse.json({ error: "OTP must be equal to 6 characters" }, { status: 400 })
+   }
+
     // Check if username already exists
     const existingUsername = await prisma.user.findUnique({
 		where: { username },
@@ -63,6 +74,15 @@ export async function POST(request: NextRequest) {
 			return NextResponse.json({ error: "Invalid Admin Key" }, { status: 403 });
 		}
 	}
+
+   // Validate password strength
+   const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+   if (!strongPasswordRegex.test(password)) {
+	 return NextResponse.json({
+	   error: "Password must be at least 8 characters long, contain one uppercase letter, one lowercase letter, one number, and one special character"
+	 }, { status: 400 });
+   }
+
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10)
 	
@@ -86,9 +106,9 @@ export async function POST(request: NextRequest) {
 	.catch(() => {
 		// Ignore error if record doesn't exist
 	})
-	console.log("Sending response...");
+	// console.log("Sending response...");
 	
-	console.log("=====================================================");
+	// console.log("=====================================================");
     return NextResponse.json({
 		success: true,
       user: {

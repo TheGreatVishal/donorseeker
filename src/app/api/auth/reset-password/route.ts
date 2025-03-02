@@ -10,6 +10,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Email, OTP, and password are required" }, { status: 400 })
     }
 
+    // Validate password strength
+    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    if (!strongPasswordRegex.test(password)) {
+      return NextResponse.json({
+        error: "Password must be at least 8 characters long, contain one uppercase letter, one lowercase letter, one number, and one special character"
+      }, { status: 400 });
+    }
+
     // Find the OTP verification record
     const otpVerification = await prisma.oTPVerification.findUnique({
       where: { email },
