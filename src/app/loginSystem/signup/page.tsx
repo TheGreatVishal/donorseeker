@@ -28,7 +28,6 @@ const signupSchema = z
       .max(15, "Contact number must not exceed 15 characters"),
     isAdmin: z.boolean().default(false),
     adminKey: z.string().optional(),
-    otp: z.string().length(6, "OTP must be 6 characters"),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -45,6 +44,7 @@ export default function SignupPage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  // const [email, setEmail] = useState("")
   const [otp, setOtp] = useState("")
   const [adminKeyVerified, setAdminKeyVerified] = useState(false)
   const [verifyingAdminKey, setVerifyingAdminKey] = useState(false)
@@ -55,6 +55,7 @@ export default function SignupPage() {
   const [sendingOtp, setSendingOtp] = useState(false)
   const [otpSent, setOtpSent] = useState(false)
   const usernameTimeoutRef = useRef<NodeJS.Timeout | null>(null)
+  // const formData = useRef<SignupFormValues | null>(null)
 
   useEffect(() => {
     setMounted(true)
@@ -115,14 +116,6 @@ export default function SignupPage() {
   useEffect(() => {
     if (watchedEmail) {
       const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
-      // Start at beginning of string or line
-      // Include all characters except @ until the @ sign
-      // Include the @ sign
-      // Include all characters except @ after the @ sign until the full stop
-      // Include all characters except @ after the full stop
-      // Stop at the end of the string or line
-
       setEmailValid(emailPattern.test(watchedEmail))
     } else {
       setEmailValid(null)
@@ -178,28 +171,28 @@ export default function SignupPage() {
 
   const onSubmit = async (data: SignupFormValues) => {
     if (data.isAdmin && !adminKeyVerified) {
-      setError("Please verify your admin key first");
-      return;
+      setError("Please verify your admin key first")
+      return
     }
-  
+
     if (!usernameAvailable) {
-      setError("Username is already taken");
-      return;
+      setError("Username is already taken")
+      return
     }
-  
+
     if (!otpSent) {
-      setError("Please send OTP to your email first");
-      return;
+      setError("Please send OTP to your email first")
+      return
     }
-  
-    if (!data.otp || data.otp.length === 0) {
-      setError("Please enter the verification code sent to your email");
-      return;
+
+    if (!otp || otp.length === 0) {
+      setError("Please enter the verification code sent to your email")
+      return
     }
-  
-    setIsLoading(true);
-    setError(null);
-  
+
+    setIsLoading(true)
+    setError(null)
+
     try {
       // Verify OTP
       const verifyResponse = await fetch("/api/auth/verify-otp", {
@@ -209,16 +202,16 @@ export default function SignupPage() {
         },
         body: JSON.stringify({
           email: data.email,
-          otp: data.otp, // ✅ Use data.otp
+          otp,
         }),
-      });
-  
-      const verifyResult = await verifyResponse.json();
-  
+      })
+
+      const verifyResult = await verifyResponse.json()
+
       if (!verifyResponse.ok) {
-        throw new Error(verifyResult.error || "OTP verification failed");
+        throw new Error(verifyResult.error || "OTP verification failed")
       }
-  
+
       // Register user after OTP verification
       const registerResponse = await fetch("/api/auth/register", {
         method: "POST",
@@ -231,26 +224,26 @@ export default function SignupPage() {
           password: data.password,
           contact: data.contact,
           isAdmin: data.isAdmin,
-          otp: data.otp,
-          adminKey: data.adminKey,
+		  otp: otp,
+		  adminKey: data.adminKey,
         }),
-      });
-  
-      const registerResult = await registerResponse.json();
-  
+      })
+
+      const registerResult = await registerResponse.json()
+
       if (!registerResponse.ok) {
-        throw new Error(registerResult.error || "Registration failed");
+        throw new Error(registerResult.error || "Registration failed")
       }
-  
+
       // Redirect to login page after successful registration
-      await router.push("/loginSystem/login"); // ✅ Ensure navigation completes before continuing
+      router.push("/loginSystem/login")
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred during registration");
+      setError(err instanceof Error ? err.message : "An error occurred during registration")
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
-  
+  }
+
   if (!mounted) {
     return null
   }
@@ -259,7 +252,7 @@ export default function SignupPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-rose-50 to-indigo-50 p-4">
       <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-r from-rose-400 to-indigo-500 rounded-b-[30%] opacity-80" />
 
-      <Card className="w-full max-w-md relative z-10 border-none shadow-xl bg-white/90 backdrop-blur-sm mt-10">
+      <Card className="w-full max-w-md relative z-10 border-none shadow-xl bg-white/90 backdrop-blur-sm">
         <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-white p-3 rounded-full shadow-lg">
           <div className="bg-gradient-to-r from-rose-500 to-indigo-500 p-3 rounded-full">
             <Heart className="h-6 w-6 text-white" />
@@ -461,7 +454,7 @@ export default function SignupPage() {
                     className="data-[state=checked]:bg-indigo-500"
                   />
                 </div>
-                <p className="text-xs text-slate-950">
+                <p className="text-xs text-muted-foreground">
                   Admins have additional privileges to manage the platform
                 </p>
               </div>
@@ -535,7 +528,7 @@ export default function SignupPage() {
           <p className="text-sm text-muted-foreground bg-gradient-to-r from-rose-500 to-indigo-500 text-transparent bg-clip-text">
             Already have an account?{" "}
             <Link
-              href="/loginSystem/login"
+              href="/login"
               className="font-medium text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-indigo-500 hover:underline"
             >
               Login
