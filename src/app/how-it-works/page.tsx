@@ -1,19 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import {
-  CheckCircle,
-  Gift,
-  Search,
-  UserPlus,
-  ListPlus,
-  Users,
-  CheckSquare,
-  FileSearch,
-  MessageSquare,
-  Truck,
-  Star,
-} from "lucide-react"
+import { CheckCircle, Gift, Search, UserPlus, ListPlus, Users, CheckSquare, FileSearch, MessageSquare, Truck, Star } from 'lucide-react'
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -55,9 +43,9 @@ export default function HowItWorks() {
   return (
     <div className="flex flex-col items-center text-center overflow-hidden">
       {/* Hero Section */}
-      <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-r from-violet-500 via-purple-500 to-fuchsia-500 text-white">
+      <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-r from-violet-600 via-purple-600 to-fuchsia-600 text-white">
         <motion.div
-          className="container px-4 md:px-6"
+          className="container px-4 md:px-6 mx-auto max-w-7xl"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
@@ -92,7 +80,7 @@ export default function HowItWorks() {
 
       {/* Process Section */}
       <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-white to-purple-50">
-        <div className="container px-4 md:px-6">
+        <div className="container px-4 md:px-6 mx-auto max-w-7xl">
           <motion.div
             className="mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2"
             variants={staggerContainer}
@@ -146,7 +134,7 @@ export default function HowItWorks() {
 
       {/* For Donors Section */}
       <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-r from-indigo-50 to-purple-50">
-        <div className="container px-4 md:px-6">
+        <div className="container px-4 md:px-6 mx-auto max-w-7xl">
           <motion.div
             className="flex flex-col items-center justify-center space-y-4 text-center"
             initial="hidden"
@@ -176,26 +164,26 @@ export default function HowItWorks() {
                 title: "List Your Item",
                 description: "Create a listing with details",
                 steps: ["Take clear photos", "Describe condition accurately", "Set pickup/delivery options"],
-                color: "text-pink-500",
+                color: "texblack",
               },
               {
                 icon: MessageSquare,
                 title: "Review Requests",
                 description: "Choose who receives your donation",
                 steps: ["View recipient profiles", "Read request messages", "Select the best match"],
-                color: "text-purple-500",
+                color: "text-black",
               },
               {
                 icon: Truck,
                 title: "Complete Donation",
                 description: "Finalize the donation process",
                 steps: ["Coordinate handover", "Mark as completed", "Receive feedback"],
-                color: "text-indigo-500",
+                color: "text-black",
               },
             ].map((card, index) => (
               <motion.div key={index} variants={fadeIn}>
-                <Card className="transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-2 border-t-4 border-t-purple-500 overflow-hidden">
-                  <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50">
+                <Card className="transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-2 border-t-4 border-t-purple-600 overflow-hidden">
+                  <CardHeader className="bg-gradient-to-r from-purple-100 to-pink-100">
                     <div className="flex items-center space-x-2">
                       <card.icon className={`h-6 w-6 ${card.color}`} />
                       <CardTitle className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
@@ -252,7 +240,7 @@ export default function HowItWorks() {
 
       {/* For Recipients Section */}
       <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-b from-white to-indigo-50">
-        <div className="container px-4 md:px-6">
+        <div className="container px-4 md:px-6 mx-auto max-w-7xl">
           <motion.div
             className="flex flex-col items-center justify-center space-y-4 text-center"
             initial="hidden"
@@ -300,8 +288,8 @@ export default function HowItWorks() {
               },
             ].map((card, index) => (
               <motion.div key={index} variants={fadeIn}>
-                <Card className="transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-2 border-t-4 border-t-indigo-500 overflow-hidden">
-                  <CardHeader className="bg-gradient-to-r from-indigo-50 to-purple-50">
+                <Card className="transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-2 border-t-4 border-t-indigo-600 overflow-hidden">
+                  <CardHeader className="bg-gradient-to-r from-indigo-100 to-purple-100">
                     <div className="flex items-center space-x-2">
                       <card.icon className={`h-6 w-6 ${card.color}`} />
                       <CardTitle className="bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
@@ -358,7 +346,7 @@ export default function HowItWorks() {
 
       {/* FAQ Section */}
       <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-r from-purple-50 to-pink-50">
-        <div className="container px-4 md:px-6">
+        <div className="container px-4 md:px-6 mx-auto max-w-7xl">
           <motion.div
             className="flex flex-col items-center justify-center space-y-4 text-center"
             initial="hidden"
@@ -404,7 +392,7 @@ export default function HowItWorks() {
               },
             ].map((faq, index) => (
               <motion.div key={index} variants={fadeIn}>
-                <Card className="transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-2 border-l-4 border-l-purple-500 h-full">
+                <Card className="transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-2 border-l-4 border-l-purple-600 h-full">
                   <CardHeader className="bg-gradient-to-r from-purple-50 to-pink-50">
                     <CardTitle className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                       {faq.question}
@@ -423,7 +411,7 @@ export default function HowItWorks() {
       {/* CTA Section */}
       <section className="w-full py-12 md:py-24 lg:py-32 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 text-white">
         <motion.div
-          className="container px-4 md:px-6"
+          className="container px-4 md:px-6 mx-auto max-w-7xl"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
@@ -496,4 +484,3 @@ export default function HowItWorks() {
     </div>
   )
 }
-

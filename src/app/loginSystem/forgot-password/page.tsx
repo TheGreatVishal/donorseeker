@@ -32,7 +32,7 @@ export default function ForgotPasswordPage() {
 
 		try {
 
-			console.log("Sending otp to email: ", email);
+			// console.log("Sending otp to email: ", email);
 
 			const response = await fetch("/api/auth/forgot-password-otp", {
 				method: "POST",
@@ -61,7 +61,7 @@ export default function ForgotPasswordPage() {
 			setError("Please enter the OTP");
 			return;
 		}
-		console.log("Verifying otp: ", otp);
+		// console.log("Verifying otp: ", otp);
 
 		setLoading(true);
 		setError("");
@@ -137,11 +137,11 @@ export default function ForgotPasswordPage() {
 	};
 
 	return (
-		<div className="flex min-h-screen items-center justify-center bg-gradient-to-r from-indigo-600 to-purple-700 px-4 py-12">
-			<Card className="w-full max-w-md shadow-lg">
-				<CardHeader className="text-white">
+		<div className="flex min-h-screen items-center justify-center bg-gradient-to-r from-pink-200 to-blue-200 px-4 py-12">
+			<Card className="w-full max-w-md shadow-2xl bg-orange-300 hover:scale-105 transform transition-transform">
+				<CardHeader className="text-black">
 					<CardTitle className="text-2xl font-bold text-center">Forgot Password</CardTitle>
-					<CardDescription className="text-center text-gray-200">
+					<CardDescription className="text-center text-black">
 						{step === 1 && "Enter your email to receive a verification code"}
 						{step === 2 && "Enter the verification code sent to your email"}
 						{step === 3 && "Create a new password for your account"}
@@ -190,7 +190,7 @@ export default function ForgotPasswordPage() {
 					)}
 				</CardContent>
 				<CardFooter className="flex justify-center">
-					<Link href="/login" className="text-sm text-white hover:text-gray-200">Back to Login</Link>
+					<Link href="/login" className="text-sm text-black hover:text-blue-600">Back to Login</Link>
 				</CardFooter>
 			</Card>
 		</div>

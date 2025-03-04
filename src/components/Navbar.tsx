@@ -24,9 +24,8 @@ export function Navbar() {
 
   return (
     <motion.header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-white shadow-md text-gray-900" : "bg-transparent text-white"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "bg-white shadow-md text-gray-900" : "bg-transparent text-white"
+        }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
@@ -34,20 +33,23 @@ export function Navbar() {
       <nav className="container mx-auto px-4 py-4 flex items-center justify-between">
         <Link href="/" className="flex items-center space-x-2">
           <Image src="/logo.png" alt="Donor Seeker Logo" width={150} height={50} className="h-12 w-auto" />
-        </Link>
+          <span className="text-xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">
+            Donor Seeker
+          </span>
 
+        </Link>
         {/* Desktop Menu */}
         <div className={`hidden lg:flex items-center space-x-4 ${isScrolled ? "text-gray-900" : "text-white"}`}>
-          <Link href="/" className="text-sm font-medium px-3 py-2 hover:text-orange-500">
+          <Link href="/" className="text-lg font-medium px-3 py-2 hover:text-orange-500">
             Home
           </Link>
-          <Link href="/how-it-works" className="text-sm font-medium px-3 py-2 hover:text-orange-500">
+          <Link href="/how-it-works" className="text-lg font-medium px-3 py-2 hover:text-orange-500">
             How It Works
           </Link>
-          <Link href="/browse" className="text-sm font-medium px-3 py-2 hover:text-orange-500">
+          <Link href="/browse" className="text-lg font-medium px-3 py-2 hover:text-orange-500">
             Browse Donations
           </Link>
-          <Link href="/list-item" className="text-sm font-medium px-3 py-2 hover:text-orange-500">
+          <Link href="/list-item" className="text-lg font-medium px-3 py-2 hover:text-orange-500">
             List an Item
           </Link>
 

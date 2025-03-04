@@ -7,7 +7,7 @@ export function Footer() {
       <div className="container mx-auto px-4 grid gap-8 md:grid-cols-3">
         <div>
           <h3 className="mb-4 text-lg font-semibold text-pink-500">Contact Us</h3>
-          <p>Email: donationhelp@example.com</p>
+          <p>Email: donorseeker2025@gmail.com</p>
           <p>Phone: +91 1234567890</p>
           <p>Phone: +91 1234567890</p>
         </div>

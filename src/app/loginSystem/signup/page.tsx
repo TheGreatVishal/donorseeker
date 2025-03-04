@@ -256,7 +256,7 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-rose-50 to-indigo-50 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-rose-50 to-indigo-50 p-4 pt-12">
       <div className="absolute top-0 left-0 w-full h-64 bg-gradient-to-r from-rose-400 to-indigo-500 rounded-b-[30%] opacity-80" />
 
       <Card className="w-full max-w-md relative z-10 border-none shadow-xl bg-white/90 backdrop-blur-sm">

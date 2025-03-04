@@ -39,7 +39,7 @@ export function HomePageNavbar() {
         isScrolled ? "bg-orange-200 shadow-lg" : "bg-blue-400"
       }`}
     >
-      <nav className="container mx-auto px-4 py-4 flex items-center justify-between transition-colors duration-300">
+      <nav className="container mx-auto px-4 py-4 flex items-center justify-between transition-colors duration-300 ">
         <Link href="/home" className="flex items-center space-x-2">
           <Image
             src="/logo.png"
@@ -48,6 +48,9 @@ export function HomePageNavbar() {
             height={50}
             className="h-12 w-auto"
           />
+           <span className="text-xl font-bold bg-gradient-to-r from-pink-500 to-blue-500 text-transparent bg-clip-text">
+            Donor Seeker
+          </span>
         </Link>
 
         <div className="hidden lg:flex items-center space-x-6">
@@ -61,7 +64,7 @@ export function HomePageNavbar() {
             <Link
               key={index}
               href={`/${item.toLowerCase().replace(/ /g, "-")}`}
-              className="text-sm font-medium px-4 py-2 relative group transition-colors duration-300 text-gray-800 hover:text-pink-500"
+              className=" font-medium px-4 py-2 relative group transition-colors duration-300 text-gray-800 hover:text-orange-500  text-lg"
             >
               {item}
               <span className="absolute left-0 bottom-0 w-0 group-hover:w-full h-0.5 bg-blue-500 transition-all"></span>
@@ -70,7 +73,7 @@ export function HomePageNavbar() {
           {isAdmin && (
             <Link
               href="/admin-dashboard"
-              className="text-sm font-medium px-4 py-2 hover:text-pink-500 transition text-gray-800"
+              className="text-sm font-medium px-4 py-2 hover:text-orange-500 transition text-gray-800"
             >
               Admin Dashboard
             </Link>
@@ -78,18 +81,19 @@ export function HomePageNavbar() {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="flex items-center space-x-2 text-gray-800 hover:text-pink-500">
+              <Button variant="ghost" className="flex items-center space-x-2 text-gray-800 hover:text-orange-500 ">
                 <User size={20} />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-white text-gray-800 shadow-md">
-              <DropdownMenuItem>
-                <Link href="/dashboard" className="w-full hover:text-pink-500">
+
+            <DropdownMenuContent align="end" className="bg-white text-gray-800 shadow-md mt-4 p-2">
+              {/* <DropdownMenuItem>
+                <Link href="/dashboard" className="w-full hover:text-orange-500">
                   Dashboard
                 </Link>
-              </DropdownMenuItem>
+              </DropdownMenuItem> */}
               <DropdownMenuItem>
-                <Link href="/profile" className="w-full hover:text-pink-500">
+                <Link href="/profile" className="w-full hover:text-orange-500">
                   Profile
                 </Link>
               </DropdownMenuItem>
