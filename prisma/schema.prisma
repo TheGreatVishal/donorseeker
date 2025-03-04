@@ -41,7 +41,7 @@ model User {
 }
 
 model OTPVerification {
-  id        String   @id @default(uuid())
+  id        Int    @id @default(autoincrement())
   email     String   @unique // Ensures only one OTP per email
   otp       String
   expiresAt DateTime
@@ -49,7 +49,7 @@ model OTPVerification {
 
 // Base listing type with common fields
 model DonationListing {
-  id          String           @id @default(uuid())
+  id          Int           @id @default(autoincrement())
   title       String
   description String
   category    String
@@ -74,7 +74,7 @@ model DonationListing {
 
 // Requirement listings (what users need)
 model RequirementListing {
-  id          String           @id @default(uuid())
+  id          Int           @id @default(autoincrement())
   title       String
   description String
   category    String
@@ -93,7 +93,7 @@ model RequirementListing {
 
 // Requests for donations
 model DonationRequest {
-  id          String           @id @default(uuid())
+  id          Int            @id @default(autoincrement())
   message     String
   status      RequestStatus    @default(PENDING)
   createdAt   DateTime         @default(now())
@@ -104,7 +104,7 @@ model DonationRequest {
   seeker      User             @relation("UserSentRequests", fields: [seekerId], references: [id])
   
   // Relation to the donation listing
-  listingId   String
+  listingId   Int
   listing     DonationListing  @relation(fields: [listingId], references: [id])
   
   // Transactions that resulted from this request
@@ -113,16 +113,16 @@ model DonationRequest {
 
 // Completed donations
 model Transaction {
-  id              String           @id @default(uuid())
+  id              Int            @id @default(autoincrement())
   completedAt     DateTime         @default(now())
   isReceived      Boolean          @default(false)
   
   // Relation to the donation listing
-  listingId       String
+  listingId       Int
   listing         DonationListing  @relation(fields: [listingId], references: [id])
   
   // Relation to the request that led to this transaction
-  requestId       String
+  requestId       Int
   request         DonationRequest  @relation(fields: [requestId], references: [id])
   
   // Relations to the users involved in the transaction
@@ -138,13 +138,13 @@ model Transaction {
 
 // Feedback after receiving items
 model Feedback {
-  id              String           @id @default(uuid())
+  id              Int           @id @default(autoincrement())
   rating          Int              // 1-5 star rating
   comment         String?
   createdAt       DateTime         @default(now())
   
   // Relation to the transaction
-  transactionId   String           @unique
+  transactionId   Int           @unique
   transaction     Transaction      @relation(fields: [transactionId], references: [id])
   
   // Relations to the users involved
@@ -155,12 +155,6 @@ model Feedback {
   receiver        User             @relation("ReceivedFeedback", fields: [receiverId], references: [id])
 }
 
-model PasswordReset {
-  id         String    @id @default(uuid())
-  email      String    @unique
-  otp        String
-  expiresAt  DateTime  
-}
 
 enum ListingStatus {
   PENDING

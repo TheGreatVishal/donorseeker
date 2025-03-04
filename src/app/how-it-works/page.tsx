@@ -164,21 +164,21 @@ export default function HowItWorks() {
                 title: "List Your Item",
                 description: "Create a listing with details",
                 steps: ["Take clear photos", "Describe condition accurately", "Set pickup/delivery options"],
-                color: "texblack",
+                color: "text-pink-500",
               },
               {
                 icon: MessageSquare,
                 title: "Review Requests",
                 description: "Choose who receives your donation",
                 steps: ["View recipient profiles", "Read request messages", "Select the best match"],
-                color: "text-black",
+                color: "text-purple-500",
               },
               {
                 icon: Truck,
                 title: "Complete Donation",
                 description: "Finalize the donation process",
                 steps: ["Coordinate handover", "Mark as completed", "Receive feedback"],
-                color: "text-black",
+                color: "text-indigo-500",
               },
             ].map((card, index) => (
               <motion.div key={index} variants={fadeIn}>
@@ -190,10 +190,10 @@ export default function HowItWorks() {
                         {card.title}
                       </CardTitle>
                     </div>
-                    <CardDescription>{card.description}</CardDescription>
+                    <CardDescription className="text-black">{card.description}</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <ul className="space-y-2">
+                    <ul className="space-y-2 text-black">
                       {card.steps.map((step, stepIndex) => (
                         <motion.li
                           key={stepIndex}
@@ -222,15 +222,15 @@ export default function HowItWorks() {
           >
             <Button
               asChild
-              className="group bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white shadow-lg transition-all duration-300"
+              className="group bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 hover:scale-110 text-white shadow-lg transition-all duration-300"
             >
-              <Link href="/donate">
+              <Link href="/donate" className="text-xl">
                 Start Donating
                 <motion.span
-                  animate={{ rotate: [0, 15, 0] }}
-                  transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse" }}
+                  animate={{ rotate: [-30, 0, 30] }}
+                  transition={{ duration: 1.0, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse" }}
                 >
-                  <Gift className="ml-2 h-4 w-4" />
+                  <Gift className="ml-2 h-6 w-6" />
                 </motion.span>
               </Link>
             </Button>
@@ -296,10 +296,10 @@ export default function HowItWorks() {
                         {card.title}
                       </CardTitle>
                     </div>
-                    <CardDescription>{card.description}</CardDescription>
+                    <CardDescription className="text-black">{card.description}</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <ul className="space-y-2">
+                    <ul className="space-y-2 text-black">
                       {card.steps.map((step, stepIndex) => (
                         <motion.li
                           key={stepIndex}
@@ -328,15 +328,15 @@ export default function HowItWorks() {
           >
             <Button
               asChild
-              className="group bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg transition-all duration-300"
+              className="group bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 hover:scale-110 text-white shadow-lg transition-all duration-300"
             >
-              <Link href="/browse">
+              <Link href="/browse" className="text-xl">
                 Browse Donations
                 <motion.span
                   animate={{ scale: [1, 1.2, 1] }}
                   transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY, repeatType: "reverse" }}
                 >
-                  <Search className="ml-2 h-4 w-4" />
+                  <Search className="ml-2 h-6 w-6" />
                 </motion.span>
               </Link>
             </Button>

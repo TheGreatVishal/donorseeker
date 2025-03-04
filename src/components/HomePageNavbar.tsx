@@ -73,7 +73,7 @@ export function HomePageNavbar() {
           {isAdmin && (
             <Link
               href="/admin-dashboard"
-              className="text-sm font-medium px-4 py-2 hover:text-orange-500 transition text-gray-800"
+              className="text-lg font-medium px-4 py-2 hover:text-orange-500 transition text-gray-800"
             >
               Admin Dashboard
             </Link>
