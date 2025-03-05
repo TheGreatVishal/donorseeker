@@ -2,14 +2,10 @@ import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import { getServerSession } from "next-auth/next"
 
-// Define ListingStatus type
-// type ListingStatus = "PENDING" | "APPROVED" | "REJECTED"
-
 export async function POST(request: Request) {
 
     console.log("=================================================");
     console.log("(donations/route.ts) Posting data in DB...");
-
 
     try {
         const session = await getServerSession()
@@ -51,7 +47,7 @@ export async function POST(request: Request) {
     }
 }
 
-export async function GET(request: Request) {
+export async function GET() {
     try {
     //   const { searchParams } = new URL(request.url)
     //   const isApprovedParam = searchParams.get("isApproved")
