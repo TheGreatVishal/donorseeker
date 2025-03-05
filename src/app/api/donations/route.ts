@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma"
 import { getServerSession } from "next-auth/next"
 
 // Define ListingStatus type
-type ListingStatus = "PENDING" | "APPROVED" | "REJECTED"
+// type ListingStatus = "PENDING" | "APPROVED" | "REJECTED"
 
 export async function POST(request: Request) {
 
@@ -53,38 +53,42 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
     try {
-        const { searchParams } = new URL(request.url)
-        const category = searchParams.get("category")
-        const status = searchParams.get("status") as ListingStatus | null
+      const { searchParams } = new URL(request.url)
+      const isApprovedParam = searchParams.get("isApproved")
+    const isApproved = isApprovedParam === "True" ? true : false
 
-        const filter: Record<string, unknown> = {
-            status: status || "APPROVED",
-        };
-        
-
-        if (category) {
-            filter.category = category
-        }
-
-        const donations = await prisma.donationListing.findMany({
-            where: filter,
-            orderBy: {
-                createdAt: "desc",
+  
+      console.log("=================================================")
+      console.log("(donations/route.ts) Fetching donations...")
+      console.log("Search params:", searchParams)
+      console.log("isApproved:", isApproved)
+  
+      const filter: { isApproved?: boolean } = {};
+      if (isApprovedParam !== null) {
+          filter.isApproved = isApproved;
+      }
+  
+      const donations = await prisma.donationListing.findMany({
+        where: filter,
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          user: {
+            select: {
+              username: true,
+              email: true,
             },
-            include: {
-                user: {
-                    select: {
-                        username: true,
-                        email: true,
-                    },
-                },
-            },
-        })
-
-        return NextResponse.json(donations)
+          },
+        },
+      })
+      console.log("Donations fetched:", donations)
+  
+      return NextResponse.json(donations)
     } catch (error) {
-        console.error("Error fetching donations:", error)
-        return NextResponse.json({ error: "Failed to fetch donations" }, { status: 500 })
+      console.error("Error fetching donations:", error)
+      return NextResponse.json({ error: "Failed to fetch donations" }, { status: 500 })
     }
-}
-
+  }
+  
+  
