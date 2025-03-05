@@ -73,14 +73,14 @@ export default function BrowseDonationsPage() {
   const fetchDonations = async () => {
     try {
       setLoading(true)
-      const url = new URL("/api/donations", window.location.origin)
+      // const url = new URL("/api/donations", window.location.origin)
 
       // Only set status parameter, no category filtering at API level
-      url.searchParams.append("status", "APPROVED")
+      // url.searchParams.append("status", "APPROVED")
 
-      console.log("Fetching donations from:", url.toString())
+      // console.log("Fetching donations from:", url.toString())
 
-      const response = await fetch(url.toString())
+      const response = await fetch("/api/donations")
 
       if (!response.ok) {
         throw new Error("Failed to fetch donations")

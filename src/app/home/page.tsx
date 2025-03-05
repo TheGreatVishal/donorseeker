@@ -45,7 +45,7 @@ export default function HomePage() {
             icon: "🔍",
             description: "Browse available donations",
             gradient: "from-blue-500 to-blue-600",
-            page: "/seek"
+            page: "/browse-donations"
         },
         {
             title: "Leaderboard",

@@ -53,23 +53,25 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
     try {
-      const { searchParams } = new URL(request.url)
-      const isApprovedParam = searchParams.get("isApproved")
-    const isApproved = isApprovedParam === "True" ? true : false
+    //   const { searchParams } = new URL(request.url)
+    //   const isApprovedParam = searchParams.get("isApproved")
+    // const isApproved = isApprovedParam === "True" ? true : false
 
   
       console.log("=================================================")
       console.log("(donations/route.ts) Fetching donations...")
-      console.log("Search params:", searchParams)
-      console.log("isApproved:", isApproved)
+      // console.log("Search params:", searchParams)
+      // console.log("isApproved:", isApproved)
   
-      const filter: { isApproved?: boolean } = {};
-      if (isApprovedParam !== null) {
-          filter.isApproved = isApproved;
-      }
+      // const filter: { isApproved?: boolean } = {};
+      // if (isApprovedParam !== null) {
+      //     filter.isApproved = isApproved;
+      // }
   
       const donations = await prisma.donationListing.findMany({
-        where: filter,
+        where: {
+          isApproved: true,
+        },
         orderBy: {
           createdAt: "desc",
         },
