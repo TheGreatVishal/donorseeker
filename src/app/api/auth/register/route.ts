@@ -33,7 +33,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: parsedData.error.errors[0].message }, { status: 400 });
     }
 
-    let { username, email, password, contact, isAdmin, otp, adminKey } = parsedData.data;
+    const {isAdmin} = parsedData.data
+    let { username, email, password, contact, otp, adminKey } = parsedData.data;
 
     // Check if username or email already exists
     const [existingUsername, existingEmail] = await Promise.all([
