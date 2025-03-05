@@ -49,8 +49,8 @@ export default function LoginPage() {
 
 			// console.log("Result",JSON.stringify(result))
 			if (result?.error) {
-				// setErrorMessage(result.error)
-				setErrorMessage("Some problem occured. Try again.")
+				setErrorMessage(result.error)
+				// setErrorMessage("Some problem occured. Try again.")
 			} else {
 				router.push("/home")
 			}

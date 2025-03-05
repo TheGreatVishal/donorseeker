@@ -47,21 +47,21 @@ export default function BrowseDonationsPage() {
 
   const applyFilters = useCallback(() => {
     let filtered = donations;
-  
+
     if (category !== "all") {
       filtered = filtered.filter((donation) => donation.category === category);
     }
-  
+
     filtered = filtered.filter(
       (donation) =>
         donation.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         donation.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  
+
     setFilteredDonations(filtered);
     setCurrentPage(1);
   }, [donations, searchTerm, category]);
-  
+
   useEffect(() => {
     applyFilters();
   }, [donations, searchTerm, category, applyFilters]); // No more warning
@@ -87,7 +87,7 @@ export default function BrowseDonationsPage() {
       }
 
       const data = await response.json()
-      console.log("Donations data received:", data)
+      // console.log("Donations data received:", data)
 
       setDonations(data)
       setLoading(false)
@@ -173,7 +173,7 @@ export default function BrowseDonationsPage() {
           </div>
 
           <Link
-            href="/listing-forms/add-donation"
+            href="/donate"
             className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 flex items-center"
           >
             <PlusCircle className="mr-2" /> Donate Item
@@ -222,13 +222,13 @@ export default function BrowseDonationsPage() {
                     {donation.imageUrls && donation.imageUrls.length > 0 ? (
                       <div className="h-48 relative overflow-hidden rounded-md mb-2">
                         <Image
-  src={donation.imageUrls[0] || "/placeholder.svg"}
-  alt={donation.title}
-  width={300}
-  height={200}
-  className="object-contain w-full h-full"
-  onError={() => console.log("Image failed to load")}
-/>
+                          src={donation.imageUrls[0] || "/placeholder.svg"}
+                          alt={donation.title}
+                          width={300}
+                          height={200}
+                          className="object-contain w-full h-full"
+                          onError={() => console.log("Image failed to load")}
+                        />
                       </div>
                     ) : (
                       <div className="h-48 bg-gray-200 dark:bg-gray-700 rounded-md flex items-center justify-center mb-2">

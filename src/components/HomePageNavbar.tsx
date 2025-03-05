@@ -58,7 +58,7 @@ export function HomePageNavbar() {
             "Home",
             "How It Works",
             "Browse Donations",
-            "List an Item",
+            // "List an Item",
             "My Requests",
           ].map((item, index) => (
             <Link

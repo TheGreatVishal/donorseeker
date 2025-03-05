@@ -59,7 +59,7 @@ export async function sendOTP(email: string) {
 				update: { otp, expiresAt },
 				create: { email, otp, expiresAt },
 			});
-			console.log("OTP stored successfully.");
+			// console.log("OTP stored successfully.");
 		} catch (error) {
 			if (error instanceof Error) {
 				console.error("Database Error:", error.message);
@@ -90,10 +90,10 @@ export async function verifyAdminKeyRequest(adminKey: string) {
 		// console.log(`Verifying admin key: ${adminKey}`);
 
 		// Using a hardcoded key for now
-		const validAdminKey = process.env.ADMIN_KEY || "admin123";
-
-		const isValid = adminKey === validAdminKey;
-		console.log(`Admin key valid: ${isValid}`);
+		// const validAdminKey = process.env.ADMIN_KEY;
+		// console.log(`Valid admin key: ${validAdminKey}`);
+		// console.log(`Admin key valid: ${isValid}`);
+		const isValid = adminKey === process.env.ADMIN_KEY;
 
 		return { success: isValid };
 	} catch (error) {

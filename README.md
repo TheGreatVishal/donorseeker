@@ -25,13 +25,12 @@
 2. that page will ask to prompt email-id and there is send otp button just right side of email id field.
 3. when we press send otp, first we will check if  the email id is registered in database or not, if emial id is registered only then we will send otp to that email id and we will also save that otp to our database table  otpverification with that email id. (create api for this)
 4. there is button called "verify otp" (api to verify otp is already created which takes email and otp as input), system will check if entered otp is same as otp in database or not, if not then message will be shown invalid otp else if otp is  correct then option will come for  new password and confirm password and a button "update password" and message for successful updation of password and will be redirected to login page.
+ 
 -------------------------------------------------------------------------------
+# schema so that 
 
-update this schema so that 
-
--> donor and seeker is single person which is user, don't make them separate single user can do both donation and seeking
+-> donor and seeker is single person which is user, user can do both donation and seeking
 -> admin is other user which will approve/reject the listings
--> user type have been handled properly, don't alter it
 
 1. user should be able to list a donation
 2. user should be able to list his/her requirement to get donation
@@ -43,6 +42,8 @@ update this schema so that
 8. user can edit, delete and view their donation and requirement listings
 9. user can mark item as received if that item has been donated to him after accepting his request 
 10. user can leave feedback after receiving item 
-11. leader board, Display users with the highest donations based on verified transactions
+11. on leader-board Display users with the highest donations based on verified transactions
 12. admin can View, approve, or remove inappropriate listings. 
 13. User Views Personal Donation/Request History
+
+-----------------------------------------------------------------------------------------------

@@ -4,8 +4,8 @@ import { getServerSession } from "next-auth/next"
 
 export async function POST(request: Request) {
 
-    console.log("=================================================");
-    console.log("(donations/route.ts) Posting data in DB...");
+    // console.log("=================================================");
+    // console.log("(donations/route.ts) Posting data in DB...");
 
     try {
         const session = await getServerSession()
@@ -54,16 +54,11 @@ export async function GET() {
     // const isApproved = isApprovedParam === "True" ? true : false
 
   
-      console.log("=================================================")
-      console.log("(donations/route.ts) Fetching donations...")
+      // console.log("=================================================")
+      // console.log("(donations/route.ts) Fetching donations...")
       // console.log("Search params:", searchParams)
       // console.log("isApproved:", isApproved)
-  
-      // const filter: { isApproved?: boolean } = {};
-      // if (isApprovedParam !== null) {
-      //     filter.isApproved = isApproved;
-      // }
-  
+    
       const donations = await prisma.donationListing.findMany({
         where: {
           isApproved: true,
@@ -80,7 +75,7 @@ export async function GET() {
           },
         },
       })
-      console.log("Donations fetched:", donations)
+      // console.log("Donations fetched:", donations)
   
       return NextResponse.json(donations)
     } catch (error) {

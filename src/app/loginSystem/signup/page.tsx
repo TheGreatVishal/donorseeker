@@ -18,16 +18,16 @@ import { checkUsernameAvailability, sendOTP, verifyAdminKeyRequest } from "./act
 
 const signupSchema = z
   .object({
-    username:  z.string()
-				.min(3, "Username must be at least 3 characters")
-				.max(15, "Username must not exceed 15 characters"),
+    username: z.string()
+      .min(3, "Username must be at least 3 characters")
+      .max(15, "Username must not exceed 15 characters"),
     email: z.string().email("Please enter a valid email"),
     password: z.string()
-    .min(8, "Password must be at least 8 characters")
-    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-    .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-    .regex(/[0-9]/, "Password must contain at least one number")
-    .regex(/[!@#$%^&*(),.?":{}|<>]/, "Password must contain at least one special character"),
+      .min(8, "Password must be at least 8 characters")
+      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+      .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+      .regex(/[0-9]/, "Password must contain at least one number")
+      .regex(/[!@#$%^&*(),.?":{}|<>]/, "Password must contain at least one special character"),
     confirmPassword: z.string(),
     contact: z
       .string()
@@ -130,31 +130,31 @@ export default function SignupPage() {
   }, [watchedEmail])
 
   const handleSendOtp = async () => {
-	if (!emailValid || !watchedEmail) {
-	  console.error("Invalid email or empty email:", watchedEmail);
-	  return;
-	}
-  
-	console.log("(sign up page) Sending OTP for email:", watchedEmail); // Debugging log
-  
-	setSendingOtp(true);
-	setError(null);
-  
-	try {
-	  const result = await sendOTP(watchedEmail);
-	  if (result.success) {
-		setOtpSent(true);
-	  } else {
-		throw new Error(result.error || "Failed to send OTP");
-	  }
-	} catch (err) {
-	  setError(err instanceof Error ? err.message : "Failed to send OTP");
-	  setOtpSent(false);
-	} finally {
-	  setSendingOtp(false);
-	}
+    if (!emailValid || !watchedEmail) {
+      console.error("Invalid email or empty email:", watchedEmail);
+      return;
+    }
+
+    // console.log("(sign up page) Sending OTP for email:", watchedEmail); // Debugging log
+
+    setSendingOtp(true);
+    setError(null);
+
+    try {
+      const result = await sendOTP(watchedEmail);
+      if (result.success) {
+        setOtpSent(true);
+      } else {
+        throw new Error(result.error || "Failed to send OTP");
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to send OTP");
+      setOtpSent(false);
+    } finally {
+      setSendingOtp(false);
+    }
   };
-  
+
 
   const verifyAdminKey = async () => {
     if (!adminKey || adminKey.length === 0) return
@@ -231,8 +231,9 @@ export default function SignupPage() {
           password: data.password,
           contact: data.contact,
           isAdmin: data.isAdmin,
-		  otp: otp,
-		  adminKey: data.adminKey,
+          otp: otp,
+          adminKey: data.adminKey,
+          confirmPassword: data.confirmPassword,
         }),
       })
 
@@ -301,11 +302,10 @@ export default function SignupPage() {
                     id="username"
                     placeholder="johndoe"
                     {...register("username")}
-                    className={`pl-10 py-6 text-black ${
-                      usernameAvailable === false
+                    className={`pl-10 py-6 text-black ${usernameAvailable === false
                         ? "bg-rose-50/50 border-rose-300 focus:border-rose-500"
                         : "bg-rose-50/50 border-rose-100 focus:border-rose-300"
-                    }`}
+                      }`}
                     onBlur={() => trigger("username")}
                   />
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-rose-400" />
@@ -336,11 +336,10 @@ export default function SignupPage() {
                       type="email"
                       placeholder="john@example.com"
                       {...register("email")}
-                      className={`pl-10 py-6 text-black ${
-                        emailValid === false
+                      className={`pl-10 py-6 text-black ${emailValid === false
                           ? "bg-rose-50/50 border-rose-300 focus:border-rose-500 text-indigo-700"
                           : "bg-indigo-50/50 border-indigo-100 focus:border-indigo-300 text-indigo-700"
-                      }`}
+                        }`}
                       onBlur={() => trigger("email")}
                     />
                     <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-indigo-400" />
@@ -423,9 +422,9 @@ export default function SignupPage() {
                       id="confirmPassword"
                       type="password"
                       {...register("confirmPassword")}
-                      className= "text-indigo-700 pl-10 py-6 bg-rose-50/50 border-rose-100 focus:border-rose-300 "
+                      className="text-indigo-700 pl-10 py-6 bg-rose-50/50 border-rose-100 focus:border-rose-300 "
                     />
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-rose-400"  />
+                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-rose-400" />
                   </div>
                   {errors.confirmPassword && (
                     <p className="text-sm text-rose-500 mt-1">{errors.confirmPassword.message}</p>
