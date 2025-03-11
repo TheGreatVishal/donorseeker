@@ -75,7 +75,7 @@ export default function DonatePage() {
   }
 
   // Upload images to Cloudinary
-  const uploadImages = async (): Promise<string[]> => {
+  const uploadImages = async (): Promise<string[] | null> => {
     if (imageFiles.length === 0) return []
 
     setIsUploading(true)
@@ -83,7 +83,7 @@ export default function DonatePage() {
 
     try {
       // Create an array of upload promises
-      console.log("Uploading images...");
+      console.log("Uploading images...")
 
       const uploadPromises = imageFiles.map(async (file) => {
         const formData = new FormData()
@@ -111,7 +111,7 @@ export default function DonatePage() {
       // Wait for all uploads to complete
       const results = await Promise.all(uploadPromises)
       uploadedUrls.push(...results)
-      console.log(uploadedUrls);
+      console.log(uploadedUrls)
 
       return uploadedUrls
     } catch (error) {
@@ -119,8 +119,9 @@ export default function DonatePage() {
       toast({
         title: "Upload Failed",
         description: "There was a problem uploading your images. Please try again.",
+        // variant: "destructive",
       })
-      return []
+      return null // Return null to indicate failure
     } finally {
       setIsUploading(false)
     }
@@ -129,7 +130,7 @@ export default function DonatePage() {
   // Handle form submission
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    console.log("Submitting donation...");
+    console.log("Submitting donation...")
 
     // Validate form
     if (!formData.title || !formData.description || !formData.category || !formData.condition || !formData.contact) {
@@ -141,50 +142,108 @@ export default function DonatePage() {
       return
     }
 
-    setIsSubmitting(true)
+    // Validate that there are images to upload if the user has selected any
+    if (imageFiles.length > 0) {
+      setIsSubmitting(true)
 
-    try {
-      // Upload images first
-      const uploadedImageUrls = await uploadImages()
+      try {
+        // Upload images first
+        const uploadedImageUrls = await uploadImages()
 
-      // Prepare the final data with uploaded image URLs
-      const finalData = {
-        ...formData,
-        imageUrls: uploadedImageUrls,
+        // If uploadedImageUrls is null, it means there was an error during upload
+        if (uploadedImageUrls === null) {
+          toast({
+            title: "Image Upload Failed",
+            description: "Your donation cannot be submitted because image upload failed. Please try again.",
+            // variant: "destructive",
+          })
+          setIsSubmitting(false)
+          return // Stop the submission process
+        }
+
+        // Prepare the final data with uploaded image URLs
+        const finalData = {
+          ...formData,
+          imageUrls: uploadedImageUrls,
+        }
+
+        console.log(finalData)
+        console.log("Submitting donation in db...")
+
+        // Submit the donation listing
+        const response = await fetch("/api/donations", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(finalData),
+        })
+
+        if (!response.ok) {
+          throw new Error("Failed to create donation listing")
+        }
+
+        toast({
+          title: "Donation Listed",
+          description: "Your donation has been submitted for approval.",
+        })
+
+        // Redirect to the donations page or a success page
+        router.push("/donate/success")
+      } catch (error) {
+        console.error("Error submitting donation:", error)
+        toast({
+          title: "Submission Failed",
+          description: "There was a problem submitting your donation. Please try again.",
+          // variant: "destructive",
+        })
+      } finally {
+        setIsSubmitting(false)
       }
+    } else {
+      // No images to upload, proceed with form submission
+      setIsSubmitting(true)
 
-      console.log(finalData);
-      console.log("Submitting donation in db...");
+      try {
+        // Prepare the final data with empty image URLs
+        const finalData = {
+          ...formData,
+          imageUrls: [],
+        }
 
-      // Submit the donation listing
-      const response = await fetch("/api/donations", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(finalData),
-      })
+        console.log(finalData)
+        console.log("Submitting donation in db...")
 
-      if (!response.ok) {
-        throw new Error("Failed to create donation listing")
+        // Submit the donation listing
+        const response = await fetch("/api/donations", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(finalData),
+        })
+
+        if (!response.ok) {
+          throw new Error("Failed to create donation listing")
+        }
+
+        toast({
+          title: "Donation Listed",
+          description: "Your donation has been submitted for approval.",
+        })
+
+        // Redirect to the donations page or a success page
+        router.push("/donate/success")
+      } catch (error) {
+        console.error("Error submitting donation:", error)
+        toast({
+          title: "Submission Failed",
+          description: "There was a problem submitting your donation. Please try again.",
+          // variant: "destructive",
+        })
+      } finally {
+        setIsSubmitting(false)
       }
-
-      toast({
-        title: "Donation Listed",
-        description: "Your donation has been submitted for approval.",
-      })
-
-      // Redirect to the donations page or a success page
-      router.push("/donate/success")
-    } catch (error) {
-      console.error("Error submitting donation:", error)
-      toast({
-        title: "Submission Failed",
-        description: "There was a problem submitting your donation. Please try again.",
-        // variant: "destructive",
-      })
-    } finally {
-      setIsSubmitting(false)
     }
   }
 

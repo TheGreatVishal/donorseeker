@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
 		secureCookie: process.env.NODE_ENV === 'production'
 	});
 
-	const publicPaths = ['/', '/loginSystem/login', '/loginSystem/signup', '../public', '/loginSystem/forgot-password', '/loginSystem/reset-password', '/how-it-works'];
+	const publicPaths = ['/', '/loginSystem/login', '/loginSystem/signup', '../public', '/loginSystem/forgot-password', '/loginSystem/reset-password', '/how-it-works', "/browse-donations"];
 
 	const isPublicPath = publicPaths.includes(request.nextUrl.pathname);
 

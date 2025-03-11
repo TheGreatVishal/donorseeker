@@ -27,7 +27,7 @@
 4. there is button called "verify otp" (api to verify otp is already created which takes email and otp as input), system will check if entered otp is same as otp in database or not, if not then message will be shown invalid otp else if otp is  correct then option will come for  new password and confirm password and a button "update password" and message for successful updation of password and will be redirected to login page.
  
 -------------------------------------------------------------------------------
-# schema so that 
+# schema idea to get functionalities....
 
 -> donor and seeker is single person which is user, user can do both donation and seeking
 -> admin is other user which will approve/reject the listings

@@ -46,7 +46,7 @@ export function Navbar() {
           <Link href="/how-it-works" className="text-lg font-medium px-3 py-2 hover:text-orange-500">
             How It Works
           </Link>
-          <Link href="/browse" className="text-lg font-medium px-3 py-2 hover:text-orange-500">
+          <Link href="/browse-donations" className="text-lg font-medium px-3 py-2 hover:text-orange-500">
             Browse Donations
           </Link>
           <Link href="/list-item" className="text-lg font-medium px-3 py-2 hover:text-orange-500">
