@@ -89,7 +89,6 @@ export async function verifyAdminKeyRequest(adminKey: string) {
 	try {
 		// console.log(`Verifying admin key: ${adminKey}`);
 
-		// Using a hardcoded key for now
 		// const validAdminKey = process.env.ADMIN_KEY;
 		// console.log(`Valid admin key: ${validAdminKey}`);
 		// console.log(`Admin key valid: ${isValid}`);

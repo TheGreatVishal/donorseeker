@@ -110,7 +110,7 @@ export default function AdminDashboard() {
 
     // Filter by approval status
     if (approvalFilter !== "all") {
-      filtered = filtered.filter((listing) => 
+      filtered = filtered.filter((listing) =>
         approvalFilter === "approved" ? listing.isApproved : !listing.isApproved
       )
     }
@@ -143,12 +143,12 @@ export default function AdminDashboard() {
       }
 
       const data = await response.json()
-      
+
       // Update the listings state
-      setListings(prevListings => 
-        prevListings.map(listing => 
-          listing.id === id && listing.listingType === type 
-            ? { ...listing, isApproved: !currentStatus } 
+      setListings(prevListings =>
+        prevListings.map(listing =>
+          listing.id === id && listing.listingType === type
+            ? { ...listing, isApproved: !currentStatus }
             : listing
         )
       )
@@ -186,9 +186,13 @@ export default function AdminDashboard() {
 
   return (
     <div className="container mx-auto p-4 md:p-10 mt-4 md:mt-10">
-      <div className="mb-6 md:mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold">Admin Dashboard</h1>
-        <p className="text-muted-foreground">Manage donation and requirement listings</p>
+      <div className="mb-10 mt-10 pt-10 text-center space-y-3">
+        <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 text-transparent bg-clip-text">
+          Admin Dashboard
+        </h1>
+        <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 max-w-2xl mx-auto">
+          <span className="font-medium text-blue-600 dark:text-blue-400">Effortlessly</span> manage donation and requirement listings with ease.
+        </p>
       </div>
 
       <div className="mb-6 flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
@@ -211,7 +215,7 @@ export default function AdminDashboard() {
                 <span>{approvalFilter === "all" ? "All Status" : approvalFilter === "approved" ? "Approved" : "Pending"}</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="mt-2 dark:bg-gray-800 hover:text-black">
               <DropdownMenuItem onClick={() => setApprovalFilter("all")}>
                 All Status
               </DropdownMenuItem>
@@ -261,17 +265,17 @@ export default function AdminDashboard() {
 
         <TabsContent value="all" className="mt-0">
           {viewMode === "list" ? (
-            <ListingsTable 
-              listings={filteredListings} 
-              isLoading={isLoading} 
-              onView={viewListing} 
+            <ListingsTable
+              listings={filteredListings}
+              isLoading={isLoading}
+              onView={viewListing}
               onApprovalToggle={handleApprovalToggle}
             />
           ) : (
-            <ListingsGrid 
-              listings={filteredListings} 
-              isLoading={isLoading} 
-              onView={viewListing} 
+            <ListingsGrid
+              listings={filteredListings}
+              isLoading={isLoading}
+              onView={viewListing}
               onApprovalToggle={handleApprovalToggle}
               getInitials={getInitials}
             />
@@ -280,17 +284,17 @@ export default function AdminDashboard() {
 
         <TabsContent value="donation" className="mt-0">
           {viewMode === "list" ? (
-            <ListingsTable 
-              listings={filteredListings} 
-              isLoading={isLoading} 
-              onView={viewListing} 
+            <ListingsTable
+              listings={filteredListings}
+              isLoading={isLoading}
+              onView={viewListing}
               onApprovalToggle={handleApprovalToggle}
             />
           ) : (
-            <ListingsGrid 
-              listings={filteredListings} 
-              isLoading={isLoading} 
-              onView={viewListing} 
+            <ListingsGrid
+              listings={filteredListings}
+              isLoading={isLoading}
+              onView={viewListing}
               onApprovalToggle={handleApprovalToggle}
               getInitials={getInitials}
             />
@@ -299,17 +303,17 @@ export default function AdminDashboard() {
 
         <TabsContent value="requirement" className="mt-0">
           {viewMode === "list" ? (
-            <ListingsTable 
-              listings={filteredListings} 
-              isLoading={isLoading} 
-              onView={viewListing} 
+            <ListingsTable
+              listings={filteredListings}
+              isLoading={isLoading}
+              onView={viewListing}
               onApprovalToggle={handleApprovalToggle}
             />
           ) : (
-            <ListingsGrid 
-              listings={filteredListings} 
-              isLoading={isLoading} 
-              onView={viewListing} 
+            <ListingsGrid
+              listings={filteredListings}
+              isLoading={isLoading}
+              onView={viewListing}
               onApprovalToggle={handleApprovalToggle}
               getInitials={getInitials}
             />
