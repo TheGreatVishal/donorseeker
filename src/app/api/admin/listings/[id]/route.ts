@@ -41,7 +41,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
           user: {
             select: {
               id: true,
-              username: true,
+              firstname: true,
+              lastname: true,
               email: true,
               contact: true,
               donationCount: true,
@@ -63,7 +64,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
           user: {
             select: {
               id: true,
-              username: true,
+              firstname: true,
+              lastname: true,
               email: true,
               contact: true,
               donationCount: true,
@@ -85,7 +87,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
           user: {
             select: {
               id: true,
-              username: true,
+              firstname: true,
+              lastname: true,
               email: true,
               contact: true,
               donationCount: true,
@@ -105,7 +108,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
             user: {
               select: {
                 id: true,
-                username: true,
+                firstname: true,
+                lastname: true,
                 email: true,
                 contact: true,
                 donationCount: true,
