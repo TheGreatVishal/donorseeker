@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { z } from "zod"
@@ -9,18 +9,20 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Loader2, User, Mail, Lock, Phone, Key, Heart, CheckCircle, AlertCircle } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
-import { checkUsernameAvailability, sendOTP, verifyAdminKeyRequest } from "./actions"
+import { sendOTP } from "./actions"
 
 const signupSchema = z
   .object({
-    username: z.string()
-      .min(3, "Username must be at least 3 characters")
-      .max(15, "Username must not exceed 15 characters"),
+    firstname: z.string()
+      .min(2, "firstname must be at least 2 characters")
+      .max(30, "firstname must not exceed 30 characters"),
+    lastname: z.string()
+      .min(0, "lastname must be at least 0 characters")
+      .max(30, "lastname must not exceed 30 characters"),
     email: z.string().email("Please enter a valid email"),
     password: z.string()
       .min(8, "Password must be at least 8 characters")
@@ -51,18 +53,11 @@ export default function SignupPage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  // const [email, setEmail] = useState("")
   const [otp, setOtp] = useState("")
-  const [adminKeyVerified, setAdminKeyVerified] = useState(false)
-  const [verifyingAdminKey, setVerifyingAdminKey] = useState(false)
   const [mounted, setMounted] = useState(false)
-  const [usernameAvailable, setUsernameAvailable] = useState<boolean | null>(null)
-  const [checkingUsername, setCheckingUsername] = useState(false)
   const [emailValid, setEmailValid] = useState<boolean | null>(null)
   const [sendingOtp, setSendingOtp] = useState(false)
   const [otpSent, setOtpSent] = useState(false)
-  const usernameTimeoutRef = useRef<NodeJS.Timeout | null>(null)
-  // const formData = useRef<SignupFormValues | null>(null)
 
   useEffect(() => {
     setMounted(true)
@@ -72,7 +67,7 @@ export default function SignupPage() {
     register,
     handleSubmit,
     watch,
-    setValue,
+    // setValue,
     trigger,
     // getValues,
     formState: { errors, isValid },
@@ -84,40 +79,8 @@ export default function SignupPage() {
     mode: "onChange",
   })
 
-  const isAdmin = watch("isAdmin")
-  const adminKey = watch("adminKey")
-  const username = watch("username")
+  // const isAdmin = watch("isAdmin")
   const watchedEmail = watch("email")
-
-  // Check username availability when user types
-  useEffect(() => {
-    if (usernameTimeoutRef.current) {
-      clearTimeout(usernameTimeoutRef.current)
-    }
-
-    if (username && username.length >= 3 && !errors.username) {
-      setCheckingUsername(true)
-      usernameTimeoutRef.current = setTimeout(async () => {
-        try {
-          const isAvailable = await checkUsernameAvailability(username)
-          setUsernameAvailable(isAvailable)
-        } catch (err) {
-          console.error("Error checking username:", err)
-          setUsernameAvailable(null)
-        } finally {
-          setCheckingUsername(false)
-        }
-      }, 500)
-    } else {
-      setUsernameAvailable(null)
-    }
-
-    return () => {
-      if (usernameTimeoutRef.current) {
-        clearTimeout(usernameTimeoutRef.current)
-      }
-    }
-  }, [username, errors.username])
 
   // Validate email format
   useEffect(() => {
@@ -155,38 +118,7 @@ export default function SignupPage() {
     }
   };
 
-
-  const verifyAdminKey = async () => {
-    if (!adminKey || adminKey.length === 0) return
-
-    setVerifyingAdminKey(true)
-    setError(null)
-
-    try {
-      const result = await verifyAdminKeyRequest(adminKey)
-      setAdminKeyVerified(result.success)
-      if (!result.success) {
-        throw new Error(result.error || "Invalid admin key")
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to verify admin key")
-      setAdminKeyVerified(false)
-    } finally {
-      setVerifyingAdminKey(false)
-    }
-  }
-
   const onSubmit = async (data: SignupFormValues) => {
-    if (data.isAdmin && !adminKeyVerified) {
-      setError("Please verify your admin key first")
-      return
-    }
-
-    if (!usernameAvailable) {
-      setError("Username is already taken")
-      return
-    }
-
     if (!otpSent) {
       setError("Please send OTP to your email first")
       return
@@ -226,13 +158,15 @@ export default function SignupPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: data.username,
+          // username: data.username,
+          firstname: data.firstname,
+          lastname: data.lastname,
           email: data.email,
           password: data.password,
           contact: data.contact,
-          isAdmin: data.isAdmin,
+          // isAdmin: data.isAdmin,
           otp: otp,
-          adminKey: data.adminKey,
+          // adminKey: data.adminKey,
           confirmPassword: data.confirmPassword,
         }),
       })
@@ -294,37 +228,47 @@ export default function SignupPage() {
               className="space-y-4"
             >
               <div className="space-y-2">
-                <Label htmlFor="username" className="text-sm font-medium">
-                  Username
+                <Label htmlFor="firstname" className="text-sm font-medium">
+                  First Name*
                 </Label>
                 <div className="relative">
                   <Input
-                    id="username"
-                    placeholder="johndoe"
-                    {...register("username")}
-                    className={`pl-10 py-6 text-black ${usernameAvailable === false
+                    id="firstname"
+                    placeholder="John"
+                    {...register("firstname")}
+                    className={`pl-10 py-6 text-black ${errors.firstname
                         ? "bg-rose-50/50 border-rose-300 focus:border-rose-500"
                         : "bg-rose-50/50 border-rose-100 focus:border-rose-300"
                       }`}
-                    onBlur={() => trigger("username")}
+                    onBlur={() => trigger("firstname")}
                   />
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-rose-400" />
-                  {checkingUsername && (
-                    <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-indigo-400 animate-spin" />
-                  )}
-                  {usernameAvailable === true && !checkingUsername && (
-                    <CheckCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-green-500" />
-                  )}
-                  {usernameAvailable === false && !checkingUsername && (
-                    <AlertCircle className="absolute right-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-rose-500" />
-                  )}
                 </div>
-                {errors.username && <p className="text-sm text-rose-500 mt-1">{errors.username.message}</p>}
-                {usernameAvailable === false && !errors.username && (
-                  <p className="text-sm text-rose-500 mt-1">Username already exists</p>
-                )}
+                {errors.firstname && <p className="text-sm text-rose-500 mt-1">{errors.firstname.message}</p>}
               </div>
 
+              <div className="space-y-2">
+                <Label htmlFor="lastname" className="text-sm font-medium">
+                  Last Name <span className="text-gray-400 text-xs">(optional)</span>
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="lastname"
+                    placeholder="Doe"
+                    {...register("lastname")}
+                    className={`pl-10 py-6 text-black ${errors.lastname
+                        ? "bg-rose-50/50 border-rose-300 focus:border-rose-500"
+                        : "bg-rose-50/50 border-rose-100 focus:border-rose-300"
+                      }`}
+                    onBlur={() => trigger("lastname")}
+                  />
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-rose-400" />
+                </div>
+                {errors.lastname && <p className="text-sm text-rose-500 mt-1">{errors.lastname.message}</p>}
+              </div>
+
+
+              {/* Enter email and Send OTP */}
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-sm font-medium">
                   Email
@@ -337,8 +281,8 @@ export default function SignupPage() {
                       placeholder="john@example.com"
                       {...register("email")}
                       className={`pl-10 py-6 text-black ${emailValid === false
-                          ? "bg-rose-50/50 border-rose-300 focus:border-rose-500 text-indigo-700"
-                          : "bg-indigo-50/50 border-indigo-100 focus:border-indigo-300 text-indigo-700"
+                        ? "bg-rose-50/50 border-rose-300 focus:border-rose-500 text-indigo-700"
+                        : "bg-indigo-50/50 border-indigo-100 focus:border-indigo-300 text-indigo-700"
                         }`}
                       onBlur={() => trigger("email")}
                     />
@@ -365,6 +309,8 @@ export default function SignupPage() {
                 )}
               </div>
 
+
+              {/* Email Verification code */}
               <AnimatePresence>
                 {otpSent && (
                   <motion.div
@@ -396,6 +342,7 @@ export default function SignupPage() {
                 )}
               </AnimatePresence>
 
+              {/* Password and confirm Password */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="password" className="text-sm font-medium">
@@ -432,6 +379,7 @@ export default function SignupPage() {
                 </div>
               </div>
 
+              {/* Contact Number */}
               <div className="space-y-2">
                 <Label htmlFor="contact" className="text-sm font-medium">
                   Contact Number
@@ -448,78 +396,13 @@ export default function SignupPage() {
                 {errors.contact && <p className="text-sm text-rose-500 mt-1">{errors.contact.message}</p>}
               </div>
 
-              <div className="space-y-3 bg-gradient-to-r from-rose-50 to-indigo-50 p-4 rounded-lg">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="isAdmin" className="text-sm font-medium">
-                    Sign up as Admin
-                  </Label>
-                  <Switch
-                    id="isAdmin"
-                    checked={isAdmin}
-                    onCheckedChange={(checked) => setValue("isAdmin", checked)}
-                    className="data-[state=checked]:bg-indigo-500"
-                  />
-                </div>
-                <p className="text-xs text-muted-foreground">
-                  Admins have additional privileges to manage the platform
-                </p>
-              </div>
-
-              <AnimatePresence>
-                {isAdmin && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="space-y-2 overflow-hidden"
-                  >
-                    <div className="p-4 bg-indigo-50 rounded-lg border border-indigo-100">
-                      <Label htmlFor="adminKey" className="text-sm font-medium">
-                        Admin Key
-                      </Label>
-                      <div className="relative mt-2">
-                        <Input
-                          id="adminKey"
-                          type="password"
-                          placeholder="Enter admin key"
-                          {...register("adminKey")}
-                          className="pl-10 py-6 bg-white border-indigo-200 focus:border-indigo-400 text-indigo-700"
-                        />
-                        <Key className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-indigo-500" />
-                      </div>
-                      {errors.adminKey && <p className="text-sm text-rose-500 mt-1">{errors.adminKey.message}</p>}
-
-                      <div className="mt-3">
-                        <Button
-                          type="button"
-                          onClick={verifyAdminKey}
-                          disabled={verifyingAdminKey || !adminKey || adminKey.length === 0}
-                          variant="outline"
-                          className="w-full border-indigo-200 hover:bg-indigo-100"
-                        >
-                          {verifyingAdminKey ? (
-                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          ) : adminKeyVerified ? (
-                            "Verified ✓"
-                          ) : (
-                            "Verify Admin Key"
-                          )}
-                        </Button>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
+              {/* Submit button */}
               <Button
                 type="submit"
                 className="w-full py-6 bg-gradient-to-r from-rose-500 to-indigo-500 hover:from-rose-600 hover:to-indigo-600 transition-all duration-300"
                 disabled={
                   isLoading ||
-                  (isAdmin && !adminKeyVerified) ||
                   !isValid ||
-                  usernameAvailable === false ||
                   !otpSent ||
                   !otp
                 }
@@ -530,6 +413,7 @@ export default function SignupPage() {
           </AnimatePresence>
         </CardContent>
 
+        {/* Already have an account? */}
         <CardFooter className="flex justify-center pb-6">
           <p className="text-sm text-muted-foreground bg-gradient-to-r from-rose-500 to-indigo-500 text-transparent bg-clip-text">
             Already have an account?{" "}

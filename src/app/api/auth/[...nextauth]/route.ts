@@ -47,9 +47,11 @@ const handler = NextAuth({
 				return {
 					id: user.id.toString(),
 					email: user.email,
-					name: user.username,
-					isAdmin: user.isAdmin
-				}
+					firstname: user.firstname,
+					lastname: user.lastname,
+					// name: `${user.firstname} ${user.lastname}`.trim(),
+					isAdmin: user.isAdmin,
+				  }
 			}
 		})
 	],
@@ -58,6 +60,8 @@ const handler = NextAuth({
 			if (user) {
 				token.id = user.id
 				token.isAdmin = user.isAdmin
+				token.firstname = user.firstname
+				token.lastname = user.lastname
 			}
 			return token
 		},
@@ -65,6 +69,8 @@ const handler = NextAuth({
 			if (session.user) {
 				session.user.id = token.id as string
 				session.user.isAdmin = token.isAdmin as boolean
+				session.user.firstname = token.firstname as string
+				session.user.lastname = token.lastname as string
 			}
 			return session
 		},

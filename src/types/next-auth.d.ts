@@ -8,6 +8,8 @@ declare module "next-auth" {
     user: {
       id: string;
       isAdmin: boolean;
+      firstname: string;
+      lastname: string;
     } & DefaultSession["user"];
   }
 
@@ -15,14 +17,19 @@ declare module "next-auth" {
    * Extend the built-in user types
    */
   interface User {
-    id: string;
-    isAdmin: boolean;
+    id: string
+    email: string
+    firstname: string
+    lastname: string
+    isAdmin: boolean
   }
 }
 
 declare module "next-auth/jwt" {
   interface JWT {
-    id: string;
-    isAdmin: boolean;
+    id: string
+    isAdmin: boolean
+    firstname: string
+    lastname: string
   }
 }

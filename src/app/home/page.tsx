@@ -58,7 +58,7 @@ export default function HomePage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-300 dark:from-gray-900 dark:to-gray-800">
-            
+
             {/* Hero Section */}
             <section className="relative py-20 px-6 bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg">
                 <div className="container mx-auto text-center">
@@ -68,7 +68,7 @@ export default function HomePage() {
                         transition={{ duration: 0.6 }}
                         className="text-5xl font-extrabold drop-shadow-lg"
                     >
-                        Welcome, {session?.user?.name || 'Guest'}! 🎉
+                        Welcome, {session?.user?.firstname ? `${session.user.firstname} ${session.user.lastname}` : "Guest"}! 🎉
                     </motion.h1>
                     <motion.p
                         initial={{ opacity: 0, y: 10 }}

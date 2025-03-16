@@ -3,23 +3,23 @@
 import prisma from "../../../lib/prisma";
 import { sendEmail } from "../../../lib/mail";
 
-export async function checkUsernameAvailability(username: string): Promise<boolean> {
-	try {
-		// console.log(`Checking availability for username: ${username}`);
+// export async function checkUsernameAvailability(username: string): Promise<boolean> {
+// 	try {
+// 		// console.log(`Checking availability for username: ${username}`);
 
-		const existingUser = await prisma.user.findUnique({
-			where: { username },
-			select: { id: true },
-		});
+// 		const existingUser = await prisma.user.findUnique({
+// 			where: { username },
+// 			select: { id: true },
+// 		});
 
-		const isAvailable = !existingUser;
-		// console.log(`Username availability: ${isAvailable}`);
-		return isAvailable;
-	} catch (error) {
-		console.error("Error checking username availability:", error);
-		throw new Error("Failed to check username availability");
-	}
-}
+// 		const isAvailable = !existingUser;
+// 		// console.log(`Username availability: ${isAvailable}`);
+// 		return isAvailable;
+// 	} catch (error) {
+// 		console.error("Error checking username availability:", error);
+// 		throw new Error("Failed to check username availability");
+// 	}
+// }
 
 export async function sendOTP(email: string) {
 	try {
@@ -85,18 +85,18 @@ export async function sendOTP(email: string) {
 	}
 }
 
-export async function verifyAdminKeyRequest(adminKey: string) {
-	try {
-		// console.log(`Verifying admin key: ${adminKey}`);
+// export async function verifyAdminKeyRequest(adminKey: string) {
+// 	try {
+// 		// console.log(`Verifying admin key: ${adminKey}`);
 
-		// const validAdminKey = process.env.ADMIN_KEY;
-		// console.log(`Valid admin key: ${validAdminKey}`);
-		// console.log(`Admin key valid: ${isValid}`);
-		const isValid = adminKey === process.env.ADMIN_KEY;
+// 		// const validAdminKey = process.env.ADMIN_KEY;
+// 		// console.log(`Valid admin key: ${validAdminKey}`);
+// 		// console.log(`Admin key valid: ${isValid}`);
+// 		const isValid = adminKey === process.env.ADMIN_KEY;
 
-		return { success: isValid };
-	} catch (error) {
-		console.error("Error verifying admin key:", error);
-		return { success: false, error: "Failed to verify admin key" };
-	}
-}
+// 		return { success: isValid };
+// 	} catch (error) {
+// 		console.error("Error verifying admin key:", error);
+// 		return { success: false, error: "Failed to verify admin key" };
+// 	}
+// }
