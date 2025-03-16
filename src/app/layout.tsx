@@ -47,7 +47,7 @@ function NavbarWrapper() {
 }
 
 function AuthRedirect() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
 
   useEffect(() => {
