@@ -3,7 +3,6 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import prisma from "@/lib/prisma";
-// import { NextRequest } from "next/server";
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -13,8 +12,6 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // const params = await Promise.resolve(context.params);
-    // const id = Number.parseInt(params.id);
     const { id: idString } = await params
     const id = Number.parseInt(idString)
 
