@@ -36,7 +36,7 @@ export function HomePageNavbar() {
   return (
     <motion.header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-orange-200 shadow-lg" : "bg-blue-400"
+        isScrolled ? "bg-pink-200 shadow-lg" : "bg-blue-400"
       }`}
     >
       <nav className="container mx-auto px-4 py-4 flex items-center justify-between transition-colors duration-300 ">
@@ -64,7 +64,7 @@ export function HomePageNavbar() {
             <Link
               key={index}
               href={`/${item.toLowerCase().replace(/ /g, "-")}`}
-              className=" font-medium px-4 py-2 relative group transition-colors duration-300 text-gray-800 hover:text-orange-500  text-lg"
+              className=" font-medium px-4 py-2 relative group transition-colors duration-300 text-gray-800 hover:text-pink-500  text-lg"
             >
               {item}
               <span className="absolute left-0 bottom-0 w-0 group-hover:w-full h-0.5 bg-blue-500 transition-all"></span>
@@ -73,7 +73,7 @@ export function HomePageNavbar() {
           {isAdmin && (
             <Link
               href="/admin/dashboard"
-              className="text-lg font-medium px-4 py-2 hover:text-orange-500 transition text-gray-800"
+              className="text-lg font-medium px-4 py-2 hover:text-pink-500 transition text-gray-800"
             >
               Admin Dashboard
             </Link>
@@ -81,19 +81,19 @@ export function HomePageNavbar() {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="flex items-center space-x-2 text-gray-800 hover:text-orange-500 ">
+              <Button variant="ghost" className="flex items-center space-x-2 text-gray-800 hover:text-pink-500 ">
                 <User size={20} />
               </Button>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="end" className="bg-white text-gray-800 shadow-md mt-4 p-2">
               {/* <DropdownMenuItem>
-                <Link href="/dashboard" className="w-full hover:text-orange-500">
+                <Link href="/dashboard" className="w-full hover:text-pink-500">
                   Dashboard
                 </Link>
               </DropdownMenuItem> */}
               <DropdownMenuItem>
-                <Link href="/profile" className="w-full hover:text-orange-500">
+                <Link href="/profile" className="w-full hover:text-pink-500">
                   Profile
                 </Link>
               </DropdownMenuItem>

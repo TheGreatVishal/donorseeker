@@ -31,7 +31,8 @@ type Listing = {
   listingType: "donation" | "requirement"
   isApproved: boolean
   user: {
-    username: string
+    firstname: string
+    lastname: string
     email: string
   }
 }
@@ -97,7 +98,8 @@ export default function AdminDashboard() {
       filtered = filtered.filter(
         (listing) =>
           listing.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          listing.user.username.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          listing.user.firstname.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          listing.user.lastname.toLowerCase().includes(searchQuery.toLowerCase()) ||
           listing.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
           listing.id.toString().includes(searchQuery.trim()),
       )
@@ -175,14 +177,7 @@ export default function AdminDashboard() {
     )
   }
 
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
-      .map(part => part[0])
-      .join('')
-      .toUpperCase()
-      .substring(0, 2);
-  };
+
 
   return (
     <div className="container mx-auto p-4 md:p-10 mt-4 md:mt-10">
@@ -200,7 +195,7 @@ export default function AdminDashboard() {
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
             type="search"
-            placeholder="Search by title, category, username or ID..."
+            placeholder="Search by title, category, donor name or ID..."
             className="pl-8"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -277,7 +272,7 @@ export default function AdminDashboard() {
               isLoading={isLoading}
               onView={viewListing}
               onApprovalToggle={handleApprovalToggle}
-              getInitials={getInitials}
+              // getInitials={getInitials}
             />
           )}
         </TabsContent>
@@ -296,7 +291,7 @@ export default function AdminDashboard() {
               isLoading={isLoading}
               onView={viewListing}
               onApprovalToggle={handleApprovalToggle}
-              getInitials={getInitials}
+              // getInitials={getInitials}
             />
           )}
         </TabsContent>
@@ -315,7 +310,7 @@ export default function AdminDashboard() {
               isLoading={isLoading}
               onView={viewListing}
               onApprovalToggle={handleApprovalToggle}
-              getInitials={getInitials}
+              // getInitials={getInitials}
             />
           )}
         </TabsContent>
@@ -368,7 +363,7 @@ function ListingsTable({
           <div key={`${listing.listingType}-${listing.id}`} className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 p-4">
             <div className="col-span-1 md:col-span-5">
               <div className="font-medium">{listing.title}</div>
-              <div className="text-sm text-muted-foreground">By: {listing.user.username}</div>
+              <div className="text-sm text-muted-foreground">By: {listing.user.firstname}</div>
               <div className="md:hidden flex flex-wrap gap-2 mt-2">
                 <Badge variant="outline">{listing.category}</Badge>
                 {listing.listingType === "donation" ? (
@@ -448,13 +443,13 @@ function ListingsGrid({
   isLoading,
   onView,
   onApprovalToggle,
-  getInitials,
+  // getInitials,
 }: {
   listings: Listing[]
   isLoading: boolean
   onView: (id: number, type: string) => void
   onApprovalToggle: (id: number, type: string, currentStatus: boolean) => void
-  getInitials: (name: string) => string
+  // getInitials: (name: string) => string
 }) {
   if (isLoading) {
     return (
@@ -482,11 +477,11 @@ function ListingsGrid({
             <div className="flex justify-between items-start">
               <div className="flex items-center gap-2">
                 <Avatar className="h-8 w-8">
-                  <AvatarFallback>{getInitials(listing.user.username)}</AvatarFallback>
+                  <AvatarFallback>{listing.user.firstname.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div>
                   <CardTitle className="text-base">{listing.title}</CardTitle>
-                  <CardDescription className="text-xs">By {listing.user.username}</CardDescription>
+                  <CardDescription className="text-xs">By {listing.user.firstname + " " + listing.user.lastname}</CardDescription>
                 </div>
               </div>
               {listing.listingType === "donation" ? (

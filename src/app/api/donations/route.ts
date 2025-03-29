@@ -58,6 +58,7 @@ export async function GET() {
       // console.log("(donations/route.ts) Fetching donations...")
       // console.log("Search params:", searchParams)
       // console.log("isApproved:", isApproved)
+    // console.log("Fetching donations...");
     
       const donations = await prisma.donationListing.findMany({
         where: {

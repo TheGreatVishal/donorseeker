@@ -43,7 +43,8 @@ type Listing = {
   listingType: "donation" | "requirement"
   user: {
     id: number
-    username: string
+    firstname: string
+    lastname: string
     email: string
     contact: string
     donationCount: number
@@ -154,14 +155,14 @@ export default function ListingDetailsPage() {
     }
   }
 
-  const getInitials = (name: string) => {
-    return name
-      .split(" ")
-      .map((part) => part[0])
-      .join("")
-      .toUpperCase()
-      .substring(0, 2)
-  }
+  // const getInitials = (name: string) => {
+  //   return name
+      // .split(" ")
+      // .map((part) => part[0])
+      // .join("")
+      // .toUpperCase()
+      // .substring(0, 2)
+  // }
 
   const navigateImage = (direction: 'next' | 'prev') => {
     if (!listing?.imageUrls?.length) return;
@@ -605,11 +606,11 @@ export default function ListingDetailsPage() {
                 <div className="flex items-center gap-3">
                   <Avatar className="h-14 w-14 border-2 border-primary/10">
                     <AvatarFallback className="bg-primary/10 text-primary">
-                      {getInitials(listing.user.username)}
+                    {listing.user.firstname[0]}
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <p className="font-medium">{listing.user.username}</p>
+                    <p className="font-medium">{listing.user.firstname + " " + listing.user.lastname}</p>
                     <p className="text-sm text-muted-foreground">User ID: {listing.user.id}</p>
                   </div>
                 </div>
@@ -725,11 +726,11 @@ export default function ListingDetailsPage() {
                     <span className="font-medium">0</span>
                   </div>
                   
-                  <div className="flex flex-col items-center justify-center p-3 bg-background rounded-lg">
+                  {/* <div className="flex flex-col items-center justify-center p-3 bg-background rounded-lg">
                     <MessageCircle className="h-5 w-5 text-primary mb-1" />
                     <span className="text-xs text-muted-foreground">Messages</span>
                     <span className="font-medium">0</span>
-                  </div>
+                  </div> */}
                 </div>
               </CardContent>
             </Card>

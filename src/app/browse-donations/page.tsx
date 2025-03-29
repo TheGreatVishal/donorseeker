@@ -1,11 +1,9 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect } from "react"
-// import { useSession } from "next-auth/react"
 import Link from "next/link"
-import { PlusCircle,  Eye } from "lucide-react"
+import { PlusCircle, Eye } from "lucide-react"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Input } from "@/components/ui/input"
@@ -24,7 +22,8 @@ interface Donation {
 	contact: string
 	status: string
 	user: {
-		username: string
+		firstname: string
+		lastname: string
 		email: string
 	}
 }
@@ -46,44 +45,45 @@ export default function BrowseDonationsPage() {
 
 
 	const applyFilters = useCallback(() => {
+		if (!Array.isArray(donations)) {
+			console.error("Donations data is not an array:", donations);
+			return;
+		}
+	
 		let filtered = donations;
-
+	
 		// Filter by category (if not "all")
 		if (category !== "all") {
-			filtered = filtered.filter((donation) => donation.category.toLowerCase() === category.toLowerCase());
+			filtered = filtered.filter((donation) => 
+				donation && typeof donation.category === "string" && donation.category.toLowerCase() === category.toLowerCase()
+			);
 		}
-
-		// Convert search term to lowercase once
-		const lowerCaseSearchTerm = searchTerm.toLowerCase();
-
+	
+		const lowerCaseSearchTerm = searchTerm ? searchTerm.toLowerCase() : "";
+	
 		// Filter by id, title, description, or username
 		filtered = filtered.filter((donation) =>
-			donation.id === searchTerm ||
-			donation.title.toLowerCase().includes(lowerCaseSearchTerm) ||
-			donation.description.toLowerCase().includes(lowerCaseSearchTerm) ||
-			donation.user.username.toLowerCase().includes(lowerCaseSearchTerm) // ✅ Fixed parenthesis
+			donation &&
+			(typeof donation.id === "string" && donation.id === searchTerm) ||
+			(typeof donation.title === "string" && donation.title.toLowerCase().includes(lowerCaseSearchTerm)) ||
+			(typeof donation.description === "string" && donation.description.toLowerCase().includes(lowerCaseSearchTerm)) ||
+			(donation.user && typeof donation.user.firstname === "string" && donation.user.firstname.toLowerCase().includes(lowerCaseSearchTerm))
 		);
-
+	
 		setFilteredDonations(filtered);
 		setCurrentPage(1);
 	}, [donations, searchTerm, category]);
+	
 
 
 	useEffect(() => {
 		applyFilters();
-	}, [donations, searchTerm, category, applyFilters]); // No more warning
+	}, [donations, searchTerm, category, applyFilters]);
 
 
 	const fetchDonations = async () => {
 		try {
 			setLoading(true)
-			// const url = new URL("/api/donations", window.location.origin)
-
-			// Only set status parameter, no category filtering at API level
-			// url.searchParams.append("status", "APPROVED")
-
-			// console.log("Fetching donations from:", url.toString())
-
 			const response = await fetch("/api/donations")
 
 			if (!response.ok) {
@@ -101,25 +101,6 @@ export default function BrowseDonationsPage() {
 			setLoading(false)
 		}
 	}
-
-	// const applyFilters = () => {
-	//   let filtered = donations
-
-	//   // Apply category filter on the client side
-	//   if (category !== "all") {
-	//     filtered = filtered.filter((donation) => donation.category === category)
-	//   }
-
-	//   // Apply search term filter
-	//   filtered = filtered.filter(
-	//     (donation) =>
-	//       donation.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-	//       donation.description.toLowerCase().includes(searchTerm.toLowerCase()),
-	//   )
-
-	//   setFilteredDonations(filtered)
-	//   setCurrentPage(1) // Reset to first page when filters change
-	// }
 
 	// Pagination logic
 	const indexOfLastItem = currentPage * itemsPerPage
@@ -254,7 +235,7 @@ export default function BrowseDonationsPage() {
 											<Heart className="w-4 h-4 mr-2" />
 											Save
 										</Button> */}
-										<Link href={`/donations/${donation.id}`} className="flex-1">
+										<Link href={`/browse-donations/${donation.id}`} className="flex-1">
 											<Button className="w-full border hover:border-blue-500" size="sm">
 												<Eye className="w-4 h-4 mr-2" />
 												View Details
