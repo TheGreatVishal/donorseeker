@@ -118,7 +118,7 @@ This project is licensed under the **MIT License**.
 
 ---
 **Developed by The Great Vishal** 🚀
-
+```sh
 src/
 │── app/
 │   ├── admin/
@@ -150,7 +150,7 @@ src/
 │── layout.tsx
 │── logo.ico
 │── page.tsx
-
+```
 
 ## Prerequisites
 Ensure you have the following installed:
