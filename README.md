@@ -21,18 +21,27 @@
 src/
 │── app/
 │   ├── admin/
-│   │   ├── dashboard/
-│   │   ├── listings/
+│   │   ├── dashboard/page.tsx
+│   │   ├── listings/[id]/page.tsx
 │   ├── api/
-│   │   ├── admin/
-│   │   ├── auth/
-│   │   ├── donations/
-│   │   ├── image-upload/
+│   │   ├── admin ├── listings ├── [id]/route.ts
+│   │   |         ├── route.ts
+│   │   ├── auth  ├── [...nextauth] 
+│   │   |         ├── forgot-password-otp
+│   │   |         ├── register
+│   │   |         ├── reset-password
+│   │   |         ├── send-otp
+│   │   |         ├── verify-admin-key
+│   │   |         ├── verify-otp
+│   │   ├── donations  ├── [id]/route.ts
+│   │   |              ├── route.ts
+│   │   ├── image-upload/route.ts
 │   ├── browse-donations/
-│   │   ├── [id]/
+│   │   ├── [id]
 │   │   │   ├── page.tsx
+│   │   │── page.tsx
 │   ├── donate/
-│   │   ├── success/
+│   │   ├── success/page.tsx
 │   │   ├── page.tsx
 │   ├── home/
 │   │   ├── layout.tsx
@@ -41,14 +50,23 @@ src/
 │   ├── how-it-works/
 │   │   ├── page.tsx
 │   ├── loginSystem/
-│   │   ├── forgot-password/
-│   │   ├── login/
-│   │   ├── signup/
+│   │   ├── forgot-password/page.tsx
+│   │   ├── login  ├── loading.tsx
+│   │   |          ├── page.ts
+│   │   ├── signup ├── action.ts
+│   │   |          ├── page.tsx
 │   │   ├── layout.tsx
-│── globals.css
-│── layout.tsx
-│── logo.ico
-│── page.tsx
+|   ├── globals.css   
+|   ├── layout.tsx   
+|   ├── logo.ico   
+|   ├── page.tsx   
+│── components
+│── lib ├── jwt.ts
+│       ├── mail.ts
+│       ├── prisma.ts
+│       ├── utils.ts
+│── types ├── next-auth.d.ts
+│── middleware.ts
 ```
 
 ## Prerequisites
