@@ -28,8 +28,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     const { searchParams } = new URL(request.url)
     const listingType = searchParams.get("type")
 
-    console.log("ID:", id)
-    console.log("Listing type:", listingType)
+    // console.log("ID:", id)
+    // console.log("Listing type:", listingType)
 
     let listing
 

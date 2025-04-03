@@ -167,12 +167,28 @@ export default function HomePage() {
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
                 <Button
+                  size="lg"
+                  className="bg-white text-blue-700 hover:bg-blue-50"
+                  onClick={() => router.push("/requirements")}
+                >
+                  Start an Ask
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+                <Button
                   variant="outline"
                   size="lg"
-                  className="border-white text-white hover:bg-white/20"
+                  className="border-white text-black hover:bg-white/20"
                   onClick={() => router.push("/browse-donations")}
                 >
                   Browse Donations
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-white text-black hover:bg-white/20"
+                  onClick={() => router.push("/my-dashboard")}
+                >
+                  My Dashboard
                 </Button>
               </div>
             </motion.div>

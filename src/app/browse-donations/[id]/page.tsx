@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { toast } from "@/components/ui/use-toast"
+import { RequestDialog } from "@/components/request-dialog"
 import Image from "next/image"
 
 interface UserType {
@@ -43,11 +44,14 @@ interface Donation {
 
 export default function DonationDetailPage() {
   const params = useParams()
+
   const router = useRouter()
   const [donation, setDonation] = useState<Donation | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [requestSent, setRequestSent] = useState(false)
+  const [requestDialogOpen, setRequestDialogOpen] = useState(false)
+  const [, setHasExistingRequest] = useState(false)
 
   useEffect(() => {
     const fetchDonationDetails = async () => {
@@ -61,6 +65,13 @@ export default function DonationDetailPage() {
 
         const data = await response.json()
         setDonation(data.listing)
+
+        // Check if user has already requested this item
+        if (data.userHasRequested) {
+          setHasExistingRequest(true)
+          setRequestSent(true)
+        }
+
         setLoading(false)
       } catch (error) {
         console.error("Error fetching donation details:", error)
@@ -88,12 +99,12 @@ export default function DonationDetailPage() {
   }
 
   const handleRequestItem = () => {
-    // This would be implemented with an actual API call
-    toast({
-      title: "Request Sent",
-      description: "Your request for this item has been sent to the donor.",
-    })
+    setRequestDialogOpen(true)
+  }
+
+  const handleRequestComplete = () => {
     setRequestSent(true)
+    setHasExistingRequest(true)
   }
 
   const handleShare = () => {
@@ -153,6 +164,9 @@ export default function DonationDetailPage() {
     if (user.ratingCount === 0) return 0
     return user.totalRating / user.ratingCount
   }
+
+  // Check if the donation is available for request
+  const canRequest = donation && donation.status !== "DONATED" && donation.status !== "COMPLETED" && donation.isApproved
 
   if (loading) {
     return (
@@ -274,8 +288,14 @@ export default function DonationDetailPage() {
                 </div>
 
                 <div className="space-y-4">
-                  <Button className="w-full" onClick={handleRequestItem} disabled={requestSent}>
-                    {requestSent ? "Request Sent" : "Request This Item"}
+                  <Button className="w-full" onClick={handleRequestItem} disabled={requestSent || !canRequest}>
+                    {requestSent
+                      ? "Request Sent"
+                      : !canRequest
+                        ? donation.status === "DONATED"
+                          ? "Already Donated"
+                          : "Not Available"
+                        : "Request This Item"}
                   </Button>
                   <Button variant="outline" className="w-full" onClick={handleShare}>
                     <Share2 className="h-4 w-4 mr-2" /> Share
@@ -381,6 +401,14 @@ export default function DonationDetailPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Request Dialog */}
+      <RequestDialog
+        open={requestDialogOpen}
+        onOpenChange={setRequestDialogOpen}
+        listingId={donation.id}
+        onRequestComplete={handleRequestComplete}
+      />
     </div>
   )
 }

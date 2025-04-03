@@ -4,7 +4,7 @@ import type React from "react"
 
 import { useState, useRef, type FormEvent } from "react"
 import { useRouter } from "next/navigation"
-import { Gift, Upload, X, Loader2 } from "lucide-react"
+import { HeartHandshake, Upload, X, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -16,28 +16,27 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import Image from "next/image"
 
 // Define types based on the schema
-type Condition = "NEW" | "USED" | "GOOD" | "FAIR" | "BAD"
-// type ListingStatus = "PENDING" | "APPROVED" | "REJECTED"
+type UrgencyLevel = "LOW" | "NORMAL" | "HIGH" | "URGENT"
 
-interface DonationFormData {
+interface RequirementFormData {
   title: string
   description: string
   category: string
-  condition: Condition
+  urgency: UrgencyLevel
   imageUrls: string[]
   contact: string
 }
 
-export default function DonatePage() {
+export default function CreateRequirementPage() {
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Form state
-  const [formData, setFormData] = useState<DonationFormData>({
+  const [formData, setFormData] = useState<RequirementFormData>({
     title: "",
     description: "",
     category: "",
-    condition: "GOOD",
+    urgency: "NORMAL",
     imageUrls: [],
     contact: "",
   })
@@ -49,7 +48,7 @@ export default function DonatePage() {
   const [imagePreviews, setImagePreviews] = useState<string[]>([])
 
   // Handle form field changes
-  const handleChange = (field: keyof DonationFormData, value: string) => {
+  const handleChange = (field: keyof RequirementFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
   }
 
@@ -131,10 +130,10 @@ export default function DonatePage() {
   // Handle form submission
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    console.log("Submitting donation...")
+    console.log("Submitting requirement...")
 
     // Validate form
-    if (!formData.title || !formData.description || !formData.category || !formData.condition || !formData.contact) {
+    if (!formData.title || !formData.description || !formData.category || !formData.urgency || !formData.contact) {
       toast({
         title: "Missing Information",
         description: "Please fill in all required fields.",
@@ -155,7 +154,7 @@ export default function DonatePage() {
         if (uploadedImageUrls === null) {
           toast({
             title: "Image Upload Failed",
-            description: "Your donation cannot be submitted because image upload failed. Please try again.",
+            description: "Your requirement cannot be submitted because image upload failed. Please try again.",
             // variant: "destructive",
           })
           setIsSubmitting(false)
@@ -169,10 +168,10 @@ export default function DonatePage() {
         }
 
         console.log(finalData)
-        console.log("Submitting donation in db...")
+        console.log("Submitting requirement in db...")
 
-        // Submit the donation listing
-        const response = await fetch("/api/donations", {
+        // Submit the requirement listing
+        const response = await fetch("/api/requirements", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -181,21 +180,21 @@ export default function DonatePage() {
         })
 
         if (!response.ok) {
-          throw new Error("Failed to create donation listing")
+          throw new Error("Failed to create requirement listing")
         }
 
         toast({
-          title: "Donation Listed",
-          description: "Your donation has been submitted for approval.",
+          title: "Requirement Listed",
+          description: "Your requirement has been submitted for approval.",
         })
 
-        // Redirect to the donations page or a success page
-        router.push("/donate/success")
+        // Redirect to the dashboard or a success page
+        router.push("/my-dashboard")
       } catch (error) {
-        console.error("Error submitting donation:", error)
+        console.error("Error submitting requirement:", error)
         toast({
           title: "Submission Failed",
-          description: "There was a problem submitting your donation. Please try again.",
+          description: "There was a problem submitting your requirement. Please try again.",
           // variant: "destructive",
         })
       } finally {
@@ -213,10 +212,10 @@ export default function DonatePage() {
         }
 
         console.log(finalData)
-        console.log("Submitting donation in db...")
+        console.log("Submitting requirement in db...")
 
-        // Submit the donation listing
-        const response = await fetch("/api/donations", {
+        // Submit the requirement listing
+        const response = await fetch("/api/listings/requirements", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -225,21 +224,21 @@ export default function DonatePage() {
         })
 
         if (!response.ok) {
-          throw new Error("Failed to create donation listing")
+          throw new Error("Failed to create requirement listing")
         }
 
         toast({
-          title: "Donation Listed",
-          description: "Your donation has been submitted for approval.",
+          title: "Requirement Listed",
+          description: "Your requirement has been submitted for approval.",
         })
 
-        // Redirect to the donations page or a success page
-        router.push("/donate/success")
+        // Redirect to the dashboard
+        router.push("/dashboard")
       } catch (error) {
-        console.error("Error submitting donation:", error)
+        console.error("Error submitting requirement:", error)
         toast({
           title: "Submission Failed",
-          description: "There was a problem submitting your donation. Please try again.",
+          description: "There was a problem submitting your requirement. Please try again.",
           // variant: "destructive",
         })
       } finally {
@@ -249,15 +248,15 @@ export default function DonatePage() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 py-12 mt-10 pt-10">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900 py-12 mt-10">
       <div className="container px-4 md:px-6 max-w-5xl mx-auto">
-        <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-8 text-center">List Your Donation</h2>
+        <h2 className="text-4xl font-bold text-gray-800 dark:text-gray-200 mb-8 text-center">List Your Requirement</h2>
         <Card className="w-full bg-white dark:bg-gray-800">
           <form onSubmit={handleSubmit}>
             <CardHeader className="pb-2">
-              <CardTitle className="text-2xl font-bold text-gray-800 dark:text-gray-200">Donation Details</CardTitle>
+              <CardTitle className="text-2xl font-bold text-gray-800 dark:text-gray-200">Requirement Details</CardTitle>
               <CardDescription className="text-gray-600 dark:text-gray-400">
-                Provide information about the item you are donating.
+                Provide information about the item you are looking for.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -268,7 +267,7 @@ export default function DonatePage() {
                 </Label>
                 <Input
                   id="title"
-                  placeholder="Enter a title for your donation"
+                  placeholder="Enter a title for your requirement"
                   value={formData.title}
                   onChange={(e) => handleChange("title", e.target.value)}
                   required
@@ -282,7 +281,7 @@ export default function DonatePage() {
                 </Label>
                 <Textarea
                   id="description"
-                  placeholder="Describe your donation in detail"
+                  placeholder="Describe what you need in detail"
                   rows={4}
                   value={formData.description}
                   onChange={(e) => handleChange("description", e.target.value)}
@@ -306,29 +305,30 @@ export default function DonatePage() {
                     <SelectItem value="books">Books</SelectItem>
                     <SelectItem value="household">Household Items</SelectItem>
                     <SelectItem value="baby">Baby & Kids</SelectItem>
+                    <SelectItem value="medical">Medical Supplies</SelectItem>
+                    <SelectItem value="school">School Supplies</SelectItem>
                     <SelectItem value="other">Other</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
 
-              {/* Condition */}
+              {/* Urgency */}
               <div className="space-y-2">
-                <Label htmlFor="condition" className="text-gray-700 dark:text-gray-200 font-semibold">
-                  Condition
+                <Label htmlFor="urgency" className="text-gray-700 dark:text-gray-200 font-semibold">
+                  Urgency Level
                 </Label>
                 <Select
-                  value={formData.condition}
-                  onValueChange={(value) => handleChange("condition", value as Condition)}
+                  value={formData.urgency}
+                  onValueChange={(value) => handleChange("urgency", value as UrgencyLevel)}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select condition" />
+                    <SelectValue placeholder="Select urgency level" />
                   </SelectTrigger>
                   <SelectContent className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                    <SelectItem value="NEW">New</SelectItem>
-                    <SelectItem value="USED">Used</SelectItem>
-                    <SelectItem value="GOOD">Good</SelectItem>
-                    <SelectItem value="FAIR">Fair</SelectItem>
-                    <SelectItem value="BAD">Bad</SelectItem>
+                    <SelectItem value="LOW">Low</SelectItem>
+                    <SelectItem value="NORMAL">Normal</SelectItem>
+                    <SelectItem value="HIGH">High</SelectItem>
+                    <SelectItem value="URGENT">Urgent</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -349,7 +349,7 @@ export default function DonatePage() {
 
               {/* Image Upload */}
               <div className="space-y-2">
-                <Label className="text-gray-700 dark:text-gray-200 font-semibold">Images</Label>
+                <Label className="text-gray-700 dark:text-gray-200 font-semibold">Images (Optional)</Label>
                 <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center bg-gray-50 dark:bg-gray-900">
                   <input
                     type="file"
@@ -368,8 +368,8 @@ export default function DonatePage() {
                           <Image
                             src={preview || "/placeholder.svg"}
                             alt={`Preview ${index + 1}`}
-                            width={500} // Adjust width as needed
-                            height={500} // Adjust height as needed
+                            width={500}
+                            height={500}
                             className="w-full h-full object-cover"
                           />
                           <button
@@ -395,7 +395,7 @@ export default function DonatePage() {
                     Upload Images
                   </Button>
                   <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                    Upload up to 5 images of your donation
+                    Upload images to help others understand your requirement better
                   </p>
                 </div>
               </div>
@@ -412,7 +412,7 @@ export default function DonatePage() {
               <Button
                 type="submit"
                 disabled={isSubmitting || isUploading}
-                className="bg-gradient-to-r from-green-500 to-green-600 text-white font-bold hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
+                className="bg-gradient-to-r from-blue-500 to-blue-600 text-white font-bold hover:shadow-lg transform hover:scale-105 transition duration-300 ease-in-out"
               >
                 {isSubmitting || isUploading ? (
                   <>
@@ -421,8 +421,8 @@ export default function DonatePage() {
                   </>
                 ) : (
                   <>
-                    <Gift className="mr-2 h-4 w-4" />
-                    List Donation
+                    <HeartHandshake className="mr-2 h-4 w-4" />
+                    List Requirement
                   </>
                 )}
               </Button>

@@ -4,10 +4,7 @@ import { getServerSession } from "next-auth/next"
 
 export async function POST(request: Request) {
 
-    // console.log("=================================================");
-    // console.log("(donations/route.ts) Posting data in DB...");
-
-    try {
+  try {
         const session = await getServerSession()
         if (!session?.user?.email) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -48,42 +45,34 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
-    try {
-    //   const { searchParams } = new URL(request.url)
-    //   const isApprovedParam = searchParams.get("isApproved")
-    // const isApproved = isApprovedParam === "True" ? true : false
-
-  
-      // console.log("=================================================")
-      // console.log("(donations/route.ts) Fetching donations...")
-      // console.log("Search params:", searchParams)
-      // console.log("isApproved:", isApproved)
-    // console.log("Fetching donations...");
-    
-      const donations = await prisma.donationListing.findMany({
-        where: {
-          isApproved: true,
+  try {    
+    const donations = await prisma.donationListing.findMany({
+      where: {
+        isApproved: true,
+        status: {
+          not: "COMPLETED",
         },
-        orderBy: {
-          createdAt: "desc",
-        },
-        include: {
-          user: {
-            select: {
-              firstname: true,
-              lastname: true,
-              email: true,
-            },
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+      include: {
+        user: {
+          select: {
+            firstname: true,
+            lastname: true,
+            email: true,
           },
         },
-      })
-      // console.log("Donations fetched:", donations)
-  
-      return NextResponse.json(donations)
-    } catch (error) {
-      console.error("Error fetching donations:", error)
-      return NextResponse.json({ error: "Failed to fetch donations" }, { status: 500 })
-    }
+      },
+    });
+
+    return NextResponse.json(donations);
+  } catch (error) {
+    console.error("Error fetching donations:", error);
+    return NextResponse.json({ error: "Failed to fetch donations" }, { status: 500 });
   }
+}
+
   
   
