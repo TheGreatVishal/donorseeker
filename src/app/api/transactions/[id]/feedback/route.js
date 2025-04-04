@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import prisma from "@/lib/prisma";
+import { logApiActivity } from "@/utils/logApiActivity";
+
 const section = "Feedback";
 const endpoint = "/api/feedback";
 
