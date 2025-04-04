@@ -1,11 +1,16 @@
+// Description: This API route handles the retrieval of all donation and requirement listings for admin-dashboard. It checks if the user is authenticated and has admin privileges before fetching the listings from the database.
+
 import { NextResponse } from "next/server"
 import { getServerSession } from "next-auth/next"
 import prisma from "@/lib/prisma"
+import { logApiActivity } from "@/utils/logApiActivity"
 
-export async function GET() {
+export async function GET(request: Request) {
+  const session = await getServerSession()
+  const endpoint = `/api/admin/listings`
+  const section = "Admin-Dashboard"
+  const requestType = "GET"
   try {
-    // Check if user is authenticated and is an admin
-    const session = await getServerSession()
 
     const user = await prisma.user.findUnique({
       where: { email: session?.user.email || "" },
@@ -13,6 +18,7 @@ export async function GET() {
     })
 
     if (!session || !user?.isAdmin) {
+      await logApiActivity({ request, session, section, endpoint, requestType, statusCode: 401, description: "Unauthorized" })
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
@@ -78,10 +84,29 @@ export async function GET() {
 
     // Sort by creation date (newest first)
     allListings.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    
+    await logApiActivity({
+      request,
+      session,
+      section,
+      endpoint,
+      requestType,
+      statusCode: 200,
+      description: "Successfully fetched all listings for admin-dashboard",
+    })
 
     return NextResponse.json({ listings: allListings })
   } catch (error) {
     console.error("Error fetching listings:", error)
+    await logApiActivity({
+      request,
+      session,
+      section,
+      endpoint,
+      requestType,
+      statusCode: 500,
+      description: "Failed to fetch listings for admin-dashboard",
+    })
     return NextResponse.json({ error: "Failed to fetch listings" }, { status: 500 })
   }
 }

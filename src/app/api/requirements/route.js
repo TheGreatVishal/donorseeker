@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import { getServerSession } from "next-auth/next";
+import { logApiActivity } from "@/utils/logApiActivity";
 
 const prisma = new PrismaClient();
+const section = "Requirement Listings";
+const endpoint = "/api/requirement";
 
 export async function GET(request) {
+  const requestType = "GET";
   try {
     const { searchParams } = new URL(request.url);
 
@@ -52,6 +56,16 @@ export async function GET(request) {
     // Get total count for pagination
     const totalCount = await prisma.requirementListing.count({ where });
 
+    await logApiActivity({
+      request,
+      session: null, // No authentication required
+      section,
+      endpoint,
+      requestType,
+      statusCode: 200,
+      description: `Fetched ${requirements.length} requirement listings successfully`,
+    });
+
     return NextResponse.json({
       requirements,
       pagination: {
@@ -63,15 +77,35 @@ export async function GET(request) {
     });
   } catch (error) {
     console.error("Error fetching requirements:", error);
+
+    await logApiActivity({
+      request,
+      session: null,
+      section,
+      endpoint,
+      requestType,
+      statusCode: 500,
+      description: `Failed to fetch requirements - ${errorMessage}`,
+    });
     return NextResponse.json({ error: "Failed to fetch requirements" }, { status: 500 });
   }
 }
 
 export async function POST(request) {
+  const requestType = "POST";
   try {
     const session = await getServerSession();
 
     if (!session || !session.user) {
+      await logApiActivity({
+        request,
+        session,
+        section,
+        endpoint,
+        requestType,
+        statusCode: 401,
+        description: "Unauthorized access attempt",
+      });
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -80,6 +114,16 @@ export async function POST(request) {
 
     // Validate required fields
     if (!data.title || !data.description || !data.category || !data.contact) {
+
+      await logApiActivity({
+        request,
+        session,
+        section,
+        endpoint,
+        requestType,
+        statusCode: 400,
+        description: "Missing required fields in request",
+      });
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
@@ -89,6 +133,15 @@ export async function POST(request) {
     });
 
     if (!user) {
+      await logApiActivity({
+        request,
+        session,
+        section,
+        endpoint,
+        requestType,
+        statusCode: 404,
+        description: "User not found",
+      });
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
@@ -105,10 +158,29 @@ export async function POST(request) {
         userId: user.id,
       },
     });
+    await logApiActivity({
+      request,
+      session,
+      section,
+      endpoint,
+      requestType,
+      statusCode: 201,
+      description: `Created new requirement listing (ID: ${requirementListing.id})`,
+    });
+
 
     return NextResponse.json(requirementListing, { status: 201 });
   } catch (error) {
     console.error("Error creating requirement listing:", error);
+    await logApiActivity({
+      request,
+      session: null,
+      section,
+      endpoint,
+      requestType,
+      statusCode: 500,
+      description: `Failed to create requirement listing - ${errorMessage}`,
+    });
     return NextResponse.json(
       { error: "Failed to create requirement listing" },
       { status: 500 }

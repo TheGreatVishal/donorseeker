@@ -1,9 +1,15 @@
-import { NextResponse } from "next/server"
-import prisma from "@/lib/prisma"
+import { NextResponse } from "next/server";
+import prisma from "@/lib/prisma";
+import { logApiActivity } from "@/utils/logApiActivity";
 
-export async function GET() {
+const section = "Requirement Categories";
+const endpoint = "/api/requirement/categories";
+
+export async function GET(request: Request) {
+  const requestType = "GET";
+
   try {
-    // Get unique categories from the database
+    // Fetch unique categories from the database where listings are approved
     const categories = await prisma.requirementListing.findMany({
       where: {
         isApproved: true,
@@ -12,15 +18,37 @@ export async function GET() {
         category: true,
       },
       distinct: ["category"],
-    })
+    });
 
-    // Extract and return just the category names
-    const categoryList = categories.map((item) => item.category)
+    // Extract category names
+    const categoryList = categories.map((item) => item.category);
 
-    return NextResponse.json(categoryList)
+    await logApiActivity({
+      request,
+      session: null, // No authentication required here
+      section,
+      endpoint,
+      requestType,
+      statusCode: 200,
+      description: "Fetched requirement categories successfully",
+    });
+
+    return NextResponse.json(categoryList);
   } catch (error) {
-    console.error("Error fetching categories:", error)
-    return NextResponse.json({ error: "Failed to fetch categories" }, { status: 500 })
+    const errorMessage = error instanceof Error ? error.message : "Unknown error";
+
+    console.error("Error fetching categories:", errorMessage);
+
+    await logApiActivity({
+      request,
+      session: null,
+      section,
+      endpoint,
+      requestType,
+      statusCode: 500,
+      description: `Failed to fetch requirement categories - ${errorMessage}`,
+    });
+
+    return NextResponse.json({ error: "Failed to fetch categories" }, { status: 500 });
   }
 }
-

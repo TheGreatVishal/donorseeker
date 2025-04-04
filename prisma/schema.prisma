@@ -156,6 +156,18 @@ model Feedback {
   receiver   User @relation("ReceivedFeedback", fields: [receiverId], references: [id])
 }
 
+model Logging {
+  id           Int      @id @default(autoincrement()) 
+  timestamp    DateTime @default(now()) 
+  ipAddress    String   
+  userEmail    String?  // if logged in
+  section      String   
+  apiEndpoint  String   
+  requestType  String   
+  statusCode   Int      
+  description  String?  
+}
+
 enum ListingStatus {
   PENDING
   APPROVED
