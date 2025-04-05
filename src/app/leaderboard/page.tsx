@@ -45,7 +45,7 @@ export default function LeaderboardPage() {
   }, [])
 
   return (
-    <div className="container mx-auto py-8 mt-10 pt-10">
+    <div className="container mx-auto py-8 mt-20 pt-10">
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center">
@@ -73,14 +73,12 @@ export default function LeaderboardPage() {
                     {index > 2 && <span className="font-bold text-gray-500">#{index + 1}</span>}
                   </div>
 
-                  <div className="relative h-10 w-10 rounded-full overflow-hidden mr-3 border">
-                    {/* <Image
-                      src={user.image || "/placeholder.svg?height=40&width=40"}
-                      alt={`${user.firstname} ${user.lastname}`}
-                      fill
-                      className="object-cover"
-                    /> */}
+                  <div className="relative h-10 w-10 rounded-full overflow-hidden mr-3 border flex items-center justify-center bg-gray-200 hover:scale-125">
+                    <p className="font-medium text-sm text-gray-700 ">
+                      {user.firstname[0]}{user.lastname[0]}
+                    </p>
                   </div>
+
 
                   <div className="flex-1">
                     <p className="font-medium">

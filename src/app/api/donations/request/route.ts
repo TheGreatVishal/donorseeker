@@ -76,6 +76,7 @@ export async function POST(request: NextRequest) {
         statusCode: 400,
         description: `Duplicate request for listingId ${listingId}`,
       });
+      // return console.error("You already have a pending request for this donation")
       return NextResponse.json({ error: "You already have a pending request for this donation" }, { status: 400 });
     }
 

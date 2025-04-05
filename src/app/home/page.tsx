@@ -15,7 +15,6 @@ import {
   Calendar,
   Users,
   TrendingUp,
-  Bell,
   MapPin,
   Sparkles,
 } from "lucide-react"
@@ -128,12 +127,12 @@ export default function HomePage() {
               </h2>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          {/* <div className="flex items-center gap-2">
             <Button variant="ghost" size="icon" className="relative">
               <Bell className="h-5 w-5" />
               <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-red-500"></span>
             </Button>
-          </div>
+          </div> */}
         </div>
       </header>
 

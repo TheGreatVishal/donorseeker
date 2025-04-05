@@ -29,7 +29,6 @@ interface Donation {
 }
 
 export default function BrowseDonationsPage() {
-	// const { data: session } = useSession()
 	const [donations, setDonations] = useState<Donation[]>([])
 	const [filteredDonations, setFilteredDonations] = useState<Donation[]>([])
 	const [category, setCategory] = useState("all")
@@ -41,7 +40,7 @@ export default function BrowseDonationsPage() {
 
 	useEffect(() => {
 		fetchDonations()
-	}, []) // Removed category dependency
+	}, []) 
 
 
 	const applyFilters = useCallback(() => {
@@ -91,7 +90,6 @@ export default function BrowseDonationsPage() {
 			}
 
 			const data = await response.json()
-			// console.log("Donations data received:", data)
 
 			setDonations(data)
 			setLoading(false)

@@ -54,7 +54,8 @@ export function RequestDialog({ open, onOpenChange, listingId, onRequestComplete
       })
 
       const data = await response.json()
-
+      console.log("\n\nData returned after sending req: ",data);
+      
       if (!response.ok) {
         throw new Error(data.error || "Failed to submit request")
       }

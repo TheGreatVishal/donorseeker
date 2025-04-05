@@ -446,9 +446,9 @@ export default function HowItWorks() {
                   asChild
                   size="lg"
                   variant="secondary"
-                  className="group bg-white text-purple-600 hover:bg-gray-100 shadow-lg transition-all duration-300"
+                  className="group bg-white text-purple-600 hover:bg-gray-100 shadow-lg transition-all duration-300 hover:scale-105"
                 >
-                  <Link href="/register">
+                  <Link href="/loginSystem/signup">
                     Create Account
                     <motion.span
                       animate={{ scale: [1, 1.2, 1] }}
@@ -464,9 +464,9 @@ export default function HowItWorks() {
                   asChild
                   variant="outline"
                   size="lg"
-                  className="group border-white text-white hover:bg-white/20 shadow-lg transition-all duration-300"
+                  className="group bg-white text-purple-600 hover:bg-gray-100 shadow-lg transition-all duration-300 hover:scale-105"
                 >
-                  <Link href="/browse">
+                  <Link href="/browse-donations">
                     Browse Donations
                     <motion.span
                       animate={{ rotate: [0, 15, 0] }}

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function BrowseRequirementsPage() {
   return (
-    <main className="container mx-auto px-4 py-8">
+    <main className="container mx-auto px-4 py-8 mt-10 pt-10">
       <h1 className="text-3xl font-bold mb-6">Browse Requirements</h1>
       <RequirementsList />
     </main>
