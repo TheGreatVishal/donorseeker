@@ -17,6 +17,7 @@ import {
   PlusCircle,
   Clock,
   Star,
+  HelpCircle,
   ShieldCheck,
 } from "lucide-react"
 import { useSession, signOut } from "next-auth/react"
@@ -62,11 +63,10 @@ export function HomePageNavbar() {
 
   return (
     <motion.header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
           ? "bg-white/95 backdrop-blur-sm shadow-md text-gray-900"
           : "bg-gradient-to-r from-pink-500/90 to-blue-500/90 backdrop-blur-sm text-white"
-      }`}
+        }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
@@ -143,15 +143,21 @@ export function HomePageNavbar() {
               </Badge> */}
             </Link>
           )}
+          <Link
+            href="/how-it-works"
+            className="flex items-center space-x-1 text-lg font-medium px-3 py-2 rounded-md transition-colors duration-300 hover:bg-white/10"
+          >
+            <HelpCircle className="h-4 w-4" />
+            <span>How It Works</span>
+          </Link>
 
           {/* User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
-                className={`flex items-center space-x-2 rounded-full p-1 ${
-                  isScrolled ? "hover:bg-gray-200" : "hover:bg-white/10"
-                }`}
+                className={`flex items-center space-x-2 rounded-full p-1 ${isScrolled ? "hover:bg-gray-200" : "hover:bg-white/10"
+                  }`}
               >
                 <Avatar className="h-9 w-9 border-2 border-white/50">
                   <AvatarImage src={session?.user?.image || ""} alt={session?.user?.firstname || "User"} />
@@ -190,13 +196,13 @@ export function HomePageNavbar() {
               <DropdownMenuLabel className="text-xs font-normal text-muted-foreground">Create New</DropdownMenuLabel>
 
               <DropdownMenuItem>
-                <Link href="/create-donation" className="flex items-center w-full">
+                <Link href="/donate" className="flex items-center w-full">
                   <PlusCircle className="mr-2 h-4 w-4 text-blue-500" />
                   <span>Donation Listing</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link href="/create-requirement" className="flex items-center w-full">
+                <Link href="/requirements" className="flex items-center w-full">
                   <PlusCircle className="mr-2 h-4 w-4 text-pink-500" />
                   <span>Requirement Listing</span>
                 </Link>
@@ -324,6 +330,13 @@ export function HomePageNavbar() {
                 <Trophy className="h-5 w-5 text-yellow-500" />
                 <span className="font-medium">Leaderboard</span>
               </Link>
+              <Link
+                href="/how-it-works"
+                className="flex items-center space-x-2 py-3 px-4 rounded-md hover:bg-gray-100 transition-colors"
+              >
+                <HelpCircle className="h-5 w-5 text-yellow-500" />
+                <span>How It Works</span>
+              </Link>
 
               {isAdmin && (
                 <Link
@@ -338,6 +351,7 @@ export function HomePageNavbar() {
                   </Badge>
                 </Link>
               )}
+
             </div>
 
             <div className="space-y-1 pt-2">
@@ -351,7 +365,7 @@ export function HomePageNavbar() {
                 <span className="font-medium">Profile</span>
               </Link>
               <Link
-                href="/dashboard"
+                href="/my-dashboard"
                 className="flex items-center space-x-2 py-3 px-4 rounded-md hover:bg-gray-100 transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -363,7 +377,7 @@ export function HomePageNavbar() {
             <div className="space-y-1 pt-2">
               <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-2">Create New</p>
               <Link
-                href="/create-donation"
+                href="/donate"
                 className="flex items-center space-x-2 py-3 px-4 rounded-md hover:bg-gray-100 transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
@@ -371,7 +385,7 @@ export function HomePageNavbar() {
                 <span className="font-medium">Donation Listing</span>
               </Link>
               <Link
-                href="/create-requirement"
+                href="/requirements"
                 className="flex items-center space-x-2 py-3 px-4 rounded-md hover:bg-gray-100 transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >

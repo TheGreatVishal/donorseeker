@@ -3,9 +3,9 @@ import type { NextRequest } from "next/server"
 import { getToken } from "next-auth/jwt"
 
 export async function middleware(request: NextRequest) {
-	  console.log("\n==== MIDDLEWARE EXECUTION ====")
-	  console.log("Requesting URL:", request.nextUrl.pathname)
-	  console.log("Full URL:", request.url)
+	//   console.log("\n==== MIDDLEWARE EXECUTION ====")
+	//   console.log("Requesting URL:", request.nextUrl.pathname)
+	//   console.log("Full URL:", request.url)
 
 	const session = await getToken({
 		req: request,
@@ -30,11 +30,11 @@ export async function middleware(request: NextRequest) {
 	const isPublicPath = publicPaths.includes(request.nextUrl.pathname);
 
 	if (!session && !isPublicPath) {
-		console.log("Middleware (!session and !public path).... redirecting to login page.....");
+		// console.log("Middleware (!session and !public path).... redirecting to login page.....");
 		return NextResponse.redirect(new URL('/loginSystem/login', request.url));
 	}
 
-	console.log("Proceeding with request")
+	// console.log("Proceeding with request")
 	return NextResponse.next()
 }
 
