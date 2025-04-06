@@ -8,7 +8,6 @@ import {
 	UserPlus,
 	ListPlus,
 	Users,
-	CheckSquare,
 	FileSearch,
 	MessageSquare,
 	Truck,
@@ -64,14 +63,15 @@ export default function HowItWorks() {
 	const floatAnimation = {
 		hidden: { y: 0 },
 		visible: {
-			y: [-10, 0, -10],
+			y: [-10, 0, -10] as number[], // Remove readonly modifier
 			transition: {
 				duration: 3,
 				repeat: Number.POSITIVE_INFINITY,
-				repeatType: "reverse" as "reverse", // Explicitly cast to the correct type
+				repeatType: "reverse" as const,
 			},
 		},
-	}
+	};
+	
 
 	return (
 		<div className="flex flex-col items-center text-center overflow-hidden mt-10 pt-10">
