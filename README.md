@@ -40,54 +40,105 @@
 ## 🗂️ Project Structure
 ```
 src/
-│── app/
+├── app/
 │   ├── admin/
 │   │   ├── dashboard/page.tsx
-│   │   ├── listings/[id]/page.tsx
+│   │   └── listings/
+│   │       └── [id]/page.tsx
+|   |
 │   ├── api/
-│   │   ├── admin ├── listings ├── [id]/route.ts
-│   │   |         ├── route.ts
-│   │   ├── auth  ├── [...nextauth] 
-│   │   |         ├── forgot-password-otp
-│   │   |         ├── register
-│   │   |         ├── reset-password
-│   │   |         ├── send-otp
-│   │   |         ├── verify-admin-key
-│   │   |         ├── verify-otp
-│   │   ├── donations  ├── [id]/route.ts
-│   │   |              ├── route.ts
+│   │   ├── admin/
+│   │   │   ├── route.ts
+│   │   │   └── listings/
+│   │   │       └── [id]/route.ts
+│   │   ├── auth/
+│   │   │   ├── [...nextauth]/route.ts
+│   │   │   ├── forgot-password-otp/route.ts
+│   │   │   ├── register/route.ts
+│   │   │   ├── reset-password/route.ts
+│   │   │   ├── send-otp/route.ts
+│   │   │   ├── verify-admin-key/route.ts
+│   │   │   └── verify-otp/route.ts
+│   │   ├── donations/
+│   │   │   ├── route.ts
+│   │   │   ├── [id]/route.ts
+│   │   │   ├── recent-donations/route.ts
+│   │   │   └── request/route.ts
 │   │   ├── image-upload/route.ts
+│   │   ├── leaderboard/route.ts
+│   │   ├── my-dashboard/
+│   │   │   ├── donations/
+│   │   │   │   ├── route.ts
+│   │   │   │   └── [id]/route.ts
+│   │   │   └── requirements/
+│   │   │       ├── route.ts
+│   │   │       └── [id]/route.ts
+│   │   ├── requirements/
+│   │   │   ├── route.js
+│   │   │   ├── [id]/route.js
+│   │   │   └── categories/route.js
+│   │   ├── transactions/
+│   │   │   ├── route.ts
+│   │   │   └── [id]/
+│   │   │       ├── route.ts
+│   │   │       ├── feedback/route.ts
+│   │   │       └── receive/route.ts
+│   │   ├── requests/
+│   │   │   ├── [id]/cancel/route.ts
+│   │   │   └── user/route.ts
+│   │   ├── user/
+│   │   │   └── profiles/route.ts
+│   │   ├── stats/route.ts
+│   │   └── logs/
+│   │       ├── route.ts
+│   │       ├── endpoints/route.ts
+│   │       ├── export/route.ts
+│   │       ├── sections/route.ts
+│   │       └── stats/route.ts
+|   |
 │   ├── browse-donations/
-│   │   ├── [id]
-│   │   │   ├── page.tsx
-│   │   │── page.tsx
+│   │   └── [id]/page.tsx
+│   │   └── page.tsx
+|   |
 │   ├── donate/
 │   │   ├── success/page.tsx
-│   │   ├── page.tsx
+│   │   └── page.tsx
+|   |
 │   ├── home/
 │   │   ├── layout.tsx
 │   │   ├── page.tsx
-│   │   ├── sign-out-button.tsx
+│   │   └── sign-out-button.tsx
+|   |
 │   ├── how-it-works/
-│   │   ├── page.tsx
+│   │   └── page.tsx
+|   |
 │   ├── loginSystem/
 │   │   ├── forgot-password/page.tsx
-│   │   ├── login  ├── loading.tsx
-│   │   |          ├── page.ts
-│   │   ├── signup ├── action.ts
-│   │   |          ├── page.tsx
-│   │   ├── layout.tsx
-|   ├── globals.css   
-|   ├── layout.tsx   
-|   ├── logo.ico   
-|   ├── page.tsx   
-│── components
-│── lib ├── jwt.ts
-│       ├── mail.ts
-│       ├── prisma.ts
-│       ├── utils.ts
-│── types ├── next-auth.d.ts
-│── middleware.ts
+│   │   ├── login/
+│   │   │   ├── loading.tsx
+│   │   │   └── page.ts
+│   │   ├── signup/
+│   │   │   ├── action.ts
+│   │   │   └── page.tsx
+│   │   └── layout.tsx
+|   |
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── logo.ico
+│   └── page.tsx
+|   
+├── components/
+├── lib/
+│   ├── jwt.ts
+│   ├── mail.ts
+│   ├── prisma.ts
+│   └── utils.ts
+|
+├── types/
+│   └── next-auth.d.ts
+|
+└── middleware.ts
+
 ```
 
 ## 🛠️ Prerequisites  
