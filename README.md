@@ -1,7 +1,7 @@
 # Donor Seeker
 
 ## Overview
-**Donor Seeker** is a platform that connects donors with seekers, allowing users to list and browse items for donation. Admins can manage the approval of listings, ensuring quality control. The platform includes authentication, OTP verification, and password security features.
+**Donor Seeker** is a full-stack web application that bridges the gap between donors and seekers. It provides a platform where donors can list items for donation and seekers can browse, request, and receive those items. Admins have tools to manage listings and monitor platform activity. The system integrates OTP verification, secure authentication, AI-based request scoring, and detailed activity logging.
 
 ## Features
 - **User Authentication**
@@ -15,6 +15,27 @@
   - Unregistered users can browse listings (Login required to view details)
   - Registered users can see item details
   - Admins can approve/unapprove donations
+
+
+- **🤖 AI Scoring**
+  - Requests are scored using AI based on the urgency level in the message
+  - More needy requests appear at the top of donor’s request list
+
+- **🏆 Leaderboard**
+  - Displays top donors based on verified transactions
+
+- **🧾 Logging System**
+  - Tracks every significant action:
+    - userEmail, ipAddress, timestamp, section, requestType, statusCode, description, endpoint
+
+- **Tech Stack**
+  - Frontend: Next.js, TypeScript, Tailwind CSS
+  - Backend: Next.js API routes
+  - Database: PostgreSQL (via Prisma)
+  - Authentication: NextAuth.js
+  - Cloudinary: Image upload
+  - AI Scoring: Groq integration
+  - Logging: Custom-built logging system with exportable CSV
 
 ## Project Structure
 ```
