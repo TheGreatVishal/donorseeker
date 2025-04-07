@@ -19,22 +19,6 @@ export async function GET(request: NextRequest) {
     const endDate = searchParams.get("endDate")
 
     if (startDate || endDate) {
-      where.timestamp = {};
-    
-      if (startDate) {
-        const startIST = new Date(new Date(startDate).getTime());
-        where.timestamp.gte = startIST;
-      }
-    
-      if (endDate) {
-        const endDateTime = new Date(endDate);
-        endDateTime.setHours(23, 59, 59, 999);
-        const endIST = new Date(endDateTime.getTime());
-        where.timestamp.lte = endIST;
-      }
-    }
-
-    if (startDate || endDate) {
       where.timestamp = {}
 
       if (startDate) {
@@ -42,7 +26,6 @@ export async function GET(request: NextRequest) {
       }
 
       if (endDate) {
-        // Set the end date to the end of the day
         const endDateTime = new Date(endDate)
         endDateTime.setHours(23, 59, 59, 999)
         where.timestamp.lte = endDateTime
@@ -104,6 +87,9 @@ export async function GET(request: NextRequest) {
       prisma.logging.count({ where }),
     ])
 
+
+    console.log(logs);
+    
     return NextResponse.json({
       logs,
       total,

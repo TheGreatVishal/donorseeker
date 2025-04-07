@@ -11,29 +11,6 @@ import { format } from "date-fns"
 import { CalendarIcon, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-// interface LogsFilterProps {
-//   currentFilters: {
-//     startDate?: string;
-//     endDate?: string;
-//     ipAddress?: string;
-//     userEmail?: string;
-//     section?: string;
-//     apiEndpoint?: string;
-//     requestType?: string;
-//     statusCode?: string;
-//   };
-//   onFilterChange: (filters: {
-//     startDate?: string;
-//     endDate?: string;
-//     ipAddress?: string;
-//     userEmail?: string;
-//     section?: string;
-//     apiEndpoint?: string;
-//     requestType?: string;
-//     statusCode?: string;
-//   }) => void;
-// }
-
 export function LogsFilter({ currentFilters, onFilterChange }) {
   // Local state for filter values
   const [filters, setFilters] = useState({
@@ -86,9 +63,6 @@ export function LogsFilter({ currentFilters, onFilterChange }) {
     fetchFilterOptions()
   }, [])
 
-  // Update local state when input changes
-// interface InputChangeEvent extends React.ChangeEvent<HTMLInputElement> {}
-
 const handleInputChange = (e) => {
     const { name, value } = e.target
     setFilters((prev) => ({ ...prev, [name]: value }))
@@ -98,11 +72,6 @@ const handleInputChange = (e) => {
 const handleSelectChange = (name, value) => {
     setFilters((prev) => ({ ...prev, [name]: value }))
 }
-
-  // Handle date selection
-// interface DateChangeHandler {
-//     (name: keyof typeof filters, date: Date | null): void;
-// }
 
 const handleDateChange  = (name, date) => {
     if (date) {
