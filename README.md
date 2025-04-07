@@ -1,43 +1,43 @@
-# Donor Seeker
+# 💖 Donor Seeker
 
-## Overview
-**Donor Seeker** is a full-stack web application that bridges the gap between donors and seekers. It provides a platform where donors can list items for donation and seekers can browse, request, and receive those items. Admins have tools to manage listings and monitor platform activity. The system integrates OTP verification, secure authentication, AI-based request scoring, and detailed activity logging.
+## 🧭 Overview  
+**Donor Seeker** is a full-stack web application that bridges the gap between donors and seekers. It provides a platform where donors can list items for donation and seekers can browse, request, and receive those items. Admins have tools to manage listings and monitor platform activity. The system integrates 🔐 OTP verification, secure authentication, 🤖 AI-based request scoring, and 📋 detailed activity logging.
 
-## Features
-- **User Authentication**
-  - Registration & Login
-  - OTP Verification
-  - Forgot Password (Reset Password)
-  - Password Strength Validation
+## ✨ Features  
 
-- **Donation Process**
-  - Donors can list items for donation
-  - Unregistered users can browse listings (Login required to view details)
-  - Registered users can see item details
-  - Admins can approve/unapprove donations
+- 🔐 **User Authentication**  
+  - 📝 Registration & Login  
+  - 📲 OTP Verification  
+  - 🔁 Forgot Password (Reset Password)  
+  - 💪 Password Strength Validation  
 
+- 🎁 **Donation Process**  
+  - 🙋‍♂️ Donors can list items for donation  
+  - 🌐 Unregistered users can browse listings (Login required to view details)  
+  - 👥 Registered users can see item details  
+  - 🛡️ Admins can approve/unapprove donations  
 
-- **🤖 AI Scoring**
-  - Requests are scored using AI based on the urgency level in the message
-  - More needy requests appear at the top of donor’s request list
+- 🤖 **AI Scoring**  
+  - ✉️ Requests are scored using AI based on the urgency level in the message  
+  - ⏫ More needy requests appear at the top of donor’s request list  
 
-- **🏆 Leaderboard**
-  - Displays top donors based on verified transactions
+- 🏆 **Leaderboard**  
+  - 🌟 Displays top donors based on verified transactions  
 
-- **🧾 Logging System**
-  - Tracks every significant action:
-    - userEmail, ipAddress, timestamp, section, requestType, statusCode, description, endpoint
+- 🧾 **Logging System**  
+  - 🕵️ Tracks every significant action:  
+    - userEmail, ipAddress, timestamp, section, requestType, statusCode, description, endpoint  
 
-- **Tech Stack**
-  - Frontend: Next.js, TypeScript, Tailwind CSS
-  - Backend: Next.js API routes
-  - Database: PostgreSQL (via Prisma)
-  - Authentication: NextAuth.js
-  - Cloudinary: Image upload
-  - AI Scoring: Groq integration
-  - Logging: Custom-built logging system with exportable CSV
+- ⚙️ **Tech Stack**  
+  - 💻 Frontend: Next.js, TypeScript, Tailwind CSS  
+  - 🧠 Backend: Next.js API routes  
+  - 🗄️ Database: PostgreSQL (via Prisma)  
+  - 🔐 Authentication: NextAuth.js  
+  - 📷 Cloudinary: Image upload  
+  - 🧠 AI Scoring: Groq integration  
+  - 📊 Logging: Custom-built logging system with exportable CSV  
 
-## Project Structure
+## 🗂️ Project Structure
 ```
 src/
 │── app/
@@ -90,18 +90,17 @@ src/
 │── middleware.ts
 ```
 
-## Prerequisites
-Ensure you have the following installed:
-- **Node.js** (Latest LTS version recommended)
-- **Yarn** (Package Manager)
+## 🛠️ Prerequisites  
+Ensure you have the following installed:  
+- 🟢 **Node.js** (Latest LTS version recommended)  
+- 🧶 **Yarn** (Package Manager)  
 
-## Installation & Running the Project
+## 🚀 Installation & Running the Project  
 
-### 1. Clone the Repository
+### 1. 📦 Clone the Repository  
 ```sh
 git clone https://github.com/your-username/donor-seeker.git
 cd donor-seeker
-```
 
 ### 2. Install Dependencies
 ```sh
