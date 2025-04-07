@@ -10,8 +10,14 @@ export async function logApiActivity({
   description,
 }) {
   const ipAddress = request?.headers?.get?.("x-forwarded-for") || "Unknown";
+  
   const userEmail = session?.user?.email || null;
-
+  // console.log("==============================================");
+  // console.log("Logging API Activity:");
+  // console.log("Session:", session);
+  // console.log("IP Address:", ipAddress);
+  // console.log("User Email:", userEmail);
+  
   // Get current time in IST
   const now = new Date();
   const istOffset = 5.5 * 60 * 60 * 1000;

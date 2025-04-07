@@ -19,6 +19,22 @@ export async function GET(request: NextRequest) {
     const endDate = searchParams.get("endDate")
 
     if (startDate || endDate) {
+      where.timestamp = {};
+    
+      if (startDate) {
+        const startIST = new Date(new Date(startDate).getTime() + 5.5 * 60 * 60 * 1000);
+        where.timestamp.gte = startIST;
+      }
+    
+      if (endDate) {
+        const endDateTime = new Date(endDate);
+        endDateTime.setHours(23, 59, 59, 999);
+        const endIST = new Date(endDateTime.getTime() + 5.5 * 60 * 60 * 1000);
+        where.timestamp.lte = endIST;
+      }
+    }
+
+    if (startDate || endDate) {
       where.timestamp = {}
 
       if (startDate) {

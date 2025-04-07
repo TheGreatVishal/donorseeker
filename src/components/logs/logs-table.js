@@ -155,7 +155,7 @@ export function LogsTable({ logs, loading, page, pageSize, totalLogs, onPageChan
             {logs.map((log) => (
               <TableRow key={log.id}>
                 <TableCell className="font-mono text-xs">
-                  {format(new Date(log.timestamp), "yyyy-MM-dd HH:mm:ss")}
+                  {format(new Date(log.timestamp) , "yyyy-MM-dd HH:mm:ss")}
                 </TableCell>
                 <TableCell className="font-mono text-xs">{log.ipAddress}</TableCell>
                 <TableCell className="max-w-[150px] truncate">{log.userEmail || "-"}</TableCell>

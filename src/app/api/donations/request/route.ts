@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import { logApiActivity } from "@/utils/logApiActivity";
 
 export async function POST(request: NextRequest) {
-  const endpoint = "/api/donations/request"; // adjust path as needed
+  const endpoint = "/api/donations/request"; 
   const section = "Donations";
   const requestType = "POST";
 

@@ -378,7 +378,7 @@ export default function DonationDetailPage() {
         </Card>
 
         {/* Similar Donations - This would be implemented with actual data */}
-        <Card className="mt-8 shadow-lg">
+        {/* <Card className="mt-8 shadow-lg">
           <CardContent className="p-6">
             <h2 className="text-2xl font-bold mb-4">Similar Donations</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -399,7 +399,7 @@ export default function DonationDetailPage() {
               </div>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
 
       {/* Request Dialog */}
