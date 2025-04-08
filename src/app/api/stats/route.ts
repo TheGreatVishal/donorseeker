@@ -9,8 +9,10 @@ export async function GET(request: Request) {
   const section = "Stats";
   const endpoint = "/api/stats";
   const requestType = "GET";
- const session = await getServerSession();
+  const session = await getServerSession();
   try {
+    console.log("Reaching here at stats ....");
+    
     const totalDonations = await prisma.transaction.count();
 
     const activeDonors = await prisma.user.count({
@@ -61,9 +63,8 @@ export async function GET(request: Request) {
       endpoint,
       requestType,
       statusCode: 500,
-      description: `Server error while fetching stats - ${
-        error instanceof Error ? error.message : "unknown error"
-      }`,
+      description: `Server error while fetching stats - ${error instanceof Error ? error.message : "unknown error"
+        }`,
     });
 
     return NextResponse.json(

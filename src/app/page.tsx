@@ -1,31 +1,33 @@
-"use client";
+"use client"
 
-import { useEffect } from "react";
-import Head from "next/head";
-import HeroCarousel from "../components/HeroCarousel";
-import Features from "../components/Features";
-import { motion, useAnimation, useScroll, useSpring } from "framer-motion";
-import { useInView } from "react-intersection-observer";
-import { Navbar } from "@/components/Navbar";
-import Testimonials  from "@/components/Testimonials";
-import {CallToActionSection} from "@/components/CallToActionSection";
+import { useEffect } from "react"
+import Head from "next/head"
+import HeroCarousel from "../components/HeroCarousel"
+import Features from "../components/Features"
+import { motion, useAnimation, useScroll, useSpring } from "framer-motion"
+import { useInView } from "react-intersection-observer"
+import { Navbar } from "@/components/Navbar"
+import Testimonials from "@/components/Testimonials"
+import { CallToActionSection } from "@/components/CallToActionSection"
+import { StatsDisplay } from "@/components/StatsDisplay"
+import { StatsProvider } from "@/components/StatsProvider"
 
 export default function Home() {
-  const controls = useAnimation();
-  const [ref, inView] = useInView();
+  const controls = useAnimation()
+  const [ref, inView] = useInView()
 
   useEffect(() => {
     if (inView) {
-      controls.start("visible");
+      controls.start("visible")
     }
-  }, [controls, inView]);
+  }, [controls, inView])
 
-  const { scrollYProgress } = useScroll();
+  const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 100,
     damping: 30,
     restDelta: 0.001,
-  });
+  })
 
   return (
     <div className="bg-gray-100 text-gray-800">
@@ -51,11 +53,27 @@ export default function Home() {
         transition={{ duration: 0.5 }}
         className="bg-white text-gray-900"
       >
-
-      <Testimonials />
+        <Testimonials />
       </motion.section>
 
-      <CallToActionSection/>
+      {/* Stats Section */}
+      <section className="w-full py-12 md:py-16 bg-white">
+        <div className="container px-4 md:px-6 mx-auto max-w-7xl">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight bg-gradient-to-r from-teal-600 to-sky-600 bg-clip-text text-transparent">
+              Our Impact
+            </h2>
+            <p className="max-w-[900px] mx-auto text-gray-600 md:text-xl/relaxed">
+              Real-time statistics from our growing community
+            </p>
+          </div>
+          <StatsProvider>
+            <StatsDisplay />
+          </StatsProvider>
+        </div>
+      </section>
+
+      <CallToActionSection />
     </div>
-  );
+  )
 }

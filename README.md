@@ -37,6 +37,10 @@
   - 🧠 AI Scoring: Groq integration  
   - 📊 Logging: Custom-built logging system with exportable CSV  
 
+## 📈 Codebase Insights
+- 💻 Total Lines of Code: `18,545+`
+- 🚧 Actively maintained and growing!
+
 ## 🗂️ Project Structure
 ```
 src/
