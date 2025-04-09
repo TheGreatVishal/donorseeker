@@ -23,7 +23,7 @@ export async function DELETE(request, { params }) {
       })
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
-    console.log("Delete request for Listing ID:", listingId)
+    // console.log("Delete request for Listing ID:", listingId)
 
     if (!listingId) {
       await logApiActivity({
@@ -113,7 +113,7 @@ export async function DELETE(request, { params }) {
       })
     })
 
-    console.log("Listing and related records deleted successfully:", listingId)
+    // console.log("Listing and related records deleted successfully:", listingId)
 
     await logApiActivity({
       request,

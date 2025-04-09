@@ -53,7 +53,7 @@ export async function batchScoreNeediness(messages: MessageToScore[]): Promise<S
       return parsedScores
     } catch (parseError) {
       console.error("Error parsing Groq response:", parseError)
-      console.log("Raw response:", text)
+      // console.log("Raw response:", text)
 
       // Fallback: Return default scores if parsing fails
       return messages.map((msg, index) => ({

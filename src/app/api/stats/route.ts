@@ -11,7 +11,7 @@ export async function GET(request: Request) {
   const requestType = "GET";
   const session = await getServerSession();
   try {
-    console.log("Reaching here at stats ....");
+    // console.log("Reaching here at stats ....");
     
     const totalDonations = await prisma.transaction.count();
 

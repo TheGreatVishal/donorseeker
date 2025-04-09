@@ -50,7 +50,7 @@ export async function getDonationRequests(listingId: number) {
       orderBy: { createdAt: "desc" },
     })
 
-    console.log("From lib/data.ts: ", requests)
+    // console.log("From lib/data.ts: ", requests)
 
     // Extract messages with their IDs for batch scoring
     const messagesToScore = requests.map((request) => ({
@@ -72,7 +72,7 @@ export async function getDonationRequests(listingId: number) {
 
     // Sort by neediness score (highest first)
     scoredRequests.sort((a, b) => b.needinessScore - a.needinessScore)
-    console.log("Scored Requests: ", scoredRequests)
+    // console.log("Scored Requests: ", scoredRequests)
 
     return scoredRequests
   } catch (error) {
