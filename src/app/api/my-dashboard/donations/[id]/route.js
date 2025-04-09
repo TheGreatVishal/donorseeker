@@ -1,18 +1,16 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import { getServerSession } from "next-auth/next"
-import { logApiActivity } from "@/utils/logApiActivity";
+import { logApiActivity } from "@/utils/logApiActivity"
 
 export async function DELETE(request, { params }) {
-  const { id } = params;
+  const { id } = params
   const listingId = Number(id)
-  const endpoint = `/api/donations/${listingId}`;
-  const section = "Donation Listing";
-  const requestType = "DELETE";
+  const endpoint = `/api/donations/${listingId}`
+  const section = "Donation Listing"
+  const requestType = "DELETE"
   const session = await getServerSession()
   try {
-
-
     if (!session?.user?.email) {
       await logApiActivity({
         request,
@@ -22,7 +20,7 @@ export async function DELETE(request, { params }) {
         requestType,
         statusCode: 401,
         description: "Unauthorized delete attempt",
-      });
+      })
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
     console.log("Delete request for Listing ID:", listingId)
@@ -36,16 +34,17 @@ export async function DELETE(request, { params }) {
         requestType,
         statusCode: 400,
         description: "Listing ID not provided",
-      });
+      })
 
-      return NextResponse.json({ error: "Listing ID is required" }, { status: 400 });
+      return NextResponse.json({ error: "Listing ID is required" }, { status: 400 })
     }
 
     const listing = await prisma.donationListing.findUnique({
       where: { id: listingId },
+      include: {
+        donationRequests: true, // Include related requests to check if they exist
+      },
     })
-
-    // console.log("Listing found:", listing)
 
     if (!listing) {
       await logApiActivity({
@@ -56,9 +55,9 @@ export async function DELETE(request, { params }) {
         requestType,
         statusCode: 404,
         description: "Listing not found",
-      });
+      })
 
-      return NextResponse.json({ error: "Listing not found" }, { status: 404 });
+      return NextResponse.json({ error: "Listing not found" }, { status: 404 })
     }
 
     // Ensure only the owner can delete their listing
@@ -75,16 +74,25 @@ export async function DELETE(request, { params }) {
         requestType,
         statusCode: 403,
         description: "Forbidden: Not the owner of the listing",
-      });
+      })
 
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
-    // console.log("User deleting the listing is same as the owner:")
 
-    await prisma.donationListing.delete({
-      where: { id: listingId },
+    // Use a transaction to delete related records first, then the listing
+    await prisma.$transaction(async (tx) => {
+      // First delete all donation requests that reference this listing
+      await tx.donationRequest.deleteMany({
+        where: { listingId },
+      })
+
+      // Then delete the listing itself
+      await tx.donationListing.delete({
+        where: { id: listingId },
+      })
     })
-    // console.log("Listing deleted successfully:", listingId)
+
+    console.log("Listing and related requests deleted successfully:", listingId)
 
     await logApiActivity({
       request,
@@ -94,20 +102,23 @@ export async function DELETE(request, { params }) {
       requestType,
       statusCode: 200,
       description: "Listing deleted successfully",
-    });
+    })
 
     return NextResponse.json({ message: "Listing deleted successfully" }, { status: 200 })
   } catch (error) {
     console.error("Error deleting listing:", error)
+    const errorMessage = error.message || "Unknown error"
+
     await logApiActivity({
       request,
-      session: null,
+      session,
       section,
       endpoint,
       requestType,
       statusCode: 500,
       description: `Failed to delete listing - ${errorMessage}`,
-    });
+    })
+
     return NextResponse.json({ error: "Failed to delete listing" }, { status: 500 })
   }
 }
