@@ -1,162 +1,120 @@
-import { type NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
-import { format, subDays } from "date-fns";
-import { getServerSession } from "next-auth/next";
-import { logApiActivity } from "@/utils/logApiActivity";
-
-const section = "Logs Section";
-const endpoint = "/api/admin/logs/stats-summary";
-const requestType = "GET";
+import { type NextRequest, NextResponse } from "next/server"
+import prisma from "@/lib/prisma"
+import type { Prisma } from "@prisma/client"
+import { getServerSession } from "next-auth/next"
 
 export async function GET(request: NextRequest) {
-	const session = await getServerSession();
-	try {
-		const { searchParams } = new URL(request.url);
-		const where: Prisma.LoggingWhereInput = {};
+  try {
 
-		const startDate = searchParams.get("startDate");
-		const endDate = searchParams.get("endDate");
+    const session = await getServerSession()
 
-		if (startDate || endDate) {
-			where.timestamp = {};
+    const user = await prisma.user.findUnique({
+      where: { email: session?.user.email || "" },
+      select: { isAdmin: true },
+    })
+   
+    if (!session || !user?.isAdmin) {
+      console.log("Not Authorized user tried to access the logs...");
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
 
-			if (startDate) {
-				where.timestamp.gte = new Date(startDate);
-			}
-			if (endDate) {
-				const endDateTime = new Date(endDate);
-				endDateTime.setHours(23, 59, 59, 999);
-				where.timestamp.lte = endDateTime;
-			}
-		}
+    console.log("User Trying to access logs: ", session?.user.email);
+    
+    const { searchParams } = new URL(request.url)
 
-		const ipAddress = searchParams.get("ipAddress");
-		if (ipAddress) {
-			where.ipAddress = { contains: ipAddress };
-		}
+    // Parse pagination parameters
+    const page = Number.parseInt(searchParams.get("page") || "1")
+    const pageSize = Number.parseInt(searchParams.get("pageSize") || "10")
+    const skip = (page - 1) * pageSize
 
-		const userEmail = searchParams.get("userEmail");
-		if (userEmail) {
-			where.userEmail = { contains: userEmail };
-		}
+    // Build filter conditions
+    const where: Prisma.LoggingWhereInput = {}
 
-		const sectionFilter = searchParams.get("section");
-		if (sectionFilter) {
-			where.section = sectionFilter;
-		}
+    // Date range filter
+    const startDate = searchParams.get("startDate")
+    const endDate = searchParams.get("endDate")
 
-		const apiEndpoint = searchParams.get("apiEndpoint");
-		if (apiEndpoint) {
-			where.apiEndpoint = { contains: apiEndpoint };
-		}
+    if (startDate || endDate) {
+      where.timestamp = {}
 
-		const requestTypeFilter = searchParams.get("requestType");
-		if (requestTypeFilter) {
-			where.requestType = requestTypeFilter;
-		}
+      if (startDate) {
+        where.timestamp.gte = new Date(startDate)
+      }
 
-		const statusCode = searchParams.get("statusCode");
-		if (statusCode) {
-			where.statusCode = parseInt(statusCode, 10);
-		}
+      if (endDate) {
+        const endDateTime = new Date(endDate)
+        endDateTime.setHours(23, 59, 59, 999)
+        where.timestamp.lte = endDateTime
+      }
+    }
 
-		// Distribution 1: Status Codes
-		const statusCodeDistribution = await prisma.logging.groupBy({
-			by: ["statusCode"],
-			where,
-			_count: { _all: true },
-			orderBy: { _count: { id: "desc" } },
-		});
+    // IP address filter
+    const ipAddress = searchParams.get("ipAddress")
+    if (ipAddress) {
+      where.ipAddress = {
+        contains: ipAddress,
+      }
+    }
 
-		// Distribution 2: Section
-		const sectionDistribution = await prisma.logging.groupBy({
-			by: ["section"],
-			where,
-			_count: { _all: true },
-			orderBy: { _count: { id: "desc" } },
-			take: 10,
-		});
+    // User email filter
+    const userEmail = searchParams.get("userEmail")
+    if (userEmail) {
+      where.userEmail = {
+        contains: userEmail,
+      }
+    }
 
-		// Distribution 3: Request Type
-		const requestTypeDistribution = await prisma.logging.groupBy({
-			by: ["requestType"],
-			where,
-			_count: { _all: true },
-			orderBy: { _count: { id: "desc" } },
-		});
+    // Section filter
+    const section = searchParams.get("section")
+    if (section) {
+      where.section = section
+    }
 
-		// Time distribution: last 7 days or custom
-		let timeStart = subDays(new Date(), 7);
-		if (startDate) timeStart = new Date(startDate);
+    // API endpoint filter
+    const apiEndpoint = searchParams.get("apiEndpoint")
+    if (apiEndpoint) {
+      where.apiEndpoint = {
+        contains: apiEndpoint,
+      }
+    }
 
-		let timeEnd = new Date();
-		if (endDate) {
-			timeEnd = new Date(endDate);
-			timeEnd.setHours(23, 59, 59, 999);
-		}
+    // Request type filter
+    const requestType = searchParams.get("requestType")
+    if (requestType) {
+      where.requestType = requestType
+    }
 
-		const dayDiff = Math.ceil((timeEnd.getTime() - timeStart.getTime()) / (1000 * 60 * 60 * 24));
-		let timeFormat = "yyyy-MM-dd";
-		if (dayDiff <= 1) timeFormat = "HH:00";
-		else if (dayDiff <= 31) timeFormat = "MM-dd";
-		else timeFormat = "yyyy-MM";
+    // Status code filter
+    const statusCode = searchParams.get("statusCode")
+    if (statusCode) {
+      where.statusCode = Number.parseInt(statusCode)
+    }
 
-		const rawTimeData = await prisma.logging.findMany({
-			where: {
-				...where,
-				timestamp: { gte: timeStart, lte: timeEnd },
-			},
-			select: {
-				timestamp: true,
-				id: true,
-			},
-			orderBy: { timestamp: "asc" },
-		});
+    // Fetch logs with pagination
+    const [logs, total] = await Promise.all([
+      prisma.logging.findMany({
+        where,
+        orderBy: {
+          timestamp: "desc",
+        },
+        skip,
+        take: pageSize,
+      }),
+      prisma.logging.count({ where }),
+    ])
 
-		const groupedTimeMap = new Map<string, number>();
-		for (const entry of rawTimeData) {
-			const key = format(entry.timestamp, timeFormat);
-			groupedTimeMap.set(key, (groupedTimeMap.get(key) || 0) + 1);
-		}
-		const formattedTimeDistribution = Array.from(groupedTimeMap.entries()).map(([name, value]) => ({ name, value }));
 
-		await logApiActivity({
-			request,
-			session,
-			section,
-			endpoint,
-			requestType,
-			statusCode: 200,
-			description: `Log summary fetched successfully by: ${session?.user.email ?? "Unknown user"}`,
-		});
+    // console.log(logs);
 
-		return NextResponse.json({
-			statusCodeDistribution: statusCodeDistribution.map(({ statusCode, _count }) => ({
-				name: statusCode,
-				value: _count._all,
-			})),
-			sectionDistribution: sectionDistribution.map(({ section, _count }) => ({
-				name: section,
-				value: _count._all,
-			})),
-			requestTypeDistribution: requestTypeDistribution.map(({ requestType, _count }) => ({
-				name: requestType,
-				value: _count._all,
-			})),
-			timeDistribution: formattedTimeDistribution,
-		});
-	} catch (error) {
-		await logApiActivity({
-			request,
-			session,
-			section,
-			endpoint,
-			requestType,
-			statusCode: 500,
-			description: `Error fetching log stats: ${error instanceof Error ? error.message : String(error)}`,
-		});
-
-		return NextResponse.json({ error: "Failed to fetch stats" }, { status: 500 });
-	}
+    return NextResponse.json({
+      logs,
+      total,
+      page,
+      pageSize,
+      totalPages: Math.ceil(total / pageSize),
+    })
+  } catch (error) {
+    console.error("Error fetching logs:", error)
+    return NextResponse.json({ error: "Failed to fetch logs" }, { status: 500 })
+  }
 }
