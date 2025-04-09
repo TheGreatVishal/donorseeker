@@ -42,7 +42,7 @@ export async function DELETE(request, { params }) {
     const listing = await prisma.donationListing.findUnique({
       where: { id: listingId },
       include: {
-        requests: true, // Correct field name from schema
+        requests: true, 
       },
     })
 
