@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth/next"
 import { logApiActivity } from "@/utils/logApiActivity"
 
 export async function GET(request: NextRequest) {
-	const section = "Logs"
+	const section = "Logs Section"
 	const endpoint = "/api/admin/logs"
 	const requestType = "GET"
 
