@@ -156,6 +156,7 @@ Ensure you have the following installed:
 ```sh
 git clone https://github.com/TheGreatVishal/donor-seeker.git
 cd donor-seeker
+```
 
 ### 2. Install Dependencies
 ```sh
