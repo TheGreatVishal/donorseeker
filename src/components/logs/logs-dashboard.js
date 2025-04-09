@@ -172,7 +172,7 @@ export default function LogsDashboard() {
           <RefreshCw className="h-4 w-4 mr-2" />
           Refresh
         </Button>
-        <Button variant="outline" onClick={exportLogs} disabled={loading || logs.length === 0}>
+        <Button variant="outline" onClick={exportLogs} disabled={loading || logs === undefined|| Number(logs.length) === 0}>
           <Download className="h-4 w-4 mr-2" />
           Export
         </Button>

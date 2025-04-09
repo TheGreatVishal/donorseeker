@@ -4,7 +4,19 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Skeleton } from "@/components/ui/skeleton"
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts"
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  Legend,
+} from "recharts"
 
 export function LogsStats({ filters }) {
   const [loading, setLoading] = useState(true)
@@ -25,17 +37,33 @@ export function LogsStats({ filters }) {
       try {
         // Convert filters object to URLSearchParams
         const params = new URLSearchParams()
-        Object.entries(filters).forEach(([key, value]) => {
-          if (value) params.append(key, String(value))
-        })
+        if (filters) {
+          Object.entries(filters).forEach(([key, value]) => {
+            if (value) params.append(key, String(value))
+          })
+        }
 
         const response = await fetch(`/api/logs/stats?${params.toString()}`)
         if (!response.ok) throw new Error("Failed to fetch stats")
 
         const data = await response.json()
-        setStats(data)
+
+        // Ensure all distribution arrays exist
+        setStats({
+          statusCodeDistribution: data.statusCodeDistribution || [],
+          sectionDistribution: data.sectionDistribution || [],
+          requestTypeDistribution: data.requestTypeDistribution || [],
+          timeDistribution: data.timeDistribution || [],
+        })
       } catch (error) {
         console.error("Error fetching stats:", error)
+        // Set empty arrays on error
+        setStats({
+          statusCodeDistribution: [],
+          sectionDistribution: [],
+          requestTypeDistribution: [],
+          timeDistribution: [],
+        })
       } finally {
         setLoading(false)
       }
@@ -43,6 +71,15 @@ export function LogsStats({ filters }) {
 
     fetchStats()
   }, [filters]) // Include filters directly in the dependency array
+
+  // Custom label renderer that only shows labels for segments with percentage >= 5%
+  const renderCustomizedLabel = ({ name, percent }) => {
+    // Only show label if percentage is 5% or higher to prevent overlap
+    if (percent >= 0.05) {
+      return `${name} (${(percent * 100).toFixed(0)}%)`
+    }
+    return null
+  }
 
   if (loading) {
     return (
@@ -87,20 +124,21 @@ export function LogsStats({ filters }) {
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
-                        data={stats.statusCodeDistribution}
+                        data={stats.statusCodeDistribution || []}
                         cx="50%"
                         cy="50%"
                         labelLine={true}
-                        label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                        label={renderCustomizedLabel}
                         outerRadius={80}
                         fill="#8884d8"
                         dataKey="value"
                       >
-                        {stats.statusCodeDistribution.map((entry, index) => (
+                        {(stats.statusCodeDistribution || []).map((entry, index) => (
                           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                       </Pie>
                       <Tooltip formatter={(value) => [`${value} logs`, `Status`]} />
+                      <Legend />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
@@ -116,7 +154,7 @@ export function LogsStats({ filters }) {
                 <div className="h-[200px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart
-                      data={stats.sectionDistribution}
+                      data={stats.sectionDistribution || []}
                       layout="vertical"
                       margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                     >
@@ -141,20 +179,21 @@ export function LogsStats({ filters }) {
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
-                        data={stats.requestTypeDistribution}
+                        data={stats.requestTypeDistribution || []}
                         cx="50%"
                         cy="50%"
                         labelLine={true}
-                        label={({ name, percent }) => `${name} (${(percent * 100).toFixed(0)}%)`}
+                        label={renderCustomizedLabel}
                         outerRadius={80}
                         fill="#8884d8"
                         dataKey="value"
                       >
-                        {stats.requestTypeDistribution.map((entry, index) => (
+                        {(stats.requestTypeDistribution || []).map((entry, index) => (
                           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                       </Pie>
                       <Tooltip />
+                      <Legend />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
@@ -171,7 +210,7 @@ export function LogsStats({ filters }) {
             <CardContent>
               <div className="h-[300px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={stats.timeDistribution} margin={{ top: 5, right: 30, left: 20, bottom: 25 }}>
+                  <BarChart data={stats.timeDistribution || []} margin={{ top: 5, right: 30, left: 20, bottom: 25 }}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" angle={-45} textAnchor="end" height={60} />
                     <YAxis />
@@ -187,4 +226,3 @@ export function LogsStats({ filters }) {
     </div>
   )
 }
-
