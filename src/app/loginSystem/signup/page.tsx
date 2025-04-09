@@ -17,14 +17,17 @@ import { sendOTP } from "./actions"
 
 const signupSchema = z
   .object({
-    firstname: z.string()
+    firstname: z
+      .string()
       .min(2, "firstname must be at least 2 characters")
       .max(30, "firstname must not exceed 30 characters"),
-    lastname: z.string()
+    lastname: z
+      .string()
       .min(0, "lastname must be at least 0 characters")
       .max(30, "lastname must not exceed 30 characters"),
     email: z.string().email("Please enter a valid email"),
-    password: z.string()
+    password: z
+      .string()
       .min(8, "Password must be at least 8 characters")
       .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
       .regex(/[a-z]/, "Password must contain at least one lowercase letter")
@@ -81,6 +84,7 @@ export default function SignupPage() {
 
   // const isAdmin = watch("isAdmin")
   const watchedEmail = watch("email")
+  const watchedPassword = watch("password")
 
   // Validate email format
   useEffect(() => {
@@ -92,31 +96,44 @@ export default function SignupPage() {
     }
   }, [watchedEmail])
 
+  // Check password requirements
+  const passwordRequirements = [
+    { regex: /.{8,}/, message: "At least 8 characters" },
+    { regex: /[A-Z]/, message: "At least one uppercase letter" },
+    { regex: /[a-z]/, message: "At least one lowercase letter" },
+    { regex: /[0-9]/, message: "At least one number" },
+    { regex: /[!@#$%^&*(),.?":{}|<>]/, message: "At least one special character" },
+  ]
+
+  const checkPasswordRequirement = (password: string, regex: RegExp) => {
+    return regex.test(password)
+  }
+
   const handleSendOtp = async () => {
     if (!emailValid || !watchedEmail) {
-      console.error("Invalid email or empty email:", watchedEmail);
-      return;
+      console.error("Invalid email or empty email:", watchedEmail)
+      return
     }
 
     // console.log("(sign up page) Sending OTP for email:", watchedEmail); // Debugging log
 
-    setSendingOtp(true);
-    setError(null);
+    setSendingOtp(true)
+    setError(null)
 
     try {
-      const result = await sendOTP(watchedEmail);
+      const result = await sendOTP(watchedEmail)
       if (result.success) {
-        setOtpSent(true);
+        setOtpSent(true)
       } else {
-        throw new Error(result.error || "Failed to send OTP");
+        throw new Error(result.error || "Failed to send OTP")
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to send OTP");
-      setOtpSent(false);
+      setError(err instanceof Error ? err.message : "Failed to send OTP")
+      setOtpSent(false)
     } finally {
-      setSendingOtp(false);
+      setSendingOtp(false)
     }
-  };
+  }
 
   const onSubmit = async (data: SignupFormValues) => {
     if (!otpSent) {
@@ -236,10 +253,11 @@ export default function SignupPage() {
                     id="firstname"
                     placeholder="John"
                     {...register("firstname")}
-                    className={`pl-10 py-6 text-black ${errors.firstname
+                    className={`pl-10 py-6 text-black ${
+                      errors.firstname
                         ? "bg-rose-50/50 border-rose-300 focus:border-rose-500"
                         : "bg-rose-50/50 border-rose-100 focus:border-rose-300"
-                      }`}
+                    }`}
                     onBlur={() => trigger("firstname")}
                   />
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-rose-400" />
@@ -256,17 +274,17 @@ export default function SignupPage() {
                     id="lastname"
                     placeholder="Doe"
                     {...register("lastname")}
-                    className={`pl-10 py-6 text-black ${errors.lastname
+                    className={`pl-10 py-6 text-black ${
+                      errors.lastname
                         ? "bg-rose-50/50 border-rose-300 focus:border-rose-500"
                         : "bg-rose-50/50 border-rose-100 focus:border-rose-300"
-                      }`}
+                    }`}
                     onBlur={() => trigger("lastname")}
                   />
                   <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-rose-400" />
                 </div>
                 {errors.lastname && <p className="text-sm text-rose-500 mt-1">{errors.lastname.message}</p>}
               </div>
-
 
               {/* Enter email and Send OTP */}
               <div className="space-y-2">
@@ -280,10 +298,11 @@ export default function SignupPage() {
                       type="email"
                       placeholder="john@example.com"
                       {...register("email")}
-                      className={`pl-10 py-6 text-black ${emailValid === false
-                        ? "bg-rose-50/50 border-rose-300 focus:border-rose-500 text-indigo-700"
-                        : "bg-indigo-50/50 border-indigo-100 focus:border-indigo-300 text-indigo-700"
-                        }`}
+                      className={`pl-10 py-6 text-black ${
+                        emailValid === false
+                          ? "bg-rose-50/50 border-rose-300 focus:border-rose-500 text-indigo-700"
+                          : "bg-indigo-50/50 border-indigo-100 focus:border-indigo-300 text-indigo-700"
+                      }`}
                       onBlur={() => trigger("email")}
                     />
                     <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-indigo-400" />
@@ -308,7 +327,6 @@ export default function SignupPage() {
                   <p className="text-sm text-rose-500 mt-1">Please enter a valid email address</p>
                 )}
               </div>
-
 
               {/* Email Verification code */}
               <AnimatePresence>
@@ -357,7 +375,31 @@ export default function SignupPage() {
                     />
                     <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-rose-400" />
                   </div>
-                  {errors.password && <p className="text-sm text-rose-500 mt-1">{errors.password.message}</p>}
+                  {watchedPassword && (
+                    <div className="mt-2 space-y-1">
+                      {passwordRequirements.map((requirement, index) => (
+                        <div key={index} className="flex items-center gap-2">
+                          {checkPasswordRequirement(watchedPassword, requirement.regex) ? (
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                          ) : (
+                            <AlertCircle className="h-4 w-4 text-rose-400" />
+                          )}
+                          <span
+                            className={`text-xs ${
+                              checkPasswordRequirement(watchedPassword, requirement.regex)
+                                ? "text-green-600"
+                                : "text-rose-500"
+                            }`}
+                          >
+                            {requirement.message}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {errors.password && !watchedPassword && (
+                    <p className="text-sm text-rose-500 mt-1">{errors.password.message}</p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
@@ -400,12 +442,7 @@ export default function SignupPage() {
               <Button
                 type="submit"
                 className="w-full py-6 bg-gradient-to-r from-rose-500 to-indigo-500 hover:from-rose-600 hover:to-indigo-600 transition-all duration-300"
-                disabled={
-                  isLoading ||
-                  !isValid ||
-                  !otpSent ||
-                  !otp
-                }
+                disabled={isLoading || !isValid || !otpSent || !otp}
               >
                 {isLoading ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : "Create Account"}
               </Button>
@@ -429,4 +466,3 @@ export default function SignupPage() {
     </div>
   )
 }
-
