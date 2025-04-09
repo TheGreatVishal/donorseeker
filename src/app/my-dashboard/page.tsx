@@ -239,24 +239,6 @@ export default function DashboardPage() {
                             <Eye className="h-4 w-4 mr-1" /> View
                           </Button>
                         </Link>
-                        {/* <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => handleToggleApproval('requirements', listing.id, listing.isApproved)}
-                          disabled={isToggling === listing.id}
-                        >
-                          {isToggling === listing.id ? (
-                            <Loader2 className="h-4 w-4 animate-spin" />
-                          ) : listing.isApproved ? (
-                            <>
-                              <ToggleRight className="h-4 w-4 mr-1" /> Delist
-                            </>
-                          ) : (
-                            <>
-                              <ToggleLeft className="h-4 w-4 mr-1" /> List
-                            </>
-                          )}
-                        </Button> */}
                         <Button
                           variant="destructive"
                           size="sm"

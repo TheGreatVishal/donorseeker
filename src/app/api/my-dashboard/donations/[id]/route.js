@@ -5,13 +5,13 @@ import { logApiActivity } from "@/utils/logApiActivity";
 
 export async function DELETE(request, { params }) {
   const { id } = params;
-  const listingId = id
+  const listingId = Number(id)
   const endpoint = `/api/donations/${listingId}`;
   const section = "Donation Listing";
   const requestType = "DELETE";
+  const session = await getServerSession()
   try {
 
-    const session = await getServerSession()
 
     if (!session?.user?.email) {
       await logApiActivity({
