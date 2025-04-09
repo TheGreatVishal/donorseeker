@@ -38,7 +38,7 @@
   - 📊 Logging: Custom-built logging system with exportable CSV  
 
 ## 📈 Codebase Insights
-- 💻 Total Lines of Code: `18,545+`
+- 💻 Total Lines of Code: `18,589+`
 - 🚧 Actively maintained and growing!
 
 ## 🗂️ Project Structure

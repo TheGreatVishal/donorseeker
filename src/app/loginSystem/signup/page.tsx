@@ -452,7 +452,7 @@ export default function SignupPage() {
 
         {/* Already have an account? */}
         <CardFooter className="flex justify-center pb-6">
-          <p className="text-sm text-muted-foreground bg-gradient-to-r from-rose-500 to-indigo-500 text-transparent bg-clip-text">
+          <p className="text-sm  bg-gradient-to-r from-rose-500 to-indigo-500 text-transparent bg-clip-text">
             Already have an account?{" "}
             <Link
               href="/login"
