@@ -42,7 +42,7 @@ export async function DELETE(request, { params }) {
     const listing = await prisma.donationListing.findUnique({
       where: { id: listingId },
       include: {
-        donationRequests: true, // Include related requests to check if they exist
+        requests: true, // Correct field name from schema
       },
     })
 
@@ -81,7 +81,28 @@ export async function DELETE(request, { params }) {
 
     // Use a transaction to delete related records first, then the listing
     await prisma.$transaction(async (tx) => {
-      // First delete all donation requests that reference this listing
+      // Check if there are any transactions related to this listing
+      const relatedTransactions = await tx.transaction.findMany({
+        where: { listingId },
+      })
+
+      // If transactions exist, delete related feedback first
+      if (relatedTransactions.length > 0) {
+        await tx.feedback.deleteMany({
+          where: {
+            transactionId: {
+              in: relatedTransactions.map((t) => t.id),
+            },
+          },
+        })
+
+        // Then delete the transactions
+        await tx.transaction.deleteMany({
+          where: { listingId },
+        })
+      }
+
+      // Delete all donation requests that reference this listing
       await tx.donationRequest.deleteMany({
         where: { listingId },
       })
@@ -92,7 +113,7 @@ export async function DELETE(request, { params }) {
       })
     })
 
-    console.log("Listing and related requests deleted successfully:", listingId)
+    console.log("Listing and related records deleted successfully:", listingId)
 
     await logApiActivity({
       request,
