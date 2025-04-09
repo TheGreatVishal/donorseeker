@@ -4,9 +4,24 @@ import { type NextRequest, NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import type { Prisma } from "@prisma/client"
 import { format } from "date-fns"
+import { getServerSession } from "next-auth/next"
 
 export async function GET(request: NextRequest) {
   try {
+
+    const session = await getServerSession()
+
+    const user = await prisma.user.findUnique({
+      where: { email: session?.user.email || "" },
+      select: { isAdmin: true },
+    })
+
+    if (!session || !user?.isAdmin) {
+      console.log("Not Authorized user tried to access the logs...");
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+
     const { searchParams } = new URL(request.url)
 
     // Build filter conditions (same as in the logs route)

@@ -1,9 +1,25 @@
 import { type NextRequest, NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import type { Prisma } from "@prisma/client"
+import { getServerSession } from "next-auth/next"
 
 export async function GET(request: NextRequest) {
   try {
+
+    const session = await getServerSession()
+
+    const user = await prisma.user.findUnique({
+      where: { email: session?.user.email || "" },
+      select: { isAdmin: true },
+    })
+   
+    if (!session || !user?.isAdmin) {
+      console.log("Not Authorized user tried to access the logs...");
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    console.log("User Trying to access logs: ", session?.user.email);
+    
     const { searchParams } = new URL(request.url)
 
     // Parse pagination parameters
@@ -88,8 +104,8 @@ export async function GET(request: NextRequest) {
     ])
 
 
-    console.log(logs);
-    
+    // console.log(logs);
+
     return NextResponse.json({
       logs,
       total,
