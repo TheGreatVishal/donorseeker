@@ -7,14 +7,14 @@ export async function POST(request: NextRequest) {
   const endpoint = "/api/donations/request"; 
   const section = "Donations";
   const requestType = "POST";
+  const session = await getServerSession();
 
   try {
-    const session = await getServerSession();
 
     if (!session || !session.user) {
       await logApiActivity({
         request,
-        session: null,
+        session,
         section,
         endpoint,
         requestType,
@@ -106,7 +106,7 @@ export async function POST(request: NextRequest) {
 
     await logApiActivity({
       request,
-      session: null,
+      session,
       section,
       endpoint,
       requestType,

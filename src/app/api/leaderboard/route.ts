@@ -3,11 +3,13 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { logApiActivity } from "@/utils/logApiActivity";
+import { getServerSession } from "next-auth/next";
 
 export async function GET(request: Request) {
   const endpoint = "/api/leaderboard"; // adjust if needed
   const section = "Leaderboard";
   const requestType = "GET";
+  const session = await getServerSession();
 
   try {
     // Get top donors based on donation count and ratings
@@ -41,7 +43,7 @@ export async function GET(request: Request) {
 
     await logApiActivity({
       request,
-      session: null,
+      session,
       section,
       endpoint,
       requestType,
@@ -57,7 +59,7 @@ export async function GET(request: Request) {
 
     await logApiActivity({
       request,
-      session: null,
+      session,
       section,
       endpoint,
       requestType,

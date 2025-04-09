@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { v2 as cloudinary } from "cloudinary";
 import { logApiActivity } from "@/utils/logApiActivity";
+import { getServerSession } from "next-auth/next";
 
 // Configure Cloudinary
 cloudinary.config({
@@ -18,6 +19,7 @@ export async function POST(request: Request) {
   const endpoint = "/api/image-upload"; // adjust if needed
   const section = "Image Upload";
   const requestType = "POST";
+  const session = await getServerSession();
 
   try {
     const formData = await request.formData();
@@ -26,7 +28,7 @@ export async function POST(request: Request) {
     if (!file) {
       await logApiActivity({
         request,
-        session: null,
+        session,
         section,
         endpoint,
         requestType,
@@ -62,7 +64,7 @@ export async function POST(request: Request) {
 
     await logApiActivity({
       request,
-      session: null,
+      session,
       section,
       endpoint,
       requestType,
@@ -80,7 +82,7 @@ export async function POST(request: Request) {
 
     await logApiActivity({
       request,
-      session: null,
+      session,
       section,
       endpoint,
       requestType,

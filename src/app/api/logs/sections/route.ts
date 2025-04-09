@@ -1,40 +1,75 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import { getServerSession } from "next-auth/next"
+import { logApiActivity } from "@/utils/logApiActivity"
 
-export async function GET() {
-  try {
-    const session = await getServerSession()
+export async function GET(request: Request) {
+	const section = "Logs Section"
+	const endpoint = "/api/admin/logs/sections"
+	const requestType = "GET"
 
-    const user = await prisma.user.findUnique({
-      where: { email: session?.user.email || "" },
-      select: { isAdmin: true },
-    })
+	try {
+		const session = await getServerSession()
 
-    if (!session || !user?.isAdmin) {
-      console.log("Not Authorized user tried to access the logs...");
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
-    }
-    
-    
-    // Get distinct sections
-    const sections = await prisma.logging.findMany({
-      select: {
-        section: true,
-      },
-      distinct: ["section"],
-      orderBy: {
-        section: "asc",
-      },
-    })
+		const user = await prisma.user.findUnique({
+			where: { email: session?.user.email || "" },
+			select: { isAdmin: true },
+		})
 
-    // Extract section names from result
-    const sectionNames = sections.map((item) => item.section)
+		if (!session || !user?.isAdmin) {
+			console.log("Not Authorized user tried to access the logs...")
 
-    return NextResponse.json(sectionNames)
-  } catch (error) {
-    console.error("Error fetching sections:", error)
-    return NextResponse.json({ error: "Failed to fetch sections" }, { status: 500 })
-  }
+			await logApiActivity({
+				request,
+				session,
+				section,
+				endpoint,
+				requestType,
+				statusCode: 401,
+				description: `Unauthorized access to logs sections by: ${session?.user.email ?? "Unknown user"}`,
+			})
+
+			return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+		}
+
+		const sections = await prisma.logging.findMany({
+			select: {
+				section: true,
+			},
+			distinct: ["section"],
+			orderBy: {
+				section: "asc",
+			},
+		})
+
+		const sectionNames = sections.map((item) => item.section)
+
+		await logApiActivity({
+			request,
+			session,
+			section,
+			endpoint,
+			requestType,
+			statusCode: 200,
+			description: `Fetched distinct log sections successfully by: ${session?.user.email}`,
+		})
+
+		return NextResponse.json(sectionNames)
+	} catch (error) {
+		console.error("Error fetching sections:", error)
+
+		const session = await getServerSession()
+
+		await logApiActivity({
+			request,
+			session,
+			section,
+			endpoint,
+			requestType,
+			statusCode: 500,
+			description: `Error fetching distinct log sections: ${error instanceof Error ? error.message : "Unknown error"}`,
+		})
+
+		return NextResponse.json({ error: "Failed to fetch sections" }, { status: 500 })
+	}
 }
-

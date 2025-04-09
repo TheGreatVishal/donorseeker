@@ -7,14 +7,14 @@ export async function POST(request: Request) {
   const endpoint = "/api/donations"; // adjust if needed
   const section = "Donations";
   const requestType = "POST";
+  const session = await getServerSession();
 
   try {
-    const session = await getServerSession();
 
     if (!session?.user?.email) {
       await logApiActivity({
         request,
-        session: null,
+        session,
         section,
         endpoint,
         requestType,
@@ -85,7 +85,7 @@ export async function POST(request: Request) {
 
     await logApiActivity({
       request,
-      session: null,
+      session,
       section,
       endpoint,
       requestType,
@@ -101,7 +101,7 @@ export async function GET() {
   const endpoint = "/api/donations"; // same path as POST
   const section = "Donations";
   const requestType = "GET";
-
+  const session = await getServerSession();
   try {
     const donations = await prisma.donationListing.findMany({
       where: {
@@ -126,7 +126,7 @@ export async function GET() {
 
     await logApiActivity({
       request: null, // No request object available in standard GET method signature
-      session: null,
+      session,
       section,
       endpoint,
       requestType,
@@ -140,7 +140,7 @@ export async function GET() {
 
     await logApiActivity({
       request: null,
-      session: null,
+      session,
       section,
       endpoint,
       requestType,
