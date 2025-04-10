@@ -3,7 +3,7 @@ import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import { format, subDays } from "date-fns";
 import { getServerSession } from "next-auth/next"
-import { logApiActivity } from "@/utils/logApiActivity"
+// import { logApiActivity } from "@/utils/logApiActivity"
 
 // const section = "Logs Section"
 // const endpoint = "/api/admin/logs/stats"

@@ -5,7 +5,7 @@ import prisma from "@/lib/prisma"
 import type { Prisma } from "@prisma/client"
 import { format } from "date-fns"
 import { getServerSession } from "next-auth/next"
-import { logApiActivity } from "@/utils/logApiActivity"
+// import { logApiActivity } from "@/utils/logApiActivity"
 
 
 export async function GET(request: NextRequest) {
