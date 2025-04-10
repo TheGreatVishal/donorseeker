@@ -3,10 +3,15 @@ import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import { format, subDays } from "date-fns";
 import { getServerSession } from "next-auth/next"
+import { logApiActivity } from "@/utils/logApiActivity"
+
+// const section = "Logs Section"
+// const endpoint = "/api/admin/logs/stats"
+// const requestType = "GET"
 
 export async function GET(request: NextRequest) {
+	
 	try {
-
 		const session = await getServerSession()
 
 		const user = await prisma.user.findUnique({
@@ -15,7 +20,8 @@ export async function GET(request: NextRequest) {
 		})
 	
 		if (!session || !user?.isAdmin) {
-		  console.log("Not Authorized user tried to access the logs...");
+		//   console.log("Not Authorized user tried to access the logs...");
+		
 		  return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 		}
 
