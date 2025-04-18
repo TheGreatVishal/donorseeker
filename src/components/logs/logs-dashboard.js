@@ -46,7 +46,7 @@ export default function LogsDashboard() {
       if (!response.ok) throw new Error("Failed to fetch logs")
 
       const data = await response.json()
-      console.log(data);
+      // console.log(data);
       
       setLogs(data.logs)
       setTotalLogs(data.total)

@@ -155,7 +155,7 @@ export function LogsTable({ logs, loading, page, pageSize, totalLogs, onPageChan
             {logs.map((log) => (
               <TableRow key={log.id}>
                 <TableCell className="font-mono text-xs">
-                  {format(new Date(log.timestamp) - new Date(5.5 * 60 * 60 * 1000) , "dd-MM-yyyy | HH:mm:ss")}
+                  {format(new Date(log.timestamp) - new Date(5.5 * 60 * 60 * 1000), "dd-MM-yyyy | HH:mm:ss")}
                 </TableCell>
                 <TableCell className="font-mono text-xs">{log.ipAddress}</TableCell>
                 <TableCell className="max-w-[150px] truncate">{log.userEmail || "-"}</TableCell>
@@ -189,7 +189,7 @@ export function LogsTable({ logs, loading, page, pageSize, totalLogs, onPageChan
                           <div className="grid grid-cols-4 items-center gap-4">
                             <div className="font-medium">Timestamp</div>
                             <div className="col-span-3 font-mono">
-                              {format(new Date(selectedLog.timestamp)  - new Date(5.5 * 60 * 60 * 1000), "dd-MM-yyyy | HH:mm:ss.SSS")}
+                              {format(new Date(selectedLog.timestamp) - new Date(5.5 * 60 * 60 * 1000), "dd-MM-yyyy | HH:mm:ss.SSS")}
                             </div>
                           </div>
                           <div className="grid grid-cols-4 items-center gap-4">
@@ -219,6 +219,19 @@ export function LogsTable({ logs, loading, page, pageSize, totalLogs, onPageChan
                           <div className="grid grid-cols-4 items-start gap-4">
                             <div className="font-medium">Description</div>
                             <div className="col-span-3 whitespace-pre-wrap">{selectedLog.description || "-"}</div>
+                          </div>
+
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <div className="font-medium">Browser</div>
+                            <div className="col-span-3">{selectedLog.browser || "-"}</div>
+                          </div>
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <div className="font-medium">Operating System</div>
+                            <div className="col-span-3">{selectedLog.operatingSystem || "-"}</div>
+                          </div>
+                          <div className="grid grid-cols-4 items-center gap-4">
+                            <div className="font-medium">Geo Location</div>
+                            <div className="col-span-3">{selectedLog.geoLocation || "-"}</div>
                           </div>
                         </div>
                       )}

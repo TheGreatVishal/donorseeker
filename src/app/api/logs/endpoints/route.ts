@@ -1,4 +1,4 @@
-// Fetches all distince api endpoints
+// Fetches all distinct api endpoints
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
 import { getServerSession } from "next-auth/next"
